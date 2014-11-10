@@ -9,6 +9,11 @@ module.exports = {
 	// -------------------------
 	test: ['karma:unit'],
 	coverage: ['karma:coverage'],
-	tdd: ['karma:tdd']
+	tdd: ['karma:tdd'],
+
+
+	// Default
+	// -------------------------
+	default: ['tdd']
 
 };
