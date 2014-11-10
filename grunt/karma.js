@@ -24,7 +24,7 @@ module.exports = {
 		reporters: ['dots', 'coverage'],
 		coverageReporter: {
 			type : 'html',
-			dir: 'coerage/'
+			dir: 'coverage/'
 		},
 	},
 
