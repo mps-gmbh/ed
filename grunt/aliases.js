@@ -12,6 +12,11 @@ module.exports = {
 	tdd: ['karma:tdd'],
 
 
+	// Build
+	// -------------------------
+	config: ['prompt:config'],
+
+
 	// Default
 	// -------------------------
 	default: ['tdd']
