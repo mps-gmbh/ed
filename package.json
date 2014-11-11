@@ -2,9 +2,12 @@
   "name": "ed",
   "version": "0.0.1",
   "description": "Keep track of your milestones and issues!",
-  "main": "index.js",
   "scripts": {
     "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:mps-gmbh/ed.git"
   },
   "author": "MPS GmbH",
   "license": "MIT",
