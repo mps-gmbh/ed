@@ -19,12 +19,12 @@ module.exports = {
 	coverage: {
 		singleRun: true,
 		preprocessors: {
-			'src/**/*.js': ['coverage']
+			'<%= dir.src %>/**/*.js': ['coverage']
 		},
 		reporters: ['dots', 'coverage'],
 		coverageReporter: {
 			type : 'html',
-			dir: 'coverage/'
+			dir: '<%= dir.coverage %>/'
 		},
 	},
 
