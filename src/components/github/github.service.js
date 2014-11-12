@@ -34,7 +34,7 @@
 					ghConfig[name] = value;
 				}
 				return ghConfig[name];
-			}
+			};
 		});
 
 
