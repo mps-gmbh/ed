@@ -6,7 +6,7 @@ module.exports = {
 	},
 	components: {
 		module: 'ed.template.components',
-		src: '<%= dir.src %>/components/**/*.tpl.html',
+		src: '<%= dir.src %>/components/**/*.html',
 		dest: '<%= dir.dist %>/<%= package.name %>.template.js'
 	},
 
