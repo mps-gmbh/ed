@@ -1,0 +1,27 @@
+$loadingSpinnerHeight: 100;
+$loadingSpinnerWidth: 60;
+
+$loadingSpinnerChildWidth: 8;
+
+loading-spinner {
+	display: block;
+
+	height: rem($loadingSpinnerHeight);
+	width: rem($loadingSpinnerWidth);
+
+	font-size: rem(0);
+	text-align: center;
+
+	> div {
+		display: inline-block;
+
+		height: 100%;
+		width: rem(8);
+
+		background: $blue;
+
+		+ div {
+			margin-left: rem(4);
+		}
+	}
+}

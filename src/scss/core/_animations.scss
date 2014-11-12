@@ -1,0 +1,22 @@
+// Strecht Delay
+// -------------------------
+$animationStrechDelayDelay: 1.2s;
+
+.Animation-stretchDelay {
+	@include animation(stretchDelay $animationStrechDelayDelay infinite ease-in-out);
+
+	@for $i from 1 through 4 {
+		&:nth-child(#{$i + 1}) {
+			@include animation-delay(-#{$animationStrechDelayDelay - ($i * 0.1)});
+		}
+	}
+}
+@include keyframes(stretchDelay) {
+	0%, 40%, 100% {
+		@include transform(scaleY(0.4));
+	}
+
+	20% {
+		@include transform(scaleY(1.0));
+	}
+}
