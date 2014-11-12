@@ -1,0 +1,21 @@
+$bodyBackgroundColor: $brand--light;
+
+$bodyColor: $black;
+$bodyFontWeight: 400;
+$bodyFontSize: 100%;
+$bodyLineHeight: 1.5;
+$bodyFontFamily: 'Raleway', 'Segoe UI', 'Helvetica Neue', Helvetica, Tahoma, Arial, sans-serif;
+
+
+*,
+*:after,
+*:before {
+	@include box-sizing(border-box);
+}
+
+body {
+	background: $bodyBackgroundColor;
+
+	color: $bodyColor;
+	font: $bodyFontWeight $bodyFontSize / #{$bodyLineHeight} $bodyFontFamily;
+}

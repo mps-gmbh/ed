@@ -13,7 +13,7 @@ $animationStrechDelayDelay: 1.2s;
 }
 @include keyframes(stretchDelay) {
 	0%, 40%, 100% {
-		@include transform(scaleY(0.4));
+		@include transform(scaleY(0.6));
 	}
 
 	20% {
