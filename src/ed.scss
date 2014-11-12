@@ -1,7 +1,15 @@
 @import 'scss/lib/bourbon/bourbon';
 @import 'scss/lib/normalize';
 
-@import 'scss/core/colors';
-@import 'scss/core/animations';
 
+@import 'scss/core/font';
+@import 'scss/core/colors';
+
+@import 'scss/core/root';
+@import 'scss/core/animations';
+@import 'scss/core/utils';
+
+
+@import 'scss/components/page';
+@import 'scss/components/brand';
 @import 'scss/components/loading-spinner';

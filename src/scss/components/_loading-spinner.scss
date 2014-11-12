@@ -1,7 +1,7 @@
-$loadingSpinnerHeight: 100;
+$loadingSpinnerHeight: 60;
 $loadingSpinnerWidth: 60;
 
-$loadingSpinnerChildWidth: 8;
+$loadingSpinnerChildWidth: 6;
 
 loading-spinner {
 	display: block;
@@ -18,7 +18,7 @@ loading-spinner {
 		height: 100%;
 		width: rem(8);
 
-		background: $blue;
+		background: $brand;
 
 		+ div {
 			margin-left: rem(4);
