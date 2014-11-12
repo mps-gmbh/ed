@@ -10,6 +10,16 @@ module.exports = function( grunt ) {
 			dist: 'dist',
 			src: 'src',
 			vendor: 'vendor'
+		},
+
+		app: {
+			prefix: '<%= dir.src %>/app.prefix',
+			suffix: '<%= dir.src %>/app.suffix'
+		},
+
+		port: {
+			livereload: 2407,
+			localhost: 5555
 		}
 
 	};
