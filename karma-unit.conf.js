@@ -7,8 +7,10 @@ module.exports = function(config) {
 			'vendor/angular/angular.js',
 			'vendor/angular-animate/angular-animate.js',
 			'vendor/angular-mocks/angular-mocks.js',
+			'vendor/angular-progress-arc/angular-progress-arc.js',
 			'dist/*.template.js',
-			'src/**/*.js'
+			'src/**/*.module.js',
+			'src/**/!(*module).js'
 		],
 		exclude: [
 		],
