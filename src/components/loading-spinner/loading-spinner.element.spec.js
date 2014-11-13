@@ -10,7 +10,7 @@ describe('[element/loading-spinner]', function () {
 
 		spyOn($templateCache, 'get').and.callThrough();
 
-		element = angular.element('<loading-spinner><loading-spinner>');
+		element = angular.element('<ed-loading-spinner><ed-loading-spinner>');
 		$compile( element )( $rootScope.$new() );
 	}));
 

@@ -1,7 +1,7 @@
 (function() {
 
 	angular.module('ed.element.loadingSpinner', [])
-		.directive( 'loadingSpinner', LoadingSpinner );
+		.directive( 'edLoadingSpinner', LoadingSpinner );
 
 	function LoadingSpinner () {
 		return {
