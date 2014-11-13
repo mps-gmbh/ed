@@ -9,7 +9,7 @@ module.exports = {
 			'<%= dir.src %>/<%= package.name %>.js',
 			'<%= dir.src %>/**/!(*spec|*fixture).js'
 		],
-		tasks: ['concat:src']
+		tasks: ['newer:lint', 'concat:src']
 	},
 
 	template: {
