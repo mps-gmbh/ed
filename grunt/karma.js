@@ -7,7 +7,7 @@ module.exports = {
 	unit: {
 		singleRun: true,
 		preprocessors: {
-			'src/**/!(*spec|*fixture).js': ['coverage']
+			'src/**/!(*module|*spec|*fixture).js': ['coverage']
 		},
 		reporters: ['dots', 'coverage'],
 		coverageReporter: {
@@ -19,7 +19,7 @@ module.exports = {
 	coverage: {
 		singleRun: true,
 		preprocessors: {
-			'src/**/!(*spec|*fixture).js': ['coverage']
+			'src/**/!(*module|*spec|*fixture).js': ['coverage']
 		},
 		reporters: ['dots', 'coverage'],
 		coverageReporter: {
