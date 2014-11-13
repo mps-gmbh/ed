@@ -1,5 +1,11 @@
 (function () {
 
+	// Export
+	// -------------------------
+	angular.module('ed.github.service', [])
+		.provider('githubService', GithubServiceProvider);
+
+
 	// Defaults
 	// -------------------------
 	var CONFIG_PARAMS = ['owner', 'repo'],
@@ -106,11 +112,5 @@
 			};
 		}];
 	}
-
-
-	// Export
-	// -------------------------
-	angular.module('ed.github.service', [])
-		.provider('githubService', GithubServiceProvider);
 
 })();
