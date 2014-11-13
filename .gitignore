@@ -3,3 +3,4 @@ vendor/
 coverage/
 dist/
 npm-debug.log
+.tmp/
