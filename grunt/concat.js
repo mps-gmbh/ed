@@ -11,7 +11,8 @@ module.exports = function () {
 				footer: WRAP_FOOTER
 			},
 			src: [
-				'<%= dir.src %>/**/!(*spec|*fixture).js'
+				'<%= dir.src %>/**/*.module.js',
+				'<%= dir.src %>/**/!(*module|*spec|*fixture).js'
 			],
 			dest: '<%= dir.dist %>/<%= package.name %>.js'
 		},
@@ -19,7 +20,8 @@ module.exports = function () {
 		ng: {
 			src: [
 				'<%= dir.vendor %>/angular/angular.js',
-				'<%= dir.vendor %>/angular-animate/angular-animate.js'
+				'<%= dir.vendor %>/angular-animate/angular-animate.js',
+				'<%= dir.vendor %>/angular-progress-arc/angular-progress-arc.js'
 			],
 			dest: '<%= dir.dist %>/angular.js'
 		}
