@@ -4,7 +4,6 @@
 	"curly":true,
 	"eqeqeq":true,
 	"immed":true,
-	"latedef":true,
 	"newcap":false,
 	"noarg":true,
 	"sub":true,
@@ -13,6 +12,8 @@
 	"smarttabs":true,
 	"undef": true,
 	"unused": true,
+	"expr": true,
+
 	"globals":{
 		"angular": true,
 
