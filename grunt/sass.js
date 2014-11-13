@@ -1,21 +1,27 @@
-module.exports =  function () {
+module.exports =  function ( grunt, config ) {
+	var path = require('path');
 
-	var main = "@import 'scss/lib/bourbon/bourbon';\n" +
-				"@import 'scss/lib/normalize';\n" +
+	function gatherScssImports () {
+		var patterns = grunt.util.toArray(arguments).reduce( function ( a, b ) {
+			return a.concat(b);
+		}).map( function ( item ) {
+			return grunt.template.process(item, { data: config });
+		});
+		return grunt.file.expand(patterns).map( function ( p ) {
+			p = path.dirname(p) + '/' + path.basename(p).replace(/^_|\.scss$/g, '');
+			return '@import "' + path.relative(config.dir.tmp, p) + '";';
+		});
+	}
 
-
-				"@import 'scss/core/font';\n" +
-				"@import 'scss/core/colors';\n" +
-
-				"@import 'scss/core/root';\n" +
-				"@import 'scss/core/animations';\n" +
-				"@import 'scss/core/utils';\n" +
-
-
-				"@import 'scss/components/page';\n" +
-				"@import 'scss/components/brand';\n" +
-				"@import 'scss/components/loading-spinner';\n";
-
+	function createSassFile () {
+		var imports = gatherScssImports(
+			config.files.style.core,
+			config.files.style.components
+		);
+		imports.unshift('@import "bourbon";');
+		grunt.file.write(config.dir.tmp + '/theme.scss', imports.toString().replace(/,/g, '\n') );
+		return config.dir.tmp + '/theme.scss';
+	}
 
 	return {
 		options: {
@@ -24,7 +30,7 @@ module.exports =  function () {
 		},
 		dev: {
 			files: {
-				'<%= dir.dist %>/<%= package.name %>.css': '<%= dir.src %>/<%= package.name %>.scss'
+				'<%= dir.dist %>/<%= package.name %>.css': createSassFile()
 			}
 		}
 	};

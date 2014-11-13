@@ -9,7 +9,22 @@ module.exports = function( grunt ) {
 			coverage: 'coverage',
 			dist: 'dist',
 			src: 'src',
-			vendor: 'vendor'
+			vendor: 'vendor',
+			tmp: '.tmp'
+		},
+
+		files: {
+			style: {
+				core: [
+					'<%= dir.src %>/core/variables.scss',
+					'<%= dir.src %>/core/normalize.scss',
+					'<%= dir.src %>/core/base.scss',
+					'<%= dir.src %>/core/animations.scss'
+				],
+				components: [
+					'<%= dir.src %>/{components,utils}/**/*.scss'
+				]
+			}
 		},
 
 		app: {

@@ -1,4 +1,4 @@
-.u-center {
+.u-center-horizontal {
 	@include display(flex);
 	@include align-items(center);
 	@include justify-content(center);
