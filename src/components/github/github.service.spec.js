@@ -56,19 +56,19 @@ describe('[github/service]', function () {
 		});
 
 		it('should throw an error if no "owner" and "repo" are specified', function () {
-			expect(function () { new GithubService() }).toThrow();
+			expect(function () { new GithubService(); }).toThrow();
 		});
 
 		it('should throw an error if no "owner" is specified', function () {
-			expect(function () { new GithubService('foo') }).toThrow();
+			expect(function () { new GithubService('foo') ;}).toThrow();
 		});
 
 		it('should throw an error if no "repo" is specified', function () {
-			expect(function () { new GithubService(null, 'mom') }).toThrow();
+			expect(function () { new GithubService(null, 'mom'); }).toThrow();
 		});
 
 		it('should not throw is "owner" and "repo" is specified', function () {
-			expect(function () { new GithubService('foo', 'mom') }).not.toThrow();
+			expect(function () { new GithubService('foo', 'mom'); }).not.toThrow();
 		});
 	});
 
@@ -343,6 +343,7 @@ describe('[github/service]', function () {
 	describe('OAuth', function () {
 		var owner = 'mps-gmbh',
 			repo = 'ed',
+			github,
 			headers;
 
 		beforeEach(function() {

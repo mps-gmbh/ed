@@ -10,7 +10,6 @@
 	// -------------------------
 	var extend = angular.extend,
 		forEach = angular.forEach,
-		isDefined = angular.isDefined,
 		MinErr = angular.$$minErr('GithubService'),
 		returnData = function ( response ) {
 			return response.data;
@@ -87,7 +86,7 @@
 					getIssuesForMilestone: getIssuesForMilestone,
 					getMilestone: getMilestone,
 					getMilestones: getMilestones
-				}
+				};
 			}
 
 			return GithubService;
