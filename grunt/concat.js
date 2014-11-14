@@ -12,7 +12,8 @@ module.exports = function () {
 			},
 			src: [
 				'<%= dir.src %>/**/*.module.js',
-				'<%= dir.src %>/**/!(*module|*spec|*fixture).js'
+				'<%= dir.src %>/**/!(*module|*spec|*fixture).js',
+				'<%= dir.tmp %>/github.config.js'
 			],
 			dest: '<%= dir.dist %>/<%= package.name %>.js'
 		},

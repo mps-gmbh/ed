@@ -1,8 +1,8 @@
 module.exports = function ( grunt, options ) {
 
 	function moduleTemplate ( data ) {
-		var tpl =	'angular.module(\'ed.config\', [])\n' +
-					'	.constant(\'ED_CONFIG\', ' + JSON.stringify(data) + ')';
+		var tpl =	'angular.module(\'ed.core\')\n' +
+					'	.constant(\'ED_GITHUB_CONFIG\', ' + JSON.stringify(data) + ');\n';
 		return tpl;
 	};
 
@@ -31,7 +31,7 @@ module.exports = function ( grunt, options ) {
 		then: function ( answers, done ) {
 			delete answers.type;
 			grunt.file.write(
-				options.dir.dist + '/ed.config.js',
+				options.dir.tmp + '/github.config.js',
 				moduleTemplate(answers)
 			);
 			done();
