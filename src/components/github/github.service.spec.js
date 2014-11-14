@@ -1,13 +1,11 @@
-// Provider
-// -------------------------
 describe('[github/service]', function () {
-	var $injector, $http, $q, $httpBackend, githubProvider, github;
+	var $http, $q, $httpBackend, GithubServiceProvider, GithubService;
 
-	beforeEach( module('ed.github.service', function ( _githubServiceProvider_ ) {
-		githubProvider = _githubServiceProvider_;
+	beforeEach( module('ed.github.service', function ( _GithubServiceProvider_ ) {
+		GithubServiceProvider = _GithubServiceProvider_;
 	}));
-	beforeEach(inject( function ( _$injector_, _$http_, _$q_, _$httpBackend_ ) {
-		$injector = _$injector_;
+	beforeEach(inject( function ( _$http_, _$q_, _$httpBackend_, _GithubService_ ) {
+		GithubService = _GithubService_;
 		$http = _$http_;
 		$q = _$q_;
 		$httpBackend = _$httpBackend_;
@@ -18,76 +16,74 @@ describe('[github/service]', function () {
 	// -------------------------
 	describe('Configuration', function () {
 		it('should be exposed during configuration', function () {
-			expect(githubProvider).toBeDefined();
+			expect(GithubServiceProvider).toBeDefined();
 		});
 
-		// Owner
-		it('should a exepose "owner" getter/setter', function () {
-			expect(githubProvider.owner).toEqual( jasmine.any(Function) );
+		it('should have a default "API_URL"', function () {
+			expect(GithubServiceProvider.API_URL).toEqual( jasmine.any(String) );
 		});
 
-		it('should be possible to set/get the "owner"', function () {
-			githubProvider.owner('mps-gmbh');
-			expect(githubProvider.owner()).toEqual('mps-gmbh');
+		it('should be possible to set the "API_URL"', function () {
+			GithubServiceProvider.API_URL = 'https://example.com';
+			expect(GithubServiceProvider.API_URL).toEqual('https://example.com');
 		});
 
-		// Repository
-		it('should expose a "repository" getter/setter', function () {
-			expect(githubProvider.repo).toEqual( jasmine.any(Function) );
+		it('should have a default "API_PREFIX_MILESTONES"', function () {
+			expect(GithubServiceProvider.API_PREFIX_MILESTONES).toEqual( jasmine.any(String) );
 		});
 
-		it('should be possible to set/get the "repository"', function () {
-			githubProvider.repo('ed');
-			expect(githubProvider.repo()).toEqual('ed');
+		it('should be possible to set the "API_PREFIX_MILESTONES"', function () {
+			GithubServiceProvider.API_PREFIX_MILESTONES = 'https://example.com';
+			expect(GithubServiceProvider.API_PREFIX_MILESTONES).toEqual('https://example.com');
 		});
 
-		// Token
-		it('should have no default "token"', function () {
-			expect(githubProvider.token).toEqual( jasmine.any(Function) );
+		it('should have a default "API_PREFIX_ISSUES"', function () {
+			expect(GithubServiceProvider.API_PREFIX_ISSUES).toEqual( jasmine.any(String) );
 		});
 
-		it('should be possible to set/get the "token"', function () {
-			githubProvider.token('AzAa!1253§$a%&#gH');
-			expect(githubProvider.token()).toEqual('AzAa!1253§$a%&#gH');
+		it('should be possible to set the "API_PREFIX_ISSUES"', function () {
+			GithubServiceProvider.API_PREFIX_ISSUES = 'https://example.com';
+			expect(GithubServiceProvider.API_PREFIX_ISSUES).toEqual('https://example.com');
 		});
 	});
 
 
-	// Missing Configuration
+	// Factory
 	// -------------------------
-	describe('Missing Configuration', function () {
+	describe('Factory', function () {
+		it('should be a factory', function() {
+			expect(GithubService).toEqual(jasmine.any(Function));
+		});
+
 		it('should throw an error if no "owner" and "repo" are specified', function () {
-			expect(function () { $injector.get('githubService'); }).toThrow();
+			expect(function () { new GithubService() }).toThrow();
 		});
 
 		it('should throw an error if no "owner" is specified', function () {
-			githubProvider.repo('foo');
-			expect(function () { $injector.get('githubService'); }).toThrow();
+			expect(function () { new GithubService('foo') }).toThrow();
 		});
 
 		it('should throw an error if no "repo" is specified', function () {
-			githubProvider.owner('mom');
-			expect(function () { $injector.get('githubService'); }).toThrow();
+			expect(function () { new GithubService(null, 'mom') }).toThrow();
 		});
 
 		it('should not throw is "owner" and "repo" is specified', function () {
-			githubProvider.repo('foo');
-			githubProvider.owner('mom');
-			expect(function () { $injector.get('githubService'); }).not.toThrow();
+			expect(function () { new GithubService('foo', 'mom') }).not.toThrow();
 		});
 	});
+
 
 	// Service
 	// -------------------------
 	describe('Service', function () {
-		var milestonesResponse,
-			issuesResponse;
+		var owner = 'mps-gmbh',
+			repo = 'ed',
+			milestonesResponse,
+			issuesResponse,
+			github;
 
 		beforeEach(function() {
-			githubProvider.owner('mps-gmbh');
-			githubProvider.repo('ed');
-
-			github = $injector.get('githubService');
+			github = new GithubService(owner, repo);
 
 			// Reponse Data
 			milestonesResponse = [{
@@ -120,27 +116,24 @@ describe('[github/service]', function () {
 			};
 
 			// Mock server
-			$httpBackend.whenGET(new RegExp(
-				'/repos/' + githubProvider.owner() + '/' + githubProvider.repo() + '/issues'
-			)).respond(function ( method, url ) {
-				var number = url.match(/milestone=(\d+)/)[1],
-					state = url.match(/state=(\w+)/)[1];
-				return [ 200, issuesResponse[number].filter(function ( issue ) {
-					return state === 'all' || state === issue.state;
-				})];
-			});
-			$httpBackend.whenGET(new RegExp(
-				'/repos/' + githubProvider.owner() + '/' + githubProvider.repo() + '/milestones$'
-			)).respond(milestonesResponse);
-			$httpBackend.whenGET(new RegExp(
-				'/repos/' + githubProvider.owner() + '/' + githubProvider.repo() + '/milestones/\\d+$'
-			)).respond(function ( method, url ) {
-				var number = parseFloat(url.match(/(\d+)$/)[1]),
-					ms = milestonesResponse.filter( function ( m ) {
-						return m.number === number;
-					})[0];
-				return [ 200, ms ];
-			});
+			$httpBackend.whenGET(new RegExp('/repos/' + owner + '/' + repo + '/issues'))
+				.respond(function ( method, url ) {
+					var number = url.match(/milestone=(\d+)/)[1],
+						state = url.match(/state=(\w+)/)[1];
+					return [ 200, issuesResponse[number].filter(function ( issue ) {
+						return state === 'all' || state === issue.state;
+					})];
+				});
+			$httpBackend.whenGET(new RegExp('/repos/' + owner + '/' + repo + '/milestones$'))
+				.respond(milestonesResponse);
+			$httpBackend.whenGET(new RegExp('/repos/' + owner + '/' + repo + '/milestones/\\d+$'))
+				.respond(function ( method, url ) {
+					var number = parseFloat(url.match(/(\d+)$/)[1]),
+						ms = milestonesResponse.filter( function ( m ) {
+							return m.number === number;
+						})[0];
+					return [ 200, ms ];
+				});
 		});
 
 		it('should be defined', function () {
@@ -348,7 +341,9 @@ describe('[github/service]', function () {
 	// OAuth
 	// -------------------------
 	describe('OAuth', function () {
-		var headers;
+		var owner = 'mps-gmbh',
+			repo = 'ed',
+			headers;
 
 		beforeEach(function() {
 			$httpBackend.whenGET(/.*/).respond(function () {
@@ -361,10 +356,7 @@ describe('[github/service]', function () {
 		// -------------------------
 		describe('(None)', function () {
 			beforeEach(function() {
-				githubProvider.owner('mps-gmbh');
-				githubProvider.repo('ed');
-
-				github = $injector.get('githubService');
+				github = new GithubService(owner, repo);
 			});
 
 			it('should not send any "Authorization" header if no token is set', function () {
@@ -386,11 +378,7 @@ describe('[github/service]', function () {
 		// -------------------------
 		describe('(With)', function () {
 			beforeEach(function() {
-				githubProvider.owner('mps-gmbh');
-				githubProvider.repo('ed');
-				githubProvider.token('123456789');
-
-				github = $injector.get('githubService');
+				github = new GithubService(owner, repo, 123456789);
 			});
 
 			it('should send "Authorization" header if token is set', function () {
