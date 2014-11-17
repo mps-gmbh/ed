@@ -2,7 +2,7 @@ module.exports = function ( grunt, options ) {
 
 	function moduleTemplate ( data ) {
 		var tpl =	'angular.module(\'ed.core\')\n' +
-					'	.constant(\'ED_GITHUB_CONFIG\', ' + JSON.stringify(data) + ');\n';
+					'	.value(\'ED_GITHUB_CONFIG\', ' + JSON.stringify(data) + ');\n';
 		return tpl;
 	};
 
