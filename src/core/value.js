@@ -1,6 +1,6 @@
 (function () {
 
 	angular.module('ed.core')
-		.constant('ED_GITHUB_CONFIG', {});
+		.value('ED_GITHUB_CONFIG', {});
 
 })();
