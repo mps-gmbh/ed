@@ -19,7 +19,8 @@ module.exports = function( grunt ) {
 					'<%= dir.src %>/core/variables.scss',
 					'<%= dir.src %>/core/normalize.scss',
 					'<%= dir.src %>/core/base.scss',
-					'<%= dir.src %>/core/animations.scss'
+					'<%= dir.src %>/core/animations.scss',
+					'<%= dir.src %>/core/mixins.scss'
 				],
 				components: [
 					'<%= dir.src %>/{components,utils}/**/*.scss'
