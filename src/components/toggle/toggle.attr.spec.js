@@ -4,7 +4,7 @@ describe('toggleAttr', function () {
 
 	//TODO: Add this globally.
 	beforeEach(function () {
-		function toHaveAttrMatcher ( util ) {
+		function toHaveAttrMatcher () {
 			return {
 				compare: function ( element, attrName, attrValue ) {
 					var result = {
@@ -24,7 +24,7 @@ describe('toggleAttr', function () {
 						message: 'Expected ' + element.outerHTML + ' not to have attribute "' + attrName + '".'
 					};
 					if( attrValue && result.pass ) {
-						result.pass = !element.getAttribute(attrName) === attrValue;
+						result.pass = element.getAttribute(attrName) !== attrValue;
 						result.message = 'Expected attribute "' + attrName + '" not to be "' + attrValue +
 							'", but was "' + element.getAttribute(attrName) + '".';
 					}
@@ -176,7 +176,7 @@ describe('toggleAttr', function () {
 			expect(element[0]).toHaveAttr('foo');
 			for (var i = 1; i < element.length; i++) {
 				expect(element[i]).not.toHaveAttr('foo');
-			};
+			}
 		});
 
 		it('should exist only one (or no) element with specified attribute (inside a group)', function() {
