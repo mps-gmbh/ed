@@ -6,7 +6,10 @@ module.exports = {
 	},
 	components: {
 		module: 'ed.template.components',
-		src: '<%= dir.src %>/components/**/*.html',
+		src: [
+			'<%= dir.src %>/components/**/*.html',
+			'<%= dir.src %>/components/**/icon-*.svg'
+		],
 		dest: '<%= dir.dist %>/<%= package.name %>.template.js'
 	},
 
