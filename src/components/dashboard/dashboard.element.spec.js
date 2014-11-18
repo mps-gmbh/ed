@@ -22,9 +22,9 @@ describe('[dashboard/element]', function () {
 	}));
 
 	it('should compile custom element', function () {
-		expect(element.children().length).toEqual(0);
+		expect(element.contents().length).toEqual(0);
 		$rootScope.$digest();
-		expect(element.children().length).toBeGreaterThan(0);
+		expect(element.contents().length).toBeGreaterThan(0);
 	});
 
 	it('should use the correct template', function () {

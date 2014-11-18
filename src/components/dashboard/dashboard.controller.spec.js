@@ -13,6 +13,9 @@ describe('[dashboard/controller]', function () {
 	beforeEach(module('ed.dashboard'));
 	beforeEach(module('ed.dashboard', function ( $provide ) {
 		$provide.value('MOCK_CONFIG', ghConfig);
+		$provide.value('MOCK_CONFIG_EMPTY', {});
+		$provide.value('MOCK_CONFIG_OWNER', { owner: 'foo' });
+		$provide.value('MOCK_CONFIG_REPO', { repo: 'foo' });
 	}));
 	beforeEach( inject( function ( _$controller_, _$httpBackend_, _GithubService_ , _GithubFixture_ ) {
 		$controller = _$controller_;
@@ -49,18 +52,18 @@ describe('[dashboard/controller]', function () {
 		});
 
 		it('should throw if config for "owner" is missing', function() {
-			params.$attrs.config = {};
+			params.$attrs.config = 'MOCK_CONFIG_EMPTY';
 			expect(function () {$controller('DashboardController', params);}).toThrow();
 
-			delete params.$attrs.config.owner;
+			params.$attrs.config = 'MOCK_CONFIG_REPO';
 			expect(function () {$controller('DashboardController', params);}).toThrow();
 		});
 
 		it('should throw if config for "repo" is missing', function() {
-			params.$attrs.config = {};
+			params.$attrs.config = 'MOCK_CONFIG_EMPTY';
 			expect(function () {$controller('DashboardController', params);}).toThrow();
 
-			delete params.$attrs.config.repo;
+			params.$attrs.config = 'MOCK_CONFIG_OWNER';
 			expect(function () {$controller('DashboardController', params);}).toThrow();
 		});
 
