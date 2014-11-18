@@ -10,16 +10,16 @@
 */
 
 [layout] {
-	box-sizing: border-box;
-	display: flex;
+	@include box-sizing(border-box);
+	@include display(flex);
 }
 
 [layout=column] {
-	flex-direction: column;
+	@include flex-direction(column);
 }
 
 [layout=row] {
-	flex-direction: row;
+	@include flex-direction(row);
 }
 
 [layout-padding],
@@ -33,7 +33,7 @@
 }
 
 [layout-wrap] {
-	flex-wrap: wrap;
+	@include flex-wrap(wrap);
 }
 
 [layout-fill] {
@@ -50,14 +50,14 @@
 	}
 
 	[layout-#{$name}] {
-		box-sizing: border-box;
-		display: flex;
+		@include box-sizing(border-box);
+		@include display(flex);
 	}
 	[layout-#{$name}=column] {
-		flex-direction: column;
+		@include flex-direction(column);
 	}
 	[layout-#{$name}=row] {
-		flex-direction: row;
+		@include flex-direction(row);
 	}
 }
 
@@ -72,7 +72,7 @@
 	// (0-19) * 5 = 0-95%
 	@for $i from 0 through 19 {
 		[#{$flexName}="#{$i * 5}"] {
-			flex: 0 0 #{$i * 5 + '%'};
+			@include flex(0 0 #{$i * 5 + '%'});
 			max-width: #{$i * 5 + '%'};
 		}
 
@@ -82,11 +82,11 @@
 	}
 
 	[#{$flexName}="33"], [#{$flexName}="34"] {
-		flex: 0 0 33.33%;
+		@include flex(0 0 33.33%);
 		max-width: 33.33%;
 	}
 	[#{$flexName}="66"], [#{$flexName}="67"] {
-		flex: 0 0 66.66%;
+		@include flex(0 0 66.66%);
 		max-width: 66.66%;
 	}
 
@@ -103,7 +103,7 @@
 // ------------------------------
 
 [flex] {
-	flex: 1;
+	@include flex(1);
 }
 
 @include flex-properties-for-size();
@@ -151,7 +151,7 @@
 [layout-align="center center"],
 [layout-align="center start"],
 [layout-align="center end"] {
-	justify-content: center;
+	@include justify-content(center);
 }
 
 // Main Axis End
@@ -159,7 +159,7 @@
 [layout-align="end center"],
 [layout-align="end start"],
 [layout-align="end end"] {
-	justify-content: flex-end;
+	@include justify-content(flex-end);
 }
 
 // Main Axis Space Around
@@ -167,7 +167,7 @@
 [layout-align="space-around center"],
 [layout-align="space-around start"],
 [layout-align="space-around end"] {
-	justify-content: space-around;
+	@include justify-content(space-around);
 }
 
 // Main Axis Space Between
@@ -175,7 +175,7 @@
 [layout-align="space-between center"],
 [layout-align="space-between start"],
 [layout-align="space-between end"] {
-	justify-content: space-between;
+	@include justify-content(space-between);
 }
 
 
@@ -190,7 +190,7 @@
 [layout-align="end center"],
 [layout-align="space-between center"],
 [layout-align="space-around center"] {
-	align-items: center;
+	@include align-items(center);
 }
 
 // Cross Axis Start
@@ -199,7 +199,7 @@
 [layout-align="end start"],
 [layout-align="space-between start"],
 [layout-align="space-around start"] {
-	align-items: flex-start;
+	@include align-items(flex-start);
 }
 
 // Cross Axis End
@@ -208,5 +208,5 @@
 [layout-align="end end"],
 [layout-align="space-between end"],
 [layout-align="space-around end"] {
-	align-items: flex-end;
+	@include align-items(flex-end);
 }
