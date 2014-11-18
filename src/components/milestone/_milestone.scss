@@ -1,0 +1,101 @@
+$milestoneVerticalPadding: 7;
+$milestoneHorizontalPadding: 10;
+
+$milestoneFontSize: 24;
+
+$milestoneProgressHeight: 38;
+
+
+// Milestone Root
+// -------------------------
+ed-milestone {
+	display: block;
+	background: $white;
+	margin: 0 rem(30);
+
+	@include shadow;
+
+	// Hover
+	&:hover:not([is-expanded]) {
+		background: $grey--light;
+		cursor: pointer;
+	}
+
+	// Borders
+	&:first-child {
+		border-radius: $border-radius $border-radius 0 0;
+	}
+	&:last-child {
+		border-radius: 0 0 $border-radius $border-radius;
+	}
+
+	&[is-expanded] {
+		margin: rem(30) 0;
+		font-size: 120%;
+		border-radius: $border-radius;
+
+		@include shadow--highlight;
+	}
+}
+
+
+// Milestone Header
+// -------------------------
+.Milestone-header {
+	padding: 0 rem($milestoneHorizontalPadding);
+	@include display(flex);
+}
+
+.Milestone-title {
+	margin: 0;
+	padding: rem($milestoneVerticalPadding) 0;
+
+	font-size: em($milestoneFontSize);
+	font-weight: 700;
+	line-height: rem($milestoneProgressHeight);
+
+	@include flex(1);
+}
+
+.Milestone-progress {
+	height: rem(38);
+	width: rem(38);
+
+	padding: rem($milestoneVerticalPadding) 0;
+}
+
+.Milestone-collapse {
+	display: none;
+
+	padding: rem(11);
+	margin-left: rem(10);
+	margin-right: rem(-$milestoneHorizontalPadding);
+
+	border-left: 1px solid $grey;
+
+	cursor: pointer;
+
+	path {
+		fill: $grey--dark;
+	}
+
+	[is-expanded] & {
+		display: block;
+	}
+}
+
+
+// Milestone Content
+// -------------------------
+.Milestone-content {
+	height: 0;
+	overflow-y: hidden;
+
+
+	[is-expanded] & {
+		padding: rem($milestoneVerticalPadding * 2 ) rem($milestoneHorizontalPadding) rem($milestoneVerticalPadding);
+		height: auto;
+
+		border-top: 1px solid $grey;
+	}
+}

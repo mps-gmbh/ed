@@ -1,0 +1,26 @@
+<div class="Milestone-header">
+	<h2
+		class="Milestone-title"
+		ed-add-attr="is-expanded"
+		ed-toggle-attr-group="milestones"
+		ed-toggle-attr-closest="ed-milestone"
+	>
+		{{ milestone.title }}
+	</h2>
+	<div class="Milestone-progress">
+		<ed-progress
+			percentage="milestone.issues.length ? (milestone.closed_issues/(milestone.closed_issues + milestone.open_issues)) : 0"
+		></ed-progress>
+	</div>
+	<div
+		class="Milestone-collapse"
+		ed-remove-attr="is-expanded"
+		ed-toggle-attr-group="milestones"
+		ed-toggle-attr-closest="ed-milestone"
+	>
+		<ed-icon name="close"></ed-icon>
+	</div>
+</div>
+<div class="Milestone-content">
+	{{ milestone.issues | json }}
+</div>
