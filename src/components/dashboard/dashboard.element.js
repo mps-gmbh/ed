@@ -9,6 +9,7 @@
 			templateUrl: 'dashboard/dashboard.html',
 			controller: 'DashboardController',
 			controllerAs: 'dashboard',
+			bindToController: true,
 			scope: {}
 		};
 	}
