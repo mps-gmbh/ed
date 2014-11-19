@@ -1,0 +1,20 @@
+<a
+	class="Issue-title"
+	target="_blank"
+	ng-href="{{ issue.html_url }}"
+>
+	{{ issue.title }}
+	<span class="Issue-number">
+		#{{ issue.number }}
+	</span>
+</a>
+<img
+	class="Issue-assignee"
+	ng-if="issue.assignee.avatar_url"
+	ng-src="{{ issue.assignee.avatar_url + '&s=192' }}"
+>
+<ed-icon
+	class="Issue-assignee"
+	name="help"
+	ng-if="!issue.assignee.avatar_url"
+></ed-icon>

@@ -7,17 +7,13 @@
 	<link rel="stylesheet" href="<%= package.name %>.css">
 </head>
 <body>
-	<div class="Page">
+	<header class="Page-header">
+		<h1 class="Brand">ED</h1>
+	</header>
 
-		<header class="Page-header">
-			<h1 class="Brand">ED</h1>
-		</header>
-
-		<main class="Page-content">
-			<ed-dashboard config="ED_GITHUB_CONFIG"></ed-dashboard>
-		</main>
-
-	</div>
+	<main class="Page-content">
+		<ed-dashboard config="ED_GITHUB_CONFIG"></ed-dashboard>
+	</main>
 
 	<script src="angular.js"></script>
 	<script src="<%= package.name %>.template.js"></script>

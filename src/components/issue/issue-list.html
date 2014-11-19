@@ -1,0 +1,6 @@
+<h3 class="IssueList-title">{{ heading }}</h3>
+<ul class="IssueList-list">
+	<li ng-repeat="issue in issues | filter:filter">
+		<ed-issue model="issue"></ed-issue>
+	</li>
+</ul>

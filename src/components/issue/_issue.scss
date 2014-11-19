@@ -1,0 +1,102 @@
+// Issue List
+// -------------------------
+//
+$issueColors:
+	( red, $red, $red--light ),
+	( yellow, $yellow, $yellow--light ),
+	( green, $green, $green--light );
+
+
+ed-issue-list {
+	padding: rem(10) rem(10) rem(10);
+	border-top: 1px solid $grey;
+
+	+ ed-issue-list {
+		border-left: 1px solid $grey;
+	}
+
+	@each $color in $issueColors {
+		// No multiple assignments supported in libsass on time of writing.
+		// Soon!! -> https://github.com/sass/libsass/issues/394
+		$name: nth($color, 1);
+		$value: nth($color, 2);
+
+		&.IssueList--#{$name} {
+			color: $value;
+		}
+	}
+}
+
+.IssueList-title {
+	margin: 0 0 rem(15);
+
+	font-size: rem(20);
+	font-weight: 300;
+}
+
+.IssueList-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+
+	li + li {
+		margin-top: rem(10);
+	}
+}
+
+
+// Issue
+// -------------------------
+ed-issue {
+	display: block;
+
+	padding: rem(5);
+
+	background: $grey--light;
+	border-left: 5px solid $grey--dark;
+
+	@each $color in $issueColors {
+		$name: nth($color, 1);
+		$value: nth($color, 2);
+		$value--light: nth($color, 3);
+
+		.IssueList--#{$name} & {
+			border-color: $value;
+			background: $value--light;
+		}
+	}
+}
+
+.Issue-title {
+	display: block;
+
+	color: $black;
+	font-size: rem(16);
+	font-weight: 600;
+	text-decoration: none;
+
+	&:hover {
+		opacity: 0.8;
+	}
+
+	@each $color in $issueColors {
+		$name: nth($color, 1);
+		$value: nth($color, 2);
+
+		.IssueList--#{$name} & {
+			color: $value;
+		}
+	}
+}
+
+.Issue-number {
+	color: $grey--dark;
+}
+
+.Issue-assignee {
+	height: rem(34);
+	width: rem(34);
+}
+ed-icon.Issue-assignee {
+	opacity: 0.2;
+}

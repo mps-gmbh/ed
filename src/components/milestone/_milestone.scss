@@ -43,7 +43,6 @@ ed-milestone {
 // -------------------------
 .Milestone-header {
 	padding: 0 rem($milestoneHorizontalPadding);
-	@include display(flex);
 }
 
 .Milestone-title {
@@ -53,8 +52,6 @@ ed-milestone {
 	font-size: em($milestoneFontSize);
 	font-weight: 700;
 	line-height: rem($milestoneProgressHeight);
-
-	@include flex(1);
 }
 
 .Milestone-progress {
@@ -78,6 +75,9 @@ ed-milestone {
 	path {
 		fill: $grey--dark;
 	}
+	&:hover path {
+		fill: $red;
+	}
 
 	[is-expanded] & {
 		display: block;
@@ -98,4 +98,8 @@ ed-milestone {
 
 		border-top: 1px solid $grey;
 	}
+}
+
+.Milestone-issues {
+	margin: 0 rem(-$milestoneHorizontalPadding) rem(-$milestoneHorizontalPadding);
 }

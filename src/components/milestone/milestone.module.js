@@ -3,7 +3,8 @@
 	angular
 		.module('ed.element.milestone', [
 			'ed.element.progress',
-			'ed.toggle'
+			'ed.toggle',
+			'ed.issue'
 		]);
 
 })();

@@ -1,13 +1,10 @@
-.Page {
-	max-width: rem(1000);
-	margin: 0 auto;
-}
-
 .Page-header {
-	margin: rem(16) 0;
+	margin: rem(16) rem(12);
 }
 
 .Page-content {
+	max-width: rem(1000);
+
 	position: relative;
-	margin: rem(24) 0;
+	margin: rem(24) auto;
 }
