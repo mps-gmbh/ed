@@ -81,6 +81,7 @@ describe('[github/service]', function () {
 			prURL = 'https://api.github.com/repos/mps-gmbh/ed/pulls/1',
 			milestonesResponse,
 			issuesResponse,
+			prResponse,
 			github;
 
 		beforeEach(function() {
@@ -114,7 +115,7 @@ describe('[github/service]', function () {
 					number: 1234,
 					state: 'open'
 				}]
-			}
+			};
 			prResponse = {
 				merged: false,
 				someOtherData: 'that-should-be-merged'
