@@ -78,6 +78,7 @@ describe('[github/service]', function () {
 	describe('Service', function () {
 		var owner = 'mps-gmbh',
 			repo = 'ed',
+			prURL = 'https://api.github.com/repos/mps-gmbh/ed/pulls/1',
 			milestonesResponse,
 			issuesResponse,
 			github;
@@ -107,12 +108,16 @@ describe('[github/service]', function () {
 					title: 'I found a bug',
 					number: 55,
 					state: 'open',
-					pull_request: { url: 'https://api.github.com/repos/octocat/Hello-World/pulls/1347' }
+					pull_request: { url: prURL }
 				}, {
 					title: 'Make button "cornflower blue" instead of "deep sky blue"',
 					number: 1234,
 					state: 'open'
 				}]
+			}
+			prResponse = {
+				merged: false,
+				someOtherData: 'that-should-be-merged'
 			};
 
 			// Mock server
@@ -134,6 +139,8 @@ describe('[github/service]', function () {
 						})[0];
 					return [ 200, ms ];
 				});
+			$httpBackend.whenGET(prURL)
+				.respond(prResponse);
 		});
 
 		it('should be defined', function () {
@@ -270,14 +277,20 @@ describe('[github/service]', function () {
 				expect(milestones.number).toEqual(milestonesResponse.number);
 			});
 
-			it('shoud fetch milestone\'s issues', function () {
+			it('shoud fetch milestone\'s issues (includes PRs!)', function () {
 				var milestones;
 				github.getMilestones().then( function ( m ) {
 					milestones = m;
 				});
 				$httpBackend.flush();
 				milestones.forEach( function ( m ) {
-					expect(m.issues).toEqual(issuesResponse[m.number]);
+					var isusResponse = issuesResponse[m.number].map(function ( isu ) {
+							if( isu.pull_request ){
+								angular.extend(isu, prResponse);
+							}
+							return isu;
+						});
+					expect(m.issues).toEqual(isusResponse);
 				});
 			});
 
@@ -289,8 +302,26 @@ describe('[github/service]', function () {
 				$httpBackend.flush();
 				milestones.forEach( function ( m ) {
 					expect(m.pull_requests).toEqual(issuesResponse[m.number].filter( function ( i ) {
+						angular.extend(i, prResponse);
 						return i.pull_request;
 					}));
+				});
+			});
+
+			it('should merge PRs with additional data', function() {
+				var milestones;
+				github.getMilestones().then( function ( m ) {
+					milestones = m;
+				});
+				$httpBackend.flush();
+				milestones.forEach( function ( m ) {
+					var plainIssue = issuesResponse[m.number].filter( function ( i ) {
+						return i.pull_request;
+					})[0];
+					m.pull_requests.forEach( function ( pr ) {
+						expect(pr).not.toEqual(plainIssue);
+						expect(pr).toEqual(angular.extend(plainIssue, prResponse));
+					});
 				});
 			});
 		});
@@ -323,12 +354,21 @@ describe('[github/service]', function () {
 				expect(milestone.title).toEqual(milestonesResponse[0].title);
 			});
 
-			it('should append related issues to milestone', function () {
-				var milestone;
+			it('should append related issues and PRs to milestone', function () {
+				var milestone,
+					isusResponse;
 				github.getMilestone( 11 ).then( function ( m ) {
 					milestone = m;
 				});
 				$httpBackend.flush();
+
+				isusResponse = issuesResponse[milestone.number].map(function ( isu ) {
+					if( isu.pull_request ){
+						angular.extend(isu, prResponse);
+					}
+					return isu;
+				});
+
 				expect(milestone.issues).toEqual(issuesResponse[milestone.number]);
 				expect(milestone.pull_requests).toEqual(issuesResponse[milestone.number].filter( function ( item ) {
 					return item.pull_request;

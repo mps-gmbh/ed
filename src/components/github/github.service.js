@@ -10,6 +10,7 @@
 	// -------------------------
 	var extend = angular.extend,
 		forEach = angular.forEach,
+		copy = angular.copy,
 		MinErr = angular.$$minErr('GithubService'),
 		returnData = function ( response ) {
 			return response.data;
@@ -25,7 +26,7 @@
 		provider.API_PREFIX_MILESTONES = '/milestones';
 		provider.API_PREFIX_ISSUES = '/issues';
 
-		provider.$get = [ '$http', '$q', 'filterFilter', function ( $http, $q, filterFilter ) {
+		provider.$get = [ '$http', '$q', function ( $http, $q ) {
 
 			function GithubService ( owner, repo, token ) {
 				if( !(owner && repo) ) {
@@ -36,6 +37,15 @@
 
 				var url = provider.API_URL + 'repos/' + owner + '/' + repo,
 					httpConfig = {};
+
+				// Helper to fetch PRs + extend issues with received data.
+				function getPullRequestFromIssue ( issue ) {
+					return $http.get(issue.pull_request.url, httpConfig)
+						.then(returnData)
+						.then( function ( pr ) {
+							extend( issue, pr );
+						});
+				}
 
 				// Add OAuth Header
 				if( token ) {
@@ -48,15 +58,23 @@
 				// - Isses that are PRs will be added to the mielstone's `pull_requests` property.
 				function getIssuesForMilestone ( milestone, state ) {
 					return $http.get( url + provider.API_PREFIX_ISSUES,
-						extend( httpConfig, {
+						extend( copy(httpConfig), {
 							params: {
 								'milestone': milestone.number,
 								'state': state || 'all'
 							}
 						})
 					).then(returnData).then( function ( issues ) {
+						var calls = [];
 						milestone.issues = issues;
-						milestone.pull_requests = filterFilter( issues, { pull_request: '!!' } );
+						milestone.pull_requests = [];
+						forEach( milestone.issues, function ( isu ) {
+							if( !isu.pull_request ) { return; }
+							milestone.pull_requests.push(isu);
+							calls.push(getPullRequestFromIssue(isu));
+						});
+						return $q.all(calls);
+					}).then(function () {
 						return milestone;
 					});
 				}

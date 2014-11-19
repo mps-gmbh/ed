@@ -37,7 +37,7 @@
 			number: 12,
 			state: 'open',
 			pull_request: {
-				html_url: 'http://www.mcfly.io'
+				url: 'http://www.mcfly.io/pull/42'
 			}
 		}])
 

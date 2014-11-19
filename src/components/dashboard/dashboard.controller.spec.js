@@ -108,6 +108,7 @@ describe('[dashboard/controller]', function () {
 							return state === 'all' || state === issue.state;
 						})];
 					});
+				$httpBackend.whenGET('http://www.mcfly.io/pull/42').respond({});
 			});
 
 			it('should inidcate that it is loading', function() {
@@ -135,7 +136,7 @@ describe('[dashboard/controller]', function () {
 				});
 			});
 
-			it('should indicate that eloading has finished', function() {
+			it('should indicate that loading has finished', function() {
 				$httpBackend.flush();
 				expect(controller.isLoading).toBeFalsy();
 			});
