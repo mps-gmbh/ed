@@ -58,11 +58,18 @@ ed-milestone {
 	line-height: 1;
 }
 
+.Milestone-number {
+	color: $grey--dark;
+	font-size: em(18);
+	font-weight: 600;
+	line-height: rem($milestoneProgressHeight);
+
+	padding-right: rem(5);
+}
+
 .Milestone-progress {
 	height: rem(38);
 	width: rem(38);
-
-	padding: rem($whitespaceVertical) 0;
 }
 
 .Milestone-collapse {
