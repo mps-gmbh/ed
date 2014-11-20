@@ -1,6 +1,6 @@
 describe('[issue/element]', function () {
 	var $rootScope, $compile, $templateCache,
-		PullRequestListController, scope, element;
+		scope, element;
 
 	beforeEach(module('ed.issue'));
 	beforeEach(module('ed.template.components'));
