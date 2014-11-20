@@ -68,6 +68,14 @@ ed-milestone {
 	padding-right: rem(5);
 }
 
+.Milestone-openPR {
+	margin-right: rem(5);
+
+	color: $green;
+	font-size: rem(16);
+	font-weight: 700;
+}
+
 .Milestone-progress {
 	height: rem(38);
 	width: rem(38);

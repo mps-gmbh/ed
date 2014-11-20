@@ -1,5 +1,6 @@
 <div class="Milestone-header" layout layout-align="start center">
 	<span class="Milestone-number">#{{ milestone.number }}</span>
+
 	<h2
 		class="Milestone-title"
 		flex
@@ -9,6 +10,11 @@
 	>
 		{{ milestone.title }}
 	</h2>
+
+	<div
+		class="Milestone-openPR Animation--blink"
+		ng-if="(milestone.pull_requests | filter: { state: 'open' }).length"
+	>PR!</div>
 	<div class="Milestone-progress">
 		<ed-progress
 			percentage="milestone.issues.length ? (milestone.closed_issues/(milestone.closed_issues + milestone.open_issues)) : 0"
