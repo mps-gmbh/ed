@@ -26,8 +26,12 @@
 <div class="Milestone-content">
 
 	<!-- Description -->
-	<div class="Milestone-description">
-
+	<div class="Milestone-section" ng-if="milestone.description">
+		<h3 class="Milestone-subTitle">Description</h3>
+		<div
+			class="Milestone-description"
+			btf-markdown="milestone.description"
+		></div>
 	</div>
 
 

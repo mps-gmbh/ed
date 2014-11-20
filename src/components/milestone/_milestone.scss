@@ -111,3 +111,21 @@ ed-milestone {
 .Milestone-section {
 	border-top: 1px solid #ededed;
 }
+
+
+// Milestone Description
+// -------------------------
+.Milestone-description {
+	padding: 0 rem($whitespaceHorizontal) rem($whitespaceVertical);
+
+	font-size: rem(16);
+
+	p {
+		margin: 0 0 rem($whitespaceVertical);
+	}
+
+	ul, ol {
+		margin: 0 0 rem($whitespaceVertical);;
+		padding-left: rem(24);
+	}
+}
