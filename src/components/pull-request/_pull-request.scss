@@ -9,13 +9,19 @@
 	}
 }
 
+.PullRequestList-empty {
+	font-size: rem(16);
+	line-height: 1;
+}
+
 ed-pull-request {
 	font-size: rem(16);
 	line-height: 1;
-	text-align: center;
 
 	ed-badge {
 		min-width: rem(62);
 		margin-right: rem(8);
+
+		text-align: center;
 	}
 }
