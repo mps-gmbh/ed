@@ -19,6 +19,15 @@ describe('[github/service]', function () {
 			expect(GithubServiceProvider).toBeDefined();
 		});
 
+		it('should have a default "HTML_URL"', function () {
+			expect(GithubServiceProvider.HTML_URL).toEqual( jasmine.any(String) );
+		});
+
+		it('should be possible to set the "HTML_URL"', function () {
+			GithubServiceProvider.HTML_URL = 'https://example.com';
+			expect(GithubServiceProvider.HTML_URL).toEqual('https://example.com');
+		});
+
 		it('should have a default "API_URL"', function () {
 			expect(GithubServiceProvider.API_URL).toEqual( jasmine.any(String) );
 		});
@@ -325,6 +334,22 @@ describe('[github/service]', function () {
 					});
 				});
 			});
+
+			it('should set a "html_url" (enhancement of Github\'s API)', function() {
+				var milestones;
+				github.getMilestones().then( function ( m ) {
+					milestones = m;
+				});
+				$httpBackend.flush();
+				milestones.forEach( function ( milestone ) {
+					expect(milestone.html_url).toBeDefined();
+					expect(milestone.html_url).toEqual(
+						GithubServiceProvider.HTML_URL + owner + '/' + repo +
+							GithubServiceProvider.API_PREFIX_MILESTONES + '/' +
+							milestone.title
+					);
+				});
+			});
 		});
 
 
@@ -374,6 +399,20 @@ describe('[github/service]', function () {
 				expect(milestone.pull_requests).toEqual(issuesResponse[milestone.number].filter( function ( item ) {
 					return item.pull_request;
 				}));
+			});
+
+			it('should set a "html_url" (enhancement of Github\'s API)', function() {
+				var milestone;
+				github.getMilestone( 1 ).then( function ( m ) {
+					milestone = m;
+				});
+				$httpBackend.flush();
+				expect(milestone.html_url).toBeDefined();
+				expect(milestone.html_url).toEqual(
+					GithubServiceProvider.HTML_URL + owner + '/' + repo +
+						GithubServiceProvider.API_PREFIX_MILESTONES + '/' +
+						milestone.title
+				);
 			});
 		});
 	});

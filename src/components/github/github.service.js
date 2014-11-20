@@ -22,6 +22,8 @@
 	function GithubServiceProvider () {
 		var provider = this;
 
+		provider.HTML_URL = 'https://github.com/';
+
 		provider.API_URL = 'https://api.github.com/';
 		provider.API_PREFIX_MILESTONES = '/milestones';
 		provider.API_PREFIX_ISSUES = '/issues';
@@ -46,6 +48,13 @@
 							extend( issue, pr );
 						});
 				}
+
+				function setMilestoneHtmlUrl ( milestone ) {
+					milestone.html_url = provider.HTML_URL + owner + '/' + repo +
+						provider.API_PREFIX_MILESTONES + '/' + milestone.title;
+					return milestone;
+				}
+
 
 				// Add OAuth Header
 				if( token ) {
@@ -83,6 +92,7 @@
 				function getMilestone( number ) {
 					return $http.get( url + provider.API_PREFIX_MILESTONES + '/' + number, httpConfig )
 						.then(returnData)
+						.then(setMilestoneHtmlUrl)
 						.then(getIssuesForMilestone);
 				}
 
@@ -93,6 +103,7 @@
 						.then( function ( milestones ) {
 							var calls = [];
 							forEach( milestones, function ( milestone ) {
+								setMilestoneHtmlUrl(milestone);
 								calls.push(getIssuesForMilestone( milestone ));
 							});
 							return $q.all(calls);
