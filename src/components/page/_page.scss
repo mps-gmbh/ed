@@ -1,10 +1,14 @@
+$pageHeaderVerticalSpace: 16;
+$pageHeaderHeight: 24 + 2 * $pageHeaderVerticalSpace;
+
 .Page-header {
-	margin: rem(16) rem(12);
+	margin: rem($pageHeaderVerticalSpace) rem(12);
 }
 
 .Page-content {
 	max-width: rem(1000);
+	@include calc(height, '100% - #{$pageHeaderHeight}px');
 
-	position: relative;
-	margin: rem(24) auto;
+	padding: rem(24) 0;
+	margin: 0 auto;
 }

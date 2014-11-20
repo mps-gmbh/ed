@@ -3,6 +3,5 @@ angular.module('mps.ed', [
 	'ed.template.components',
 	'ed.icon',
 	'ed.dashboard',
-	'ed.element.loadingSpinner',
 	'ed.element.progress',
 ]);

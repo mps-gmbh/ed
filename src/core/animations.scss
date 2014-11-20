@@ -1,3 +1,21 @@
+// Fade
+// -------------------------
+.Animation--fade.ng-enter, .Animation--fade.ng-leave {
+	-webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
+	transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
+}
+
+.Animation--fade.ng-enter,
+.Animation--fade.ng-leave.ng-leave-active {
+	opacity:0;
+}
+
+.Animation--fade.ng-leave,
+.Animation--fade.ng-enter.ng-enter-active {
+	opacity:1;
+}
+
+
 // Strecht Delay
 // -------------------------
 $animationStrechDelayDelay: 1.2s;
