@@ -23,7 +23,23 @@
 	</div>
 </div>
 <div class="Milestone-content">
-	<div class="Milestone-issues" layout>
+
+	<!-- Description -->
+	<div class="Milestone-description">
+
+	</div>
+
+
+	<!-- PRs -->
+	<section class="Milestone-section">
+		<h3 class="Milestone-subTitle">Pull Requests</h3>
+		<ed-pull-request-list
+			pull-requests="milestone.pull_requests"
+		></ed-pull-request-list>
+	</section>
+
+	<!-- Issues -->
+	<section class="Milestone-section" layout>
 		<ed-issue-list
 			class="IssueList--red"
 			flex
@@ -45,5 +61,6 @@
 			filter="{ state: 'closed', pull_request: '!' }"
 			issues="milestone.issues"
 		></ed-issue-list>
-	</div>
+	</section>
+
 </div>

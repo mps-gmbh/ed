@@ -6,6 +6,7 @@ $black: #262625;
 $grey: #ededed;
 $grey--light: #fafafa;
 $grey--dark: #cbcbcb;
+$grey--darkest: #8a8a8a;
 
 $red: #c9635f;
 $red--light: #faf2f2;
@@ -19,6 +20,7 @@ $green--light: #f1f5f1;
 $brown: #dad0b9;
 $brown--light: #faf6ee;
 
+$purple: #705d8b;
 
 // ----
 $brand: #7092b8;
@@ -26,6 +28,8 @@ $brand: #7092b8;
 
 // Layout
 // -------------------------
+$whitespaceVertical: 7;
+$whitespaceHorizontal: 10;
 $border-radius: 2px;
 
 $baseline-grid:            8px !default;

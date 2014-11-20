@@ -1,7 +1,7 @@
 describe('[element/milestone]', function () {
 	var $rootScope, $compile, $templateCache, element;
 
-	beforeEach(module('ed.element.milestone'));
+	beforeEach(module('ed.milestone'));
 	beforeEach(module('ed.template.components'));
 	beforeEach( inject( function ( _$rootScope_, _$compile_, _$templateCache_ ) {
 		$rootScope = _$rootScope_;

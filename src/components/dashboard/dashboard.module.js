@@ -1,7 +1,7 @@
 (function () {
 
 	angular.module('ed.dashboard', [
-		'ed.element.milestone',
+		'ed.milestone',
 		'ed.github.service'
 	]);
 

@@ -8,8 +8,7 @@ $issueColors:
 
 
 ed-issue-list {
-	padding: rem(10) rem(10) rem(10);
-	border-top: 1px solid $grey;
+	padding: rem($whitespaceHorizontal) rem($whitespaceVertical);
 
 	+ ed-issue-list {
 		border-left: 1px solid $grey;
@@ -70,9 +69,12 @@ ed-issue {
 .Issue-title {
 	display: block;
 
+	margin-bottom: rem(10);
+
 	color: $black;
 	font-size: rem(16);
 	font-weight: 600;
+	line-height: 1.2;
 	text-decoration: none;
 
 	&:hover {

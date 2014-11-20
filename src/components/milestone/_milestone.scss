@@ -1,8 +1,4 @@
-$milestoneVerticalPadding: 7;
-$milestoneHorizontalPadding: 10;
-
 $milestoneFontSize: 24;
-
 $milestoneProgressHeight: 38;
 
 
@@ -42,23 +38,31 @@ ed-milestone {
 // Milestone Header
 // -------------------------
 .Milestone-header {
-	padding: 0 rem($milestoneHorizontalPadding);
+	padding: 0 rem($whitespaceHorizontal);
 }
 
 .Milestone-title {
 	margin: 0;
-	padding: rem($milestoneVerticalPadding) 0;
+	padding: rem($whitespaceVertical) 0;
 
 	font-size: em($milestoneFontSize);
 	font-weight: 700;
 	line-height: rem($milestoneProgressHeight);
 }
 
+.Milestone-subTitle {
+	margin: rem($whitespaceVertical * 2) rem($whitespaceHorizontal) rem($whitespaceVertical);
+
+	color: $grey--darkest;
+	font-weight: 300;
+	line-height: 1;
+}
+
 .Milestone-progress {
 	height: rem(38);
 	width: rem(38);
 
-	padding: rem($milestoneVerticalPadding) 0;
+	padding: rem($whitespaceVertical) 0;
 }
 
 .Milestone-collapse {
@@ -66,7 +70,7 @@ ed-milestone {
 
 	padding: rem(11);
 	margin-left: rem(10);
-	margin-right: rem(-$milestoneHorizontalPadding);
+	margin-right: rem(-$whitespaceHorizontal);
 
 	border-left: 1px solid $grey;
 
@@ -91,15 +95,11 @@ ed-milestone {
 	height: 0;
 	overflow-y: hidden;
 
-
 	[is-expanded] & {
-		padding: rem($milestoneVerticalPadding * 2 ) rem($milestoneHorizontalPadding) rem($milestoneVerticalPadding);
 		height: auto;
-
-		border-top: 1px solid $grey;
 	}
 }
 
-.Milestone-issues {
-	margin: 0 rem(-$milestoneHorizontalPadding) rem(-$milestoneHorizontalPadding);
+.Milestone-section {
+	border-top: 1px solid #ededed;
 }

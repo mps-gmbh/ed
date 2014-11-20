@@ -1,6 +1,6 @@
 (function() {
 
-	angular.module('ed.element.milestone')
+	angular.module('ed.milestone')
 		.directive( 'edMilestone', Milestone );
 
 
@@ -8,7 +8,6 @@
 		return {
 			restrict: 'E',
 			templateUrl: 'milestone/milestone.html',
-			controller: 'MilestoneController',
 			scope: {
 				milestone: '=model'
 			}
