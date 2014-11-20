@@ -1,4 +1,3 @@
-
 <div
 	layout
 	layout-align="center center"
@@ -8,9 +7,12 @@
 >
 	<ed-loading-spinner></ed-loading-spinner>
 </div>
-<ed-milestone
+<div
 	class="Animation--fade"
 	ng-if="!dashboard.isLoading"
-	ng-repeat="milestone in dashboard.milestones"
-	model="milestone"
-></ed-milestone>
+>
+	<ed-milestone
+		ng-repeat="milestone in dashboard.milestones"
+		model="milestone"
+	></ed-milestone>
+</div>

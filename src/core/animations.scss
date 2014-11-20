@@ -1,7 +1,12 @@
 // Fade
 // -------------------------
-.Animation--fade.ng-enter, .Animation--fade.ng-leave {
-	@include transition(all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s);
+$animationFaceDuration: 0.3s;
+.Animation--fade.ng-enter {
+	@include transition(all $animationFaceDuration cubic-bezier(0.250, 0.460, 0.450, 0.940) $animationFaceDuration);
+}
+
+.Animation--fade.ng-leave {
+	@include transition(all $animationFaceDuration cubic-bezier(0.250, 0.460, 0.450, 0.940));
 }
 
 .Animation--fade.ng-enter,
