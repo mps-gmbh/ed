@@ -81,6 +81,9 @@ ed-milestone {
 	width: rem(38);
 }
 
+
+// Milestone collapse
+// -------------------------
 .Milestone-collapse {
 	display: none;
 
@@ -118,6 +121,27 @@ ed-milestone {
 
 .Milestone-section {
 	border-top: 1px solid #ededed;
+}
+
+
+// Milestone Bar
+// -------------------------
+.Milestone-meta {
+	background: $grey--light;
+	padding: rem($whitespaceVertical) rem($whitespaceHorizontal);
+
+	color: $grey--darkest;
+	font-size: rem(14);
+	font-weight: 600;
+	text-transform: uppercase;
+
+	a {
+		color: $grey--darkest;
+
+		&:hover {
+			color: $black;
+		}
+	}
 }
 
 

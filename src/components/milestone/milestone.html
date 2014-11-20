@@ -31,6 +31,20 @@
 </div>
 <div class="Milestone-content">
 
+	<!-- Meta Data -->
+	<div
+		class="Milestone-section Milestone-meta"
+		layout
+		layout-align="start center"
+	>
+		<a
+			ng-href="{{ milestone.html_url }}"
+			target="_blank"
+			flex
+		>View on Github</a>
+		<time date-time="{{ milestone.due_on }}">{{ milestone.due_on | date }}</time>
+	</div>
+
 	<!-- Description -->
 	<div class="Milestone-section" ng-if="milestone.description">
 		<h3 class="Milestone-subTitle">Description</h3>
