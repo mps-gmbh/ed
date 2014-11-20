@@ -3,6 +3,6 @@ module.exports = {
 		jshintrc: '.jshintrc'
 	},
 	all: {
-		src: '<%= dir.src %>/**/*.js'
+		src: '<%= files.all %>'
 	}
 };

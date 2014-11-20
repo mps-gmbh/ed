@@ -30,7 +30,7 @@ module.exports =  function ( grunt, config ) {
 		},
 		dev: {
 			files: {
-				'<%= dir.dist %>/<%= package.name %>.css': createSassFile()
+				'<%= destination.style %>': createSassFile()
 			}
 		}
 	};

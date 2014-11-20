@@ -1,8 +1,8 @@
 module.exports = function ( grunt ) {
 	return {
 		index: {
-			src: '<%= dir.src %>/<%= package.name %>.html',
-			dest:  '<%= dir.dist %>/index.html',
+			src: '<%= files.index %>',
+			dest:  '<%= destination.index %>',
 			options: {
 				process: function ( content ) {
 					return grunt.template.process(content);
