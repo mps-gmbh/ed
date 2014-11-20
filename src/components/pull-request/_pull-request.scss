@@ -1,0 +1,21 @@
+.PullRequestList {
+	margin: 0 0 rem($whitespaceVertical * 2);
+	padding: 0 0 0 rem($whitespaceHorizontal);
+	list-style: none;
+
+
+	li + li {
+		padding-top: rem(5);
+	}
+}
+
+ed-pull-request {
+	font-size: rem(16);
+	line-height: 1;
+	text-align: center;
+
+	ed-badge {
+		min-width: rem(62);
+		margin-right: rem(8);
+	}
+}

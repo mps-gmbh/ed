@@ -1,0 +1,21 @@
+<ul class="PullRequestList">
+	<li ng-repeat="pr in pullRequests">
+		<ed-pull-request
+			layout
+			layout-align="start center"
+		>
+			<ed-badge title="state(pr)" ng-class="'is-' + state(pr)">
+				{{ state(pr) }}
+			</ed-badge>
+
+			<a
+				ng-href="{{ pr.html_url }}"
+				target="_blank"
+				ng-style="state(pr) == 'closed' ? {'text-decoration': 'line-through' } : ''"
+			>
+				{{ pr.title }} #{{ pr.number }}
+			</a>
+		</ed-pull-request>
+	</li>
+	<li ng-if="!pullRequests.length">None.</li>
+</ul>
