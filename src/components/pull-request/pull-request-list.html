@@ -13,7 +13,7 @@
 				target="_blank"
 				ng-style="state(pr) == 'closed' ? {'text-decoration': 'line-through' } : ''"
 			>
-				{{ pr.title }} #{{ pr.number }}
+				{{ pr.title }} <span class="PullRequest-number">#{{ pr.number }}</span>
 			</a>
 		</ed-pull-request>
 	</li>
