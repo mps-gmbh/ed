@@ -17,7 +17,7 @@ describe('[dashboard/element]', function () {
 
 		spyOn($templateCache, 'get').and.callThrough();
 
-		element = angular.element('<ed-dashboard config=\'{ owner: "me", repo: "mine"}\'><ed-dashboard>');
+		element = angular.element('<ed-dashboard><ed-dashboard>');
 		$compile( element )( $rootScope.$new() );
 	}));
 
