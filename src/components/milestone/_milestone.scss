@@ -126,6 +126,7 @@ ed-milestone {
 
 // Milestone Bar
 // -------------------------
+$milestoneBarIconSize: 18;
 .Milestone-meta {
 	background: $grey--light;
 	padding: rem($whitespaceVertical) rem($whitespaceHorizontal);
@@ -141,6 +142,31 @@ ed-milestone {
 		&:hover {
 			color: $black;
 		}
+	}
+
+	.has-Icon {
+		position: relative;
+		padding-left: rem($milestoneBarIconSize + 3);
+	}
+
+	ed-icon {
+		position: absolute;
+		top: 0;
+		left: 0;
+
+		height: rem($milestoneBarIconSize);
+		width: rem($milestoneBarIconSize);
+
+		// Meh :(
+		&[name="github"] {
+			top: rem(-1);
+			height: rem($milestoneBarIconSize - 2);
+			width: rem($milestoneBarIconSize - 2);
+		}
+	}
+
+	path {
+		fill: currentColor;
 	}
 }
 

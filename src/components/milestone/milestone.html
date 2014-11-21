@@ -37,12 +37,23 @@
 		layout
 		layout-align="start center"
 	>
-		<a
-			ng-href="{{ milestone.html_url }}"
-			target="_blank"
-			flex
-		>View on Github</a>
-		<time date-time="{{ milestone.due_on }}">{{ milestone.due_on | date }}</time>
+		<div flex>
+			<a
+				class="has-Icon"
+				ng-href="{{ milestone.html_url }}"
+				target="_blank"
+			><ed-icon name="github"></ed-icon> View on Github</a>
+		</div>
+		<div
+			class="has-Icon"
+			ng-if="milestone.due_on"
+		>
+			<ed-icon name="time"></ed-icon>
+			<time
+				date-time="{{ milestone.due_on }}"
+				is-relative
+			></time>
+		</div>
 	</div>
 
 	<!-- Description -->

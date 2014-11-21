@@ -56,6 +56,7 @@ module.exports = function( grunt ) {
 			// Vendor
 			vendor: [
 				'<%= dir.vendor %>/showdown/compressed/showdown.js',
+				'<%= dir.vendor %>/momentjs/moment.js',
 
 				'<%= dir.vendor %>/angular/angular.js',
 				'<%= dir.vendor %>/angular-sanitize/angular-sanitize.js',
