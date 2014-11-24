@@ -9,6 +9,6 @@ $pageHeaderHeight: 24 + 2 * $pageHeaderVerticalSpace;
 	max-width: rem(1000);
 	@include calc(height, '100% - #{$pageHeaderHeight}px');
 
-	padding: rem(24) 0;
+	padding: 0;
 	margin: 0 auto;
 }

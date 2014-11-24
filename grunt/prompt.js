@@ -27,6 +27,36 @@ module.exports = function ( grunt, options ) {
 			when: function ( answers ) {
 				return answers['type'] === 'private';
 			}
+		}, {
+			name: 'grouping',
+			type: 'confirm',
+			message: 'Should milestones be grouped?',
+			default: true
+		}, {
+			name: 'milestone_groups',
+			type: 'input',
+			message: 'Please specify a (comma seperated) list of group names:',
+			default: 'sprint, refactor',
+			validate: function ( value ) {
+				return /^[-\w\s]+(?:,[-\w\s]*)*$/.test(value);
+			},
+			filter: function ( value ) {
+				return value.split(/\s*,\s*/);
+			},
+			when: function ( answers ) {
+				return answers['grouping'] === true;
+			}
+		}, {
+			name: 'milestones_groups_default',
+			type: 'input',
+			message: 'Please specify a default group for milestones without tags:',
+			default: 'backlog',
+			validate: function ( value ) {
+				return !!value;
+			},
+			when: function ( answers ) {
+				return answers['grouping'] === true;
+			}
 		}],
 		then: function ( answers, done ) {
 			delete answers.type;

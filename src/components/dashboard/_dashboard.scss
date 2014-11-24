@@ -1,0 +1,14 @@
+$dashboardPaddingTop: 25;
+
+.Dashboard-content {
+	margin-top: rem(-$dashboardPaddingTop)
+}
+
+.Dashboard-title {
+	margin: 0;
+	padding: rem($dashboardPaddingTop) 0 rem(5) rem(30);
+
+	color: $brand;
+	font-size: rem(18);
+	text-transform: uppercase;
+}

@@ -2,23 +2,27 @@
 
 	angular.module('github.fixture', [])
 		.service('GithubFixture',
-			function ( GH_FIXTURE_MILESTONES_1, GH_FIXTURE_ISSUES_1, GH_FIXTURE_ISSUES_2 ) {
+			function ( GH_FIXTURE_MILESTONES_1, GH_FIXTURE_ISSUES_1, GH_FIXTURE_ISSUES_2, GH_FIXTURE_ISSUES_3 ) {
 
 			this.milestones = GH_FIXTURE_MILESTONES_1;
 			this.issues = {
 				'1' : GH_FIXTURE_ISSUES_1,
-				'2' : GH_FIXTURE_ISSUES_2
+				'2' : GH_FIXTURE_ISSUES_2,
+				'3' : GH_FIXTURE_ISSUES_3
 			};
 		})
 
 		// Milestones
 		// -------------------------
 		.value('GH_FIXTURE_MILESTONES_1', [{
-			title: 'Back to the Future',
+			title: '[Sprint] Back to the Future',
 			number: 1
 		}, {
 			title: 'Spaceballs',
 			number: 2
+		}, {
+			title: '[Sprint] Firefly',
+			number: 3
 		}])
 
 
@@ -49,6 +53,16 @@
 			title: 'They\'ve gone to plaid!',
 			number: 21,
 			state: 'open'
-		}]);
+		}])
+
+		.value('GH_FIXTURE_ISSUES_3', [{
+			title: 'Captain, you mind if I say grace?',
+			number: 30,
+			state: 'open'
+		}, {
+			title: 'Only if you say it out loud.',
+			number: 31,
+			state: 'open'
+		}])		;
 
 })();
