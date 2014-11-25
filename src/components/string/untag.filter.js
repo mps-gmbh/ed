@@ -5,7 +5,7 @@
 
 	function UntagFilter () {
 		return function untag ( text ) {
-			return text.replace(/^\[[^\]]+\]\s?/, '');
+			return (text || '').replace(/^\[[^\]]+\]\s?/, '');
 		};
 	}
 
