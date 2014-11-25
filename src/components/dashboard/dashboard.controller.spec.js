@@ -1,5 +1,6 @@
 describe('[dashboard/controller]', function () {
 	var $controller, $httpBackend, GithubService, GithubFixture,
+		$injector, tagFilter,
 		FakeGithubService, gs, params,
 
 		ghConfig = {
@@ -9,8 +10,8 @@ describe('[dashboard/controller]', function () {
 		milestonesGroups = ['sprint', 'refactor'];
 
 	beforeEach(module('github.fixture'));
-
 	beforeEach(module('ed.github.service'));
+	beforeEach(module('ed.string'));
 	beforeEach(module('ed.dashboard'));
 	beforeEach(module('ed.dashboard', function ( $provide ) {
 		$provide.value('MOCK_CONFIG', ghConfig);
@@ -27,9 +28,11 @@ describe('[dashboard/controller]', function () {
 			milestones_groups_default: 'fallback'
 		}));
 	}));
-	beforeEach( inject( function ( _$controller_, _$httpBackend_, _GithubService_ , _GithubFixture_ ) {
-		$controller = _$controller_;
+	beforeEach( inject( function ( _$controller_, _$httpBackend_, _$injector_, _tagFilter_, _GithubService_, _GithubFixture_ ) {
+		var $ctrl = _$controller_;
 		$httpBackend = _$httpBackend_;
+		$injector = _$injector_;
+		tagFilter = _tagFilter_;
 
 		GithubFixture = _GithubFixture_;
 
@@ -41,10 +44,16 @@ describe('[dashboard/controller]', function () {
 		});
 
 		params = {
-			$attrs: {
-				config: 'MOCK_CONFIG'
-			},
-			GithubService: GithubService
+			GithubService: GithubService,
+			$injector: $injector,
+			tagFilter: tagFilter
+		};
+
+		// http://stackoverflow.com/questions/25837774/bindtocontroller-in-unit-tests#answer-26187076
+		$controller = function ( name, params, config ) {
+			var ctrlConstructor = $ctrl(name, params, true);
+			ctrlConstructor.instance.config = config === undefined ? 'MOCK_CONFIG' : config;
+			return ctrlConstructor();
 		};
 	}));
 
@@ -57,24 +66,17 @@ describe('[dashboard/controller]', function () {
 		});
 
 		it('should throw if config is missing', function () {
-			delete params.$attrs.config;
-			expect(function () {$controller('DashboardController', params);}).toThrow();
+			expect(function () {$controller('DashboardController', params, null);}).toThrow();
 		});
 
 		it('should throw if config for "owner" is missing', function () {
-			params.$attrs.config = 'MOCK_CONFIG_EMPTY';
-			expect(function () {$controller('DashboardController', params);}).toThrow();
-
-			params.$attrs.config = 'MOCK_CONFIG_REPO';
-			expect(function () {$controller('DashboardController', params);}).toThrow();
+			expect(function () {$controller('DashboardController', params, 'MOCK_CONFIG_EMPTY');}).toThrow();
+			expect(function () {$controller('DashboardController', params, 'MOCK_CONFIG_REPO');}).toThrow();
 		});
 
 		it('should throw if config for "repo" is missing', function () {
-			params.$attrs.config = 'MOCK_CONFIG_EMPTY';
-			expect(function () {$controller('DashboardController', params);}).toThrow();
-
-			params.$attrs.config = 'MOCK_CONFIG_OWNER';
-			expect(function () {$controller('DashboardController', params);}).toThrow();
+			expect(function () {$controller('DashboardController', params, 'MOCK_CONFIG_EMPTY');}).toThrow();
+			expect(function () {$controller('DashboardController', params, 'MOCK_CONFIG_OWNER');}).toThrow();
 		});
 
 
@@ -166,8 +168,7 @@ describe('[dashboard/controller]', function () {
 
 			beforeEach(function () {
 				params.GithubService = FakeGithubService;
-				params.$attrs.config = 'MOCK_CONFIG_GROUPS';
-				controller = $controller('DashboardController', params);
+				controller = $controller('DashboardController', params, 'MOCK_CONFIG_GROUPS');
 
 				$httpBackend.whenGET(/milestones$/).respond(GithubFixture.milestones);
 				$httpBackend.whenGET(/issues\?/)
@@ -182,8 +183,7 @@ describe('[dashboard/controller]', function () {
 			});
 
 			it('should put milestones in group "milestones" per default', function() {
-				params.$attrs.config = 'MOCK_CONFIG';
-				controller = $controller('DashboardController', params);
+				controller = $controller('DashboardController', params, 'MOCK_CONFIG');
 				$httpBackend.flush();
 
 				expect(controller.groups[0].milestones).toBeDefined();
@@ -198,8 +198,7 @@ describe('[dashboard/controller]', function () {
 			});
 
 			it('should be possible to create a default milestone group', function() {
-				params.$attrs.config = 'MOCK_CONFIG_GROUPS_W_DEFAULT';
-				controller = $controller('DashboardController', params);
+				controller = $controller('DashboardController', params, 'MOCK_CONFIG_GROUPS_W_DEFAULT');
 				$httpBackend.flush();
 
 				expect(controller.groups[controller.groups.length-1].name).toEqual('fallback');

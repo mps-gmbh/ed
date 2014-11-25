@@ -17,7 +17,7 @@ describe('[dashboard/element]', function () {
 
 		spyOn($templateCache, 'get').and.callThrough();
 
-		element = angular.element('<ed-dashboard><ed-dashboard>');
+		element = angular.element('<ed-dashboard config="CONFIG"><ed-dashboard>');
 		$compile( element )( $rootScope.$new() );
 	}));
 
@@ -36,6 +36,16 @@ describe('[dashboard/element]', function () {
 		expect(element.isolateScope()).toBeUndefined();
 		$rootScope.$digest();
 		expect(element.isolateScope()).toBeDefined();
+	});
+
+	it('should bind to controller "dashboard"', function() {
+		$rootScope.$digest();
+		expect(element.isolateScope().dashboard).toBeDefined();
+	});
+
+	it('should init "config" param', function() {
+		$rootScope.$digest();
+		expect(element.isolateScope().dashboard.config).toBeDefined();
 	});
 
 	it('should init the correct controller', function() {

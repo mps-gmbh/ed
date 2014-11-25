@@ -16,8 +16,8 @@
 
 	// Controller
 	// -------------------------
-	DashboardController.$inject = [ '$attrs', '$injector', 'tagFilter', 'GithubService' ];
-	function DashboardController ( $attrs, $injector, tagFilter, GithubService ) {
+	DashboardController.$inject = [ '$injector', 'tagFilter', 'GithubService' ];
+	function DashboardController ( $injector, tagFilter, GithubService ) {
 		var vm = this,
 			config,
 			github;
@@ -26,14 +26,14 @@
 		vm.groups = [];
 
 		//TODO Show errors on the page, not the console.
-		if( !$attrs.config ) {
+		if( !vm.config ) {
 			throw MinErr('badargs',
 				'Expected configuration for `GithubService` got {0}.\n' +
 				'Please generate a configuration with `grunt config`!',
-				$attrs.config );
+				vm.config );
 		}
 
-		config = $injector.get($attrs.config);
+		config = $injector.get(vm.config);
 		if( !(config.owner && config.repo) ) {
 			throw MinErr('badargs',
 				'Expected configuration for `owner` and `repository` got {0} and {1}.',

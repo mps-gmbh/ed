@@ -10,7 +10,9 @@
 			controller: 'DashboardController',
 			controllerAs: 'dashboard',
 			bindToController: true,
-			scope: {}
+			scope: {
+				config: '@'
+			}
 		};
 	}
 
