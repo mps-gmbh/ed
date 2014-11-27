@@ -35,7 +35,7 @@ module.exports = {
 	unit: {
 		singleRun: true,
 		preprocessors: {
-			'<%= files.coverage %>': ['coverage']
+			'src/**/!(*module|*spec|*fixture).js': ['coverage']
 		},
 		reporters: ['dots', 'coverage'],
 		coverageReporter: {
@@ -47,12 +47,12 @@ module.exports = {
 	coverage: {
 		singleRun: true,
 		preprocessors: {
-			'<%= files.coverage %>': ['coverage']
+			'src/**/!(*module|*spec|*fixture).js': ['coverage']
 		},
 		reporters: ['dots', 'coverage'],
 		coverageReporter: {
 			type : 'html',
-			dir: '<%= dir.coverage %>/'
+			dir: 'coverage/'
 		},
 	},
 
