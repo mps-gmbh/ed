@@ -10,7 +10,7 @@ describe('[dashboard/controller]', function () {
 		milestonesGroups = ['sprint', 'refactor'];
 
 	beforeEach(module('github.fixture'));
-	beforeEach(module('ed.github.service'));
+	beforeEach(module('ed.github'));
 	beforeEach(module('ed.string'));
 	beforeEach(module('ed.dashboard'));
 	beforeEach(module('ed.dashboard', function ( $provide ) {

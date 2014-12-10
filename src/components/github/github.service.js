@@ -2,7 +2,7 @@
 
 	// Export
 	// -------------------------
-	angular.module('ed.github.service', [])
+	angular.module('ed.github')
 		.provider('GithubService', GithubServiceProvider);
 
 
@@ -49,13 +49,6 @@
 						});
 				}
 
-				function setMilestoneHtmlUrl ( milestone ) {
-					milestone.html_url = provider.HTML_URL + owner + '/' + repo +
-						provider.API_PREFIX_MILESTONES + '/' + milestone.title;
-					return milestone;
-				}
-
-
 				// Add OAuth Header
 				if( token ) {
 					httpConfig.headers = { 'Authorization': 'token ' + token };
@@ -92,8 +85,9 @@
 				function getMilestone( number ) {
 					return $http.get( url + provider.API_PREFIX_MILESTONES + '/' + number, httpConfig )
 						.then(returnData)
-						.then(setMilestoneHtmlUrl)
-						.then(getIssuesForMilestone);
+						.then( function ( milestone ) {
+							return new Milestone(milestone);
+						});
 				}
 
 				// Get all **open** milestones for the repositroy
@@ -101,14 +95,38 @@
 					return $http.get( url + provider.API_PREFIX_MILESTONES, httpConfig )
 						.then(returnData)
 						.then( function ( milestones ) {
-							var calls = [];
-							forEach( milestones, function ( milestone ) {
-								setMilestoneHtmlUrl(milestone);
-								calls.push(getIssuesForMilestone( milestone ));
+							forEach( milestones, function ( milestone, idx ) {
+								milestones[idx] = new Milestone(milestone);
 							});
-							return $q.all(calls);
+							return milestones;
 						});
 				}
+
+
+				// Milestones
+				function Milestone ( json ) {
+					extend( this, json );
+					// Create URL to view milestone in browser.
+					this.html_url = provider.HTML_URL + owner + '/' + repo +
+						provider.API_PREFIX_MILESTONES + '/' + this.title;
+				}
+
+				Milestone.prototype = {
+					getIssues: function () {
+						var self = this;
+						self.is_loading_issues = true;
+						return getIssuesForMilestone( self ).then( function () {
+							self.is_loading_issues = false;
+						});
+					},
+					refresh: function () {
+						var self = this;
+						self.is_loading = true;
+						return self.getIssues().then( function () {
+							self.is_loading = false;
+						});
+					}
+				};
 
 				// Service
 				return {

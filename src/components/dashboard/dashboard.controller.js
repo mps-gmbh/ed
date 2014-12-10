@@ -46,7 +46,7 @@
 			config.token
 		);
 
-		github.getMilestones().then( function ( milestones ) {
+		github.getMilestones(true).then( function ( milestones ) {
 			// Fallback for no groups
 			if( !(config.milestone_groups && isArray(config.milestone_groups)) ) {
 				vm.groups.push({ name: 'milestones', milestones: milestones });
@@ -70,6 +70,11 @@
 				});
 			}
 			vm.isLoading = false;
+			return milestones;
+		}).then( function ( milestones ) {
+			forEach( milestones, function ( milestone ) {
+				milestone.getIssues();
+			});
 		});
 	}
 
