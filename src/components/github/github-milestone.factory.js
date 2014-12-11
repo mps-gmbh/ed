@@ -10,31 +10,11 @@
 		forEach = angular.forEach,
 		MinErr = angular.$$minErr('GithubMilestone');
 
-		function returnResponseData ( response ) {
-			return response.data;
-		}
-		function shallowClearAndCopy( src, dst ) {
-			dst = dst || {};
-
-			forEach(dst, function ( value, key ) {
-				if( !(key.charAt(0) === '_') ) {
-					delete dst[key];
-				}
-			});
-
-			for (var key in src) {
-				if (src.hasOwnProperty(key)) {
-					dst[key] = src[key];
-				}
-			}
-
-			return dst;
-		}
 
 	// Factory
 	// -------------------------
-	GithubMilestoneFactory.$inject = [ '$http', 'GithubAPI' ];
-	function GithubMilestoneFactory ( $http, GithubAPI ) {
+	GithubMilestoneFactory.$inject = [ '$http', '$q', 'GithubAPI', 'GithubUtils' ];
+	function GithubMilestoneFactory ( $http, $q, GithubAPI, utils ) {
 
 		function GithubMilestone ( data, a1, a2, a3 ) {
 			switch( arguments.length ) {
@@ -77,9 +57,9 @@
 						self.url );
 				}
 				return $http.get( self.url )
-					.then(returnResponseData)
+					.then(utils.response.unwrap)
 					.then(function ( milestone ) {
-						shallowClearAndCopy( milestone, self );
+						utils.response.shallowClearAndCopy( self, milestone );
 						return self;
 					});
 			},
@@ -90,7 +70,17 @@
 					self._owner, self._repo, self._token,
 					{ milestone: self.number }
 				).then( function ( issues ) {
-					return self.issues = issues;
+					self.issues = issues;
+					self.pull_requests = [];
+
+					// Queue to fetch additional `pull request` data
+					var calls = [];
+					forEach( self.issues, function ( issue ) {
+						if( !issue.pull_request ) {	return; }
+						self.pull_requests.push(issue);
+						// calls.push();
+					});
+					return self.issues;
 				});
 			}
 

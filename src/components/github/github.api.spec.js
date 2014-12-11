@@ -236,7 +236,8 @@ describe('[github/api]', function () {
 					GithubAPI.milestone.get(owner, repo, null, 1);
 					expect($http.get).toHaveBeenCalledWith( url + 'milestones/1', {
 						method: 'get',
-						url : 'https://api.github.com/repos/mps-gmbh/ed/milestones/1'
+						url : 'https://api.github.com/repos/mps-gmbh/ed/milestones/1',
+						params: {}
 					});
 				});
 
@@ -253,7 +254,8 @@ describe('[github/api]', function () {
 					expect($http.get).toHaveBeenCalledWith( url + 'milestones/1', {
 						headers : { 'Authorization' : 'token 123456789009876543' },
 						method: 'get',
-						url : 'https://api.github.com/repos/mps-gmbh/ed/milestones/1'
+						url : 'https://api.github.com/repos/mps-gmbh/ed/milestones/1',
+						params: {}
 					});
 				});
 
@@ -289,7 +291,8 @@ describe('[github/api]', function () {
 					GithubAPI.milestone.all(owner, repo);
 					expect($http.get).toHaveBeenCalledWith( url + 'milestones', {
 						method: 'get',
-						url : 'https://api.github.com/repos/mps-gmbh/ed/milestones'
+						url : 'https://api.github.com/repos/mps-gmbh/ed/milestones',
+						params: {}
 					});
 				});
 
@@ -306,7 +309,8 @@ describe('[github/api]', function () {
 					expect($http.get).toHaveBeenCalledWith( url + 'milestones', {
 						headers : { 'Authorization' : 'token 123456789009876543' },
 						method: 'get',
-						url : 'https://api.github.com/repos/mps-gmbh/ed/milestones'
+						url : 'https://api.github.com/repos/mps-gmbh/ed/milestones',
+						params: {}
 					});
 				});
 

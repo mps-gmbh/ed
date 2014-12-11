@@ -77,8 +77,8 @@ ddescribe('[github/milestone]', function () {
 
 		// args = 3
 		it('should be possible to call with [owner, repo]', function() {
-			var owner = 'me',
-				repo = 'mine',
+			var owner = 'mps-gmbh',
+				repo = 'ed',
 				milestone = new GithubMilestone(json, owner, repo);
 
 			expect(milestone._owner).toEqual(owner);
@@ -91,8 +91,8 @@ ddescribe('[github/milestone]', function () {
 
 		// args = 4
 		it('should be possible to call with [owner, repo and token]', function() {
-			var owner = 'me',
-				repo = 'mine',
+			var owner = 'mps-gmbh',
+				repo = 'ed',
 				token = '123456789',
 				milestone = new GithubMilestone(json, owner, repo, token);
 
@@ -124,8 +124,8 @@ ddescribe('[github/milestone]', function () {
 			milestoneResponse;
 
 		beforeEach(function() {
-			owner = 'me';
-			repo = 'mine';
+			owner = 'mps-gmbh';
+			repo = 'ed';
 			token = '123456789';
 			milestone = new GithubMilestone(json, owner, repo, token);
 			milestoneResponse = { title: 'Empty Milestone'};
@@ -177,20 +177,43 @@ ddescribe('[github/milestone]', function () {
 	// Issues
 	// -------------------------
 	describe('Issues', function () {
-		var owner, repo, token,
+		var owner = 'mps-gmbh',
+			repo = 'ed',
+			token = '123456789',
+			prURL = 'https://api.github.com/repos/mps-gmbh/ed/pulls/1',owner, repo, token,
 			milestone,
-			issueResponse;
+			issueResponse,
+			prResponse;
 
 		beforeEach(function() {
-			owner = 'me';
-			repo = 'mine';
-			token = '123456789';
 			milestone = new GithubMilestone(json, owner, repo, token);
-			issueResponse = [{
-				title: 'Issue #1'
-			}, {
-				title: 'Issue #2'
-			}];
+
+			// Fake Backend
+			issuesResponse = {
+				'1': [{
+					title: 'I want this to be implemented! Yesterday!',
+					number: 55,
+					state: 'open'
+				}, {
+					title: 'Yet another feature request',
+					number: 1234,
+					state: 'closed'
+				}],
+				'11': [{
+					title: 'I found a bug',
+					number: 55,
+					state: 'open',
+					pull_request: { url: prURL }
+				}, {
+					title: 'Make button "cornflower blue" instead of "deep sky blue"',
+					number: 1234,
+					state: 'open'
+				}]
+			};
+			prResponse = {
+				merged: false,
+				someOtherData: 'that-should-be-merged'
+			};
 			$httpBackend.whenGET(/.*/).respond(issueResponse);
 		});
 
@@ -203,6 +226,10 @@ ddescribe('[github/milestone]', function () {
 			milestone.getIssues();
 			$httpBackend.flush();
 			expect(milestone.issues).toEqual(issueResponse);
+
+			delete milestone.number;
+			milestone.getIssues();
+			$httpBackend.flush();
 		});
 
 		it('should return fetched issues (as promise)', function() {

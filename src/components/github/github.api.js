@@ -11,18 +11,6 @@
 		isNumber = angular.isNumber,
 		MinErr = angular.$$minErr('GithubAPI');
 
-	function returnResponseData ( response ) {
-		return response.data;
-	}
-	function createHttpConfig ( token, params ) {
-		var authHeader = {
-			'headers': {
-				'Authorization': 'token ' + token
-			}
-		};
-		return extend( {}, params, token ? authHeader : {} );
-	}
-
 
 	// Provider
 	// -------------------------
@@ -47,7 +35,7 @@
 
 		// Getter
 		// -------------------------
-		provider.$get = [ '$http', function ( $http ) {
+		provider.$get = [ '$http', 'GithubUtils', function ( $http, utils ) {
 
 			// Service
 			// -------------------------
@@ -86,10 +74,8 @@
 						}
 						return $http.get(
 							createRepoUrl(provider.BASE, owner, repo) + provider.PREFIX_ISSUES,
-							createHttpConfig( token, {
-								params: filter || {}
-							})
-						).then(returnResponseData);
+							utils.request.createHttpConfig(token, filter)
+						).then(utils.response.unwrap);
 					}
 				},
 
@@ -103,15 +89,15 @@
 						}
 						return $http.get(
 							createRepoUrl(provider.BASE, owner, repo) + provider.PREFIX_MILESTONES + '/' + number,
-							createHttpConfig( token )
-						).then(returnResponseData);
+							utils.request.createHttpConfig(token)
+						).then(utils.response.unwrap);
 					},
 
 					all: function ( owner, repo, token ) {
 						return $http.get(
 							createRepoUrl(provider.BASE, owner, repo) + provider.PREFIX_MILESTONES,
-							createHttpConfig( token )
-						).then(returnResponseData);
+							utils.request.createHttpConfig(token)
+						).then(utils.response.unwrap);
 					}
 				}
 			};
