@@ -23,6 +23,35 @@ describe('[github/utils]', function () {
 				headers: { 'Authorization': 'token 123'	}
 			});
 		});
+
+		it('should expose a method to create HTTP configuration', function() {
+			expect(utils.request.createHttpConfig).toEqual( jasmine.any(Function) );
+		});
+
+		it('should be possible to create HTTP configuration', function() {
+			var conf;
+
+			conf = utils.request.createHttpConfig( null );
+			expect(conf).toEqual({ params : {} });
+
+			conf = utils.request.createHttpConfig( '123' );
+			expect(conf).toEqual({ headers : { Authorization : 'token 123' }, params : {} });
+
+			conf = utils.request.createHttpConfig( null, { foo: 'bar' } );
+			expect(conf).toEqual({ params : { foo: 'bar' } });
+
+			conf = utils.request.createHttpConfig( '123', { foo: 'bar' } );
+			expect(conf).toEqual({ headers : { Authorization : 'token 123' }, params : { foo: 'bar' } });
+		});
+
+		it('should throw if passed `filter` is not an object', function() {
+			expect(function () {
+				utils.request.createHttpConfig( null, 'foo' );
+			}).toThrow();
+			expect(function () {
+				utils.request.createHttpConfig( null, null );
+			}).toThrow();
+		});
 	});
 
 

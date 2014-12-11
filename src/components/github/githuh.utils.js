@@ -3,7 +3,20 @@
 	angular.module('ed.github')
 		.service('GithubUtils', GithubUtils);
 
+
+	// Helper
+	// -------------------------
+	var
+		isObject = angular.isObject,
+		isDefined = angular.isDefined,
+		extend = angular.extend,
+		MinErr = angular.$$minErr('GithubUtils');
+
+
+	// Service
+	// -------------------------
 	function GithubUtils () {
+		var self = this;
 
 		// Request
 		// -------------------------
@@ -14,6 +27,17 @@
 						'Authorization': 'token ' + token
 					}
 				};
+			},
+			createHttpConfig: function ( token, filter ) {
+				if( isDefined(filter) && !isObject(filter) ) {
+					throw MinErr('badargs',
+						'Expected 2nd argument to be `undefined` or an `Object`, got {0}.',
+						filter);
+				}
+				return extend( {},
+					token ? self.request.createAuthHeader(token) : {},
+					{ params: ( filter ? filter : {} ) }
+				);
 			}
 		};
 
