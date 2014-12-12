@@ -72,6 +72,8 @@
 								'Expected filter (4th arg) to be an Object, got {0}.',
 								typeof filter );
 						}
+						filter = filter || {};
+						filter.state = filter.state || 'all';
 						return $http.get(
 							createRepoUrl(provider.BASE, owner, repo) + provider.PREFIX_ISSUES,
 							utils.request.createHttpConfig(token, filter)

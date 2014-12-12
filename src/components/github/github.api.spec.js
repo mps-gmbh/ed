@@ -130,7 +130,7 @@ describe('[github/api]', function () {
 		describe('Issues API', function () {
 			beforeEach(function() {
 				resoponseData = [{ title: 'Issue #1'}];
-				$httpBackend.whenGET(url + 'issues').respond(resoponseData);
+				$httpBackend.whenGET(url + 'issues?state=all').respond(resoponseData);
 			});
 
 			it('should expose an API for issues', function() {
@@ -147,7 +147,7 @@ describe('[github/api]', function () {
 				it('should be possible to fetch all issues', function() {
 					GithubAPI.issue.all(owner, repo);
 					expect($http.get).toHaveBeenCalledWith( url + 'issues', {
-						params : {},
+						params : { state: 'all' },
 						method: 'get',
 						url: 'https://api.github.com/repos/mps-gmbh/ed/issues'
 					});
@@ -164,7 +164,7 @@ describe('[github/api]', function () {
 				it('should be possible to fetch all issues with AuthToken', function() {
 					GithubAPI.issue.all(owner, repo, token);
 					expect($http.get).toHaveBeenCalledWith( url + 'issues', {
-						params: {},
+						params: { state: 'all' },
 						headers : { 'Authorization' : 'token 123456789009876543' },
 						method: 'get',
 						url: 'https://api.github.com/repos/mps-gmbh/ed/issues'
