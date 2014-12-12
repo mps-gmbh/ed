@@ -22,6 +22,7 @@
 		// -------------------------
 		this.request = {
 			createAuthHeader: function ( token ) {
+				if( !token ) { return {}; }
 				return {
 					'headers': {
 						'Authorization': 'token ' + token
@@ -35,7 +36,7 @@
 						filter);
 				}
 				return extend( {},
-					token ? self.request.createAuthHeader(token) : {},
+					self.request.createAuthHeader(token),
 					{ params: ( filter ? filter : {} ) }
 				);
 			}

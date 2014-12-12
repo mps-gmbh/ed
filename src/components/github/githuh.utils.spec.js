@@ -24,6 +24,10 @@ describe('[github/utils]', function () {
 			});
 		});
 
+		it('should return an empty object if no token was passed', function() {
+			expect(utils.request.createAuthHeader()).toEqual({});
+		});
+
 		it('should expose a method to create HTTP configuration', function() {
 			expect(utils.request.createHttpConfig).toEqual( jasmine.any(Function) );
 		});
