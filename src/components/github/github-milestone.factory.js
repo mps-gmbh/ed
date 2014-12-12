@@ -56,7 +56,7 @@
 						'got {0}.',
 						self.url );
 				}
-				return $http.get( self.url, utils.request.createHttpConfig(self._token) )
+				return $http.get( self.url, utils.request.createAuthHeader(self._token) )
 					.then(utils.response.unwrap)
 					.then(function ( milestone ) {
 						utils.response.shallowClearAndCopy( self, milestone );
@@ -78,8 +78,16 @@
 					forEach( self.issues, function ( issue ) {
 						if( !issue.pull_request ) {	return; }
 						self.pull_requests.push(issue);
-						// calls.push();
+						calls.push(function () {
+							return $http.get(issue.pull_request.url, utils.request.createAuthHeader(self._token))
+								.then(utils.response.unwrap)
+								.then(function ( pr ) {
+									utils.response.shallowClearAndCopy( issue, pr )
+								});
+						});
 					});
+					return $q.all(calls);
+				}).then( function () {
 					return self.issues;
 				});
 			}

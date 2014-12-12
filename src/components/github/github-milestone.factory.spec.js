@@ -1,4 +1,4 @@
-ddescribe('[github/milestone]', function () {
+describe('[github/milestone]', function () {
 	var $httpBackend,
 		GithubMilestone,
 
@@ -198,7 +198,7 @@ ddescribe('[github/milestone]', function () {
 			milestone = new GithubMilestone(json, owner, repo, token);
 
 			// Fake Backend
-			issuesResponse = {
+			issueResponse = {
 				'1': [{
 					title: 'I want this to be implemented! Yesterday!',
 					number: 55,
@@ -223,7 +223,15 @@ ddescribe('[github/milestone]', function () {
 				merged: false,
 				someOtherData: 'that-should-be-merged'
 			};
-			$httpBackend.whenGET(/.*/).respond(issueResponse);
+
+			// Mock server
+			$httpBackend.whenGET(new RegExp('/repos/' + owner + '/' + repo + '/issues'))
+				.respond(function ( method, url ) {
+					var number = url.match(/milestone=(\d+)/)[1];
+					return [ 200, issueResponse[number] ];
+				});
+			$httpBackend.whenGET(prURL)
+				.respond(prResponse);
 		});
 
 		it('should expose a method to fetch issues', function() {
@@ -234,11 +242,7 @@ ddescribe('[github/milestone]', function () {
 			expect(milestone.issues).toBeUndefined();
 			milestone.getIssues();
 			$httpBackend.flush();
-			expect(milestone.issues).toEqual(issueResponse);
-
-			delete milestone.number;
-			milestone.getIssues();
-			$httpBackend.flush();
+			expect(milestone.issues).toEqual(issueResponse[milestone.number]);
 		});
 
 		it('should return fetched issues (as promise)', function() {
@@ -248,6 +252,24 @@ ddescribe('[github/milestone]', function () {
 			});
 			$httpBackend.flush();
 			expect(milestone.issues).toEqual(i);
+		});
+
+
+		// Pull Requests
+		// -------------------------
+		describe('Pull Requests', function () {
+			beforeEach(function() {
+				angular.extend( milestone, {
+					"url": "https://api.github.com/repos/octocat/Hello-World/milestones/11",
+					"number": 11,
+				});
+			});
+
+			it('should fetch additional PR data for "PR issues"', function() {
+				milestone.getIssues();
+				$httpBackend.flush();
+				expect(milestone.pull_requests.length).toEqual(1);
+			});
 		});
 	});
 });
