@@ -164,6 +164,15 @@ ddescribe('[github/milestone]', function () {
 			expect(m).toEqual(milestone);
 		});
 
+		it('should use auth token if possible', function() {
+			$httpBackend.expectGET(json.url, {
+				'Authorization': 'token ' + token,
+				'Accept': 'application/json, text/plain, */*'
+			});
+			milestone.refresh();
+			$httpBackend.flush();
+		});
+
 		it('should throw an error if no `url` is specified', function() {
 			expect(function () {
 				delete json.url;

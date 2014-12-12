@@ -56,7 +56,7 @@
 						'got {0}.',
 						self.url );
 				}
-				return $http.get( self.url )
+				return $http.get( self.url, utils.request.createHttpConfig(self._token) )
 					.then(utils.response.unwrap)
 					.then(function ( milestone ) {
 						utils.response.shallowClearAndCopy( self, milestone );
@@ -73,7 +73,7 @@
 					self.issues = issues;
 					self.pull_requests = [];
 
-					// Queue to fetch additional `pull request` data
+					// Enqueue to fetch additional `pull request` data
 					var calls = [];
 					forEach( self.issues, function ( issue ) {
 						if( !issue.pull_request ) {	return; }
