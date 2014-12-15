@@ -142,6 +142,9 @@ describe('[dashboard/controller]', function () {
 						return milestone.number === m.number && milestone.title === m.title;
 					})).toBeTruthy();
 					expect(milestone.issues).toEqual(GithubFixture.issues[milestone.number]);
+					expect(milestone.pull_requests).toEqual(GithubFixture.issues[milestone.number].filter( function ( i ) {
+						return i.pull_request;
+					}));
 				});
 			});
 

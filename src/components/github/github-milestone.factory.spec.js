@@ -198,8 +198,10 @@ describe('[github/milestone]', function () {
 		var owner = 'mps-gmbh',
 			repo = 'ed',
 			token = '123456789',
+			prURL = 'https://api.github.com/repos/mps-gmbh/ed/pulls/1',
 			milestone,
-			issueResponse;
+			issueResponse,
+			prResponse;
 
 		beforeEach(function() {
 			milestone = new GithubMilestone(json, owner, repo, token);
@@ -219,12 +221,16 @@ describe('[github/milestone]', function () {
 					title: 'I found a bug',
 					number: 55,
 					state: 'open',
-					pull_request: { state: 'open' }
+					pull_request: { url: prURL }
 				}, {
 					title: 'Make button "cornflower blue" instead of "deep sky blue"',
 					number: 1234,
 					state: 'open'
 				}]
+			};
+			prResponse = {
+				merged: false,
+				someOtherData: 'that-should-be-merged'
 			};
 
 			// Mock server
@@ -233,6 +239,8 @@ describe('[github/milestone]', function () {
 					var number = url.match(/milestone=(\d+)/)[1];
 					return [ 200, issueResponse[number] ];
 				});
+			$httpBackend.whenGET(prURL)
+				.respond(prResponse);
 		});
 
 		it('should expose a method to fetch issues', function() {
@@ -261,6 +269,23 @@ describe('[github/milestone]', function () {
 			expect(milestone.isLoadingIssues).toBeTruthy();
 			$httpBackend.flush();
 			expect(milestone.isLoadingIssues).toBeUndefined();
+		});
+
+		// Pull Requests
+		// -------------------------
+		describe('Pull Requests', function () {
+			beforeEach(function() {
+				angular.extend( milestone, {
+					"url": "https://api.github.com/repos/octocat/Hello-World/milestones/11",
+					"number": 11,
+				});
+			});
+
+			it('should fetch additional PR data for "PR issues"', function() {
+				milestone.getIssues();
+				$httpBackend.flush();
+				expect(milestone.pull_requests.length).toEqual(1);
+			});
 		});
 	});
 });

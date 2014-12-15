@@ -7,6 +7,7 @@
 	// Helpers
 	// -------------------------
 	var extend = angular.extend,
+		forEach = angular.forEach,
 		MinErr = angular.$$minErr('GithubMilestone');
 
 
@@ -74,6 +75,23 @@
 					{ milestone: self.number }
 				).then( function ( issues ) {
 					self.issues = issues;
+					self.pull_requests = [];
+
+					// Enqueue to fetch additional `pull request` data
+					var calls = [];
+					forEach( self.issues, function ( issue ) {
+						if( !issue.pull_request ) {	return; }
+						self.pull_requests.push(issue);
+						calls.push(function () {
+							return $http.get(issue.pull_request.url, utils.request.createAuthHeader(self._token))
+								.then(utils.response.unwrap)
+								.then(function ( pr ) {
+									utils.response.shallowClearAndCopy( issue, pr );
+								});
+						});
+					});
+					return $q.all(calls);
+				}).then( function () {
 					delete self.isLoadingIssues;
 					return self.issues;
 				});
