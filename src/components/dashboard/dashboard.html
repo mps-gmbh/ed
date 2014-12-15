@@ -3,13 +3,13 @@
 	layout-align="center center"
 	layout-fill
 	class="Animation--fade"
-	ng-if="dashboard.isLoading"
+	ng-if="dashboard.repository.isLoadingMilestones"
 >
 	<ed-loading-spinner></ed-loading-spinner>
 </div>
 <div
 	class="Dashboard-content Animation--fade"
-	ng-if="!dashboard.isLoading"
+	ng-if="!dashboard.repository.isLoadingMilestones"
 >
 	<section
 		ng-repeat="group in dashboard.groups"
