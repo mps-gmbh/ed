@@ -17,6 +17,7 @@
 	function GithubMilestoneFactory ( $http, $q, GithubAPI, utils ) {
 
 		function GithubMilestone ( data, a1, a2, a3 ) {
+			/* jshint -W086 */ /* (purposefully fall through case statements) */
 			switch( arguments.length ) {
 				case 4:
 				case 3:
@@ -40,9 +41,9 @@
 				default:
 					throw MinErr( 'badargs',
 						'Expected `GithubMilestone` to be called with 1-4 arguments, got {0}.',
-						argument.length );
-					break;
+						arguments.length );
 			}
+			/* jshint +W086 */ /* (purposefully fall through case statements) */
 			extend( this, data );
 		}
 
@@ -82,7 +83,7 @@
 							return $http.get(issue.pull_request.url, utils.request.createAuthHeader(self._token))
 								.then(utils.response.unwrap)
 								.then(function ( pr ) {
-									utils.response.shallowClearAndCopy( issue, pr )
+									utils.response.shallowClearAndCopy( issue, pr );
 								});
 						});
 					});

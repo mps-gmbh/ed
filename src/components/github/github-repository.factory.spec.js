@@ -1,5 +1,6 @@
 describe('[github/repository]', function () {
-	var GithubAPI, GithubRepository;
+	var GithubAPI, GithubRepository,
+		repo;
 
 	beforeEach(module('ed.github'));
 	beforeEach( inject( function ( _GithubAPI_, _GithubRepository_ ) {
@@ -56,7 +57,7 @@ describe('[github/repository]', function () {
 			r2.getIssues();
 			expect(GithubAPI.issue.all).toHaveBeenCalledWith( 'me', 'foo', '13479120516203', undefined );
 
-			r2.getIssues({ 'state': 'open' })
+			r2.getIssues({ 'state': 'open' });
 			expect(GithubAPI.issue.all).toHaveBeenCalledWith( 'me', 'foo', '13479120516203', { 'state': 'open' } );
 		});
 

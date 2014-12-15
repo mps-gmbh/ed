@@ -189,7 +189,7 @@ describe('[github/milestone]', function () {
 		var owner = 'mps-gmbh',
 			repo = 'ed',
 			token = '123456789',
-			prURL = 'https://api.github.com/repos/mps-gmbh/ed/pulls/1',owner, repo, token,
+			prURL = 'https://api.github.com/repos/mps-gmbh/ed/pulls/1',
 			milestone,
 			issueResponse,
 			prResponse;

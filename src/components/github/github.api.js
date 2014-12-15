@@ -6,8 +6,7 @@
 
 	// Helpers
 	// -------------------------
-	var extend = angular.extend,
-		isObject = angular.isObject,
+	var isObject = angular.isObject,
 		isNumber = angular.isNumber,
 		MinErr = angular.$$minErr('GithubAPI');
 
@@ -105,7 +104,7 @@
 			};
 
 			return new GithubAPI();
-		}]
+		}];
 	}
 
 })();

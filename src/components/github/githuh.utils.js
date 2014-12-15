@@ -51,16 +51,17 @@
 			},
 
 			shallowClearAndCopy: function ( dst, src ) {
+				var key;
 				dst = dst || {};
 
 				// Clear
-				for( var key in dst ) {
+				for( key in dst ) {
 					if( key.charAt(0) !== '_' ) {
 						delete dst[key];
 					}
 				}
 				// Copy
-				for( var key in src ) {
+				for( key in src ) {
 					if (src.hasOwnProperty(key) && key.charAt(0) !== '_' ) {
 						dst[key] = src[key];
 					}
