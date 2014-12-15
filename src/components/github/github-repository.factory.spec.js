@@ -54,6 +54,8 @@ describe('[github/repository]', function () {
 		beforeEach(function() {
 			r1 = new GithubRepository( 'me', 'foo' );
 			r2 = new GithubRepository( 'me', 'foo', '13479120516203' );
+
+			$httpBackend.whenGET(/.*/).respond([]);
 		});
 
 		it('should expose a method to fetch all issues', function() {
@@ -74,6 +76,14 @@ describe('[github/repository]', function () {
 		it('should return a promise', function() {
 			expect(r1.getIssues().$$state).toEqual( jasmine.any(Object) );
 			expect(r1.getIssues().then).toEqual( jasmine.any(Function) );
+		});
+
+		it('should set loading flag', function() {
+			expect(r1.isLoadingIssues).toBeUndefined();
+			r1.getIssues();
+			expect(r1.isLoadingIssues).toBeTruthy();
+			$httpBackend.flush();
+			expect(r1.isLoadingIssues).toBeUndefined();
 		});
 	});
 
@@ -165,6 +175,14 @@ describe('[github/repository]', function () {
 				expect(r1.milestones).toBeDefined();
 				expect(r1.milestones).toEqual(jasmine.any(Array));
 			});
+
+			it('should set loading flag', function() {
+				expect(r1.isLoadingMilestones).toBeUndefined();
+				r1.getMilestones();
+				expect(r1.isLoadingMilestones).toBeTruthy();
+				$httpBackend.flush();
+				expect(r1.isLoadingMilestones).toBeUndefined();
+			});
 		});
 
 
@@ -214,6 +232,14 @@ describe('[github/repository]', function () {
 
 				expect(r1.milestones.length).toEqual(1);
 				expect(r1.milestones[0].title).toEqual(milestoneJson.title);
+			});
+
+			it('should set loading flag', function() {
+				expect(r1.isLoadingMilestone).toBeUndefined();
+				r1.getMilestone(1);
+				expect(r1.isLoadingMilestone).toEqual(1);
+				$httpBackend.flush();
+				expect(r1.isLoadingMilestone).toBeUndefined();
 			});
 		});
 	});

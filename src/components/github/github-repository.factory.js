@@ -29,16 +29,23 @@
 
 			// Issues
 			getIssues: function ( filter ) {
+				var self = this;
+				self.isLoadingIssues = true;
 				return GithubAPI.issue.all.call( null,
 					this.owner,
 					this.name,
 					this.token,
-					filter );
+					filter
+				).then( function ( issues ) {
+					delete self.isLoadingIssues;
+					return issues;
+				});
 			},
 
 			// Milestones
 			getMilestones: function () {
 				var self = this;
+				self.isLoadingMilestones = true;
 				return GithubAPI.milestone.all.call( null,
 					self.owner,
 					self.name,
@@ -53,12 +60,14 @@
 							self.token
 						);
 					});
+					delete self.isLoadingMilestones;
 					return milestones;
 				});
 			},
 
 			getMilestone: function ( number ) {
 				var self = this;
+				self.isLoadingMilestone = number;
 				return GithubAPI.milestone.get.call( null,
 					self.owner,
 					self.name,
@@ -83,7 +92,7 @@
 					if( !found ) {
 						self.milestones.push(milestone);
 					}
-
+					delete self.isLoadingMilestone;
 					return milestone;
 				});
 			}

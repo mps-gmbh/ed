@@ -51,6 +51,7 @@
 
 			refresh: function () {
 				var self = this;
+				self.isRefreshing = true;
 				if( !self.url ) {
 					throw MinErr( 'badcfg',
 						'Can not refresh Milestone. Expected property "url" to be defined, ' +
@@ -61,12 +62,14 @@
 					.then(utils.response.unwrap)
 					.then(function ( milestone ) {
 						utils.response.shallowClearAndCopy( self, milestone );
+						delete self.isRefreshing;
 						return self;
 					});
 			},
 
 			getIssues: function () {
 				var self = this;
+				self.isLoadingIssues = true;
 				return GithubAPI.issue.all(
 					self._owner, self._repo, self._token,
 					{ milestone: self.number }
@@ -89,6 +92,7 @@
 					});
 					return $q.all(calls);
 				}).then( function () {
+					delete self.isLoadingIssues;
 					return self.issues;
 				});
 			}

@@ -1,6 +1,12 @@
-describe('[github/milestone]', function () {
+ddescribe('[github/milestone]', function () {
 	var $httpBackend,
 		GithubMilestone,
+		json;
+
+	beforeEach(module('ed.github'));
+	beforeEach( inject ( function ( _$httpBackend_, _GithubMilestone_ ) {
+		$httpBackend = _$httpBackend_;
+		GithubMilestone = _GithubMilestone_;
 
 		// Example from Github's API docs
 		json = {
@@ -35,11 +41,6 @@ describe('[github/milestone]', function () {
 			"closed_at": "2013-02-12T13:22:01Z",
 			"due_on": null
 		};
-
-	beforeEach(module('ed.github'));
-	beforeEach( inject ( function ( _$httpBackend_, _GithubMilestone_ ) {
-		$httpBackend = _$httpBackend_;
-		GithubMilestone = _GithubMilestone_;
 	}));
 
 
@@ -180,6 +181,14 @@ describe('[github/milestone]', function () {
 				milestone.refresh();
 			}).toThrow();
 		});
+
+		it('should set a loading flag', function() {
+			expect(milestone.isRefreshing).toBeUndefined();
+			milestone.refresh();
+			expect(milestone.isRefreshing).toBeTruthy();
+			$httpBackend.flush();
+			expect(milestone.isRefreshing).toBeUndefined();
+		});
 	});
 
 
@@ -254,6 +263,13 @@ describe('[github/milestone]', function () {
 			expect(milestone.issues).toEqual(i);
 		});
 
+		it('should set a loading flag', function() {
+			expect(milestone.isLoadingIssues).toBeUndefined();
+			milestone.getIssues();
+			expect(milestone.isLoadingIssues).toBeTruthy();
+			$httpBackend.flush();
+			expect(milestone.isLoadingIssues).toBeUndefined();
+		});
 
 		// Pull Requests
 		// -------------------------
