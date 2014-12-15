@@ -1,11 +1,16 @@
 describe('[github/repository]', function () {
-	var GithubAPI, GithubRepository,
+	var GithubAPI, GithubMilestone, GithubRepository,
+		$httpBackend,
 		repo;
 
 	beforeEach(module('ed.github'));
-	beforeEach( inject( function ( _GithubAPI_, _GithubRepository_ ) {
+	beforeEach( inject( function ( _GithubAPI_, _GithubMilestone_, _GithubRepository_, _$httpBackend_ ) {
 		GithubAPI = _GithubAPI_;
+		GithubMilestone = _GithubMilestone_;
 		GithubRepository = _GithubRepository_;
+
+		$httpBackend = _$httpBackend_;
+
 		repo = null;
 
 		spyOn(GithubAPI.issue, 'all').and.callThrough();
@@ -32,6 +37,11 @@ describe('[github/repository]', function () {
 
 			expect(repo.token).toBeDefined();
 			expect(repo.token).toEqual('token');
+		});
+
+		it('should init an empty milestones array', function() {
+			var repo = new GithubRepository( 'owner', 'name', 'token' );
+			expect(repo.milestones).toEqual([]);
 		});
 	});
 
@@ -71,11 +81,51 @@ describe('[github/repository]', function () {
 	// Milestones
 	// -------------------------
 	describe('Milestones', function () {
-		var r1, r2;
+		var r1, r2,
+			// Example from Github's API docs
+			milestoneJson = {
+				"url": "https://api.github.com/repos/octocat/Hello-World/milestones/1",
+				"number": 1,
+				"state": "open",
+				"title": "v1.0",
+				"description": "",
+				"creator": {
+					"login": "octocat",
+					"id": 1,
+					"avatar_url": "https://github.com/images/error/octocat_happy.gif",
+					"gravatar_id": "",
+					"url": "https://api.github.com/users/octocat",
+					"html_url": "https://github.com/octocat",
+					"followers_url": "https://api.github.com/users/octocat/followers",
+					"following_url": "https://api.github.com/users/octocat/following{/other_user}",
+					"gists_url": "https://api.github.com/users/octocat/gists{/gist_id}",
+					"starred_url": "https://api.github.com/users/octocat/starred{/owner}{/repo}",
+					"subscriptions_url": "https://api.github.com/users/octocat/subscriptions",
+					"organizations_url": "https://api.github.com/users/octocat/orgs",
+					"repos_url": "https://api.github.com/users/octocat/repos",
+					"events_url": "https://api.github.com/users/octocat/events{/privacy}",
+					"received_events_url": "https://api.github.com/users/octocat/received_events",
+					"type": "User",
+					"site_admin": false
+				},
+				"open_issues": 4,
+				"closed_issues": 8,
+				"created_at": "2011-04-10T20:09:31Z",
+				"updated_at": "2014-03-03T18:58:10Z",
+				"closed_at": "2013-02-12T13:22:01Z",
+				"due_on": null
+			};
 
 		beforeEach(function() {
 			r1 = new GithubRepository( 'me', 'foo' );
 			r2 = new GithubRepository( 'me', 'foo', '13479120516203' );
+
+			$httpBackend.whenGET(/milestones\/?(d+)?/).respond( function ( method, url ) {
+				var response = /\d+$/.test(url) ?
+					milestoneJson :
+					[milestoneJson, milestoneJson];
+				return [ 200, response ];
+			});
 		});
 
 		// All
@@ -95,6 +145,25 @@ describe('[github/repository]', function () {
 			it('should return a promise', function() {
 				expect(r1.getMilestones().$$state).toEqual( jasmine.any(Object) );
 				expect(r1.getMilestones().then).toEqual( jasmine.any(Function) );
+			});
+
+			it('should cast fetched milestones to `GithubMilestone` objects', function() {
+				var milestones;
+				r2.getMilestones().then( function ( resultMilestones ) {
+					milestones = resultMilestones;
+				});
+				$httpBackend.flush();
+				milestones.forEach( function ( m ) {
+					expect(m instanceof GithubMilestone).toBeTruthy();
+				});
+			});
+
+			it('should update repositor\'s milestones', function() {
+				expect(r1.milestones).toEqual([]);
+				r1.getMilestones();
+				$httpBackend.flush();
+				expect(r1.milestones).toBeDefined();
+				expect(r1.milestones).toEqual(jasmine.any(Array));
 			});
 		});
 
@@ -116,6 +185,35 @@ describe('[github/repository]', function () {
 			it('should return a promise', function() {
 				expect(r1.getMilestone(1).$$state).toEqual( jasmine.any(Object) );
 				expect(r1.getMilestone(1).then).toEqual( jasmine.any(Function) );
+			});
+
+			it('should cast fetched milestone to `GithubMilestone` objects', function() {
+				var milestone;
+				r2.getMilestone(1).then( function ( resultMilestone ) {
+					milestone = resultMilestone;
+				});
+				$httpBackend.flush();
+				expect(milestone instanceof GithubMilestone).toBeTruthy();
+			});
+
+			it('should store fetched milestone inside the repository', function() {
+				expect(r1.milestones).toEqual([]);
+				r1.getMilestone(1);
+				$httpBackend.flush();
+				expect(r1.milestones.length).toEqual(1);
+			});
+
+			it('should overwrite milestone if fetched milestone already exists', function() {
+				r1.getMilestone(1);
+				$httpBackend.flush();
+
+				r1.milestones[0].title = 'Changed title';
+
+				r1.getMilestone(1);
+				$httpBackend.flush();
+
+				expect(r1.milestones.length).toEqual(1);
+				expect(r1.milestones[0].title).toEqual(milestoneJson.title);
 			});
 		});
 	});
