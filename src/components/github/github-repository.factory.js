@@ -79,7 +79,7 @@
 							found = true;
 							break;
 						}
-					};
+					}
 					if( !found ) {
 						self.milestones.push(milestone);
 					}
