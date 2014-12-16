@@ -31,8 +31,9 @@
 </div>
 <div class="Milestone-content">
 
+
 	<!-- Meta Data -->
-	<div
+	<section
 		class="Milestone-section Milestone-meta"
 		layout
 		layout-align="start center"
@@ -54,49 +55,64 @@
 				is-relative
 			></time>
 		</div>
-	</div>
+	</section>
 
 	<!-- Description -->
-	<div class="Milestone-section" ng-if="milestone.description">
+	<section class="Milestone-section" ng-if="milestone.description">
 		<h3 class="Milestone-subTitle">Description</h3>
 		<div
 			class="Milestone-description"
 			btf-markdown="milestone.description"
 		></div>
-	</div>
+	</section>
 
 
-	<!-- PRs -->
 	<section class="Milestone-section">
-		<h3 class="Milestone-subTitle">Pull Requests</h3>
-		<ed-pull-request-list
-			pull-requests="milestone.pull_requests"
-		></ed-pull-request-list>
+		<div
+			layout="column"
+			layout-align="center center"
+			layout-fill
+			class="Animation--fade"
+			ng-if="milestone.isLoadingIssues"
+		>
+			<ed-loading-spinner size="small"></ed-loading-spinner>
+			<div class="LoadingSpinner-label">Loading Issues</div>
+		</div>
 	</section>
 
-	<!-- Issues -->
-	<section class="Milestone-section" layout>
-		<ed-issue-list
-			class="IssueList--red"
-			flex
-			heading="ToDo"
-			filter="{ assignee: null, state: '!closed', pull_request: '!' }"
-			issues="milestone.issues"
-		></ed-issue-list>
-		<ed-issue-list
-			class="IssueList--yellow"
-			flex
-			heading="Doing"
-			filter="{ assignee: '!!', state: '!closed', pull_request: '!' }"
-			issues="milestone.issues"
-		></ed-issue-list>
-		<ed-issue-list
-			class="IssueList--green"
-			flex
-			heading="Done"
-			filter="{ state: 'closed', pull_request: '!' }"
-			issues="milestone.issues"
-		></ed-issue-list>
-	</section>
+	<span ng-if="!milestone.isLoadingIssues">
+		<!-- PRs -->
+		<section class="Milestone-section">
+			<h3 class="Milestone-subTitle">Pull Requests</h3>
+			<ed-pull-request-list
+				pull-requests="milestone.pull_requests"
+			></ed-pull-request-list>
+		</section>
+
+		<!-- Issues -->
+		<section class="Milestone-section" layout>
+			<ed-issue-list
+				class="IssueList--red"
+				flex
+				heading="ToDo"
+				filter="{ assignee: null, state: '!closed', pull_request: '!' }"
+				issues="milestone.issues"
+			></ed-issue-list>
+			<ed-issue-list
+				class="IssueList--yellow"
+				flex
+				heading="Doing"
+				filter="{ assignee: '!!', state: '!closed', pull_request: '!' }"
+				issues="milestone.issues"
+			></ed-issue-list>
+			<ed-issue-list
+				class="IssueList--green"
+				flex
+				heading="Done"
+				filter="{ state: 'closed', pull_request: '!' }"
+				issues="milestone.issues"
+			></ed-issue-list>
+		</section>
+	</span>
 
 </div>

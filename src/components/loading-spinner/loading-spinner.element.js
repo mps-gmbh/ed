@@ -1,6 +1,6 @@
 (function() {
 
-	angular.module('ed.loadingSpinner', [])
+	angular.module('ed.loadingSpinner')
 		.directive( 'edLoadingSpinner', LoadingSpinner );
 
 	function LoadingSpinner () {

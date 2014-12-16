@@ -1,7 +1,8 @@
 $loadingSpinnerHeight: 60;
 $loadingSpinnerWidth: 60;
 
-$loadingSpinnerChildWidth: 6;
+$loadingSpinnerChildWidth: 8;
+$loadingSpinnerChildMargin: 4;
 
 ed-loading-spinner {
 	display: block;
@@ -15,12 +16,33 @@ ed-loading-spinner {
 		display: inline-block;
 
 		height: 100%;
-		width: rem(8);
+		width: rem($loadingSpinnerChildWidth);
 
 		background: $brand;
 
 		+ div {
-			margin-left: rem(4);
+			margin-left: rem($loadingSpinnerChildMargin);
 		}
 	}
+
+	&[size="small"] {
+		height: rem($loadingSpinnerHeight - 15);
+		width: rem(37);
+
+		> div {
+			width: rem(5);
+
+			+ div {
+				margin-left: rem(3);
+			}
+		}
+	}
+}
+
+.LoadingSpinner-label {
+	color: darken($brand, 20%);
+	font-size: rem(12);
+	text-transform: uppercase;
+
+	padding: 0 0 rem(4);
 }
