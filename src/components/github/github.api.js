@@ -16,7 +16,8 @@
 	function GithubAPIProvider () {
 		var provider = this;
 
-		provider.BASE = 'https://api.github.com/';
+		provider.BASE_API = 'https://api.github.com/';
+		provider.BASE_HTML = 'https://www.github.com/';
 
 		provider.LOCATION_REPOS = 'repos/';
 
@@ -43,8 +44,11 @@
 			GithubAPI.prototype = {
 
 				// Config
-				getUrlBase: function () {
-					return provider.BASE;
+				getAPIBase: function () {
+					return provider.BASE_API;
+				},
+				getHTMLBase: function () {
+					return provider.BASE_HTML;
 				},
 				getLocation: function ( type ) {
 					if( /repos?/i.test(type) ) {
@@ -74,7 +78,7 @@
 						filter = filter || {};
 						filter.state = filter.state || 'all';
 						return $http.get(
-							createRepoUrl(provider.BASE, owner, repo) + provider.PREFIX_ISSUES,
+							createRepoUrl(provider.BASE_API, owner, repo) + provider.PREFIX_ISSUES,
 							utils.request.createHttpConfig(token, filter)
 						).then(utils.response.unwrap);
 					}
@@ -89,14 +93,14 @@
 								number );
 						}
 						return $http.get(
-							createRepoUrl(provider.BASE, owner, repo) + provider.PREFIX_MILESTONES + '/' + number,
+							createRepoUrl(provider.BASE_API, owner, repo) + provider.PREFIX_MILESTONES + '/' + number,
 							utils.request.createHttpConfig(token)
 						).then(utils.response.unwrap);
 					},
 
 					all: function ( owner, repo, token ) {
 						return $http.get(
-							createRepoUrl(provider.BASE, owner, repo) + provider.PREFIX_MILESTONES,
+							createRepoUrl(provider.BASE_API, owner, repo) + provider.PREFIX_MILESTONES,
 							utils.request.createHttpConfig(token)
 						).then(utils.response.unwrap);
 					}

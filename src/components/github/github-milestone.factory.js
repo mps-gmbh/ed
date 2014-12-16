@@ -32,7 +32,7 @@
 					// Set a repository and owner from `url`.
 					if( data.url ) {
 						var parts = data.url
-							.slice((GithubAPI.getUrlBase() + GithubAPI.getLocation('repo')).length)
+							.slice((GithubAPI.getAPIBase() + GithubAPI.getLocation('repo')).length)
 							.split('/');
 						this._owner = parts[0];
 						this._repo = parts[1];
@@ -45,6 +45,11 @@
 			}
 			/* jshint +W086 */ /* (purposefully fall through case statements) */
 			extend( this, data );
+
+			if( this._owner && this._repo && this.title ) {
+				this.html_url = GithubAPI.getHTMLBase() + this._owner + '/' + this._repo +
+						GithubAPI.getPrefix('milestone') + '/' + this.title;
+			}
 		}
 
 		GithubMilestone.prototype = {

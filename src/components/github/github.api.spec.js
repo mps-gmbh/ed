@@ -22,12 +22,21 @@ describe('[github/api]', function () {
 		});
 
 		it('should have a default "API_BASE"', function () {
-			expect(GithubAPIProvider.BASE).toEqual( jasmine.any(String) );
+			expect(GithubAPIProvider.BASE_API).toEqual( jasmine.any(String) );
 		});
 
-		it('should be possible to set the "BASE"', function () {
-			GithubAPIProvider.BASE = 'https://example.com';
-			expect(GithubAPIProvider.BASE).toEqual('https://example.com');
+		it('should be possible to set the "API_BASE"', function () {
+			GithubAPIProvider.BASE_API = 'https://example.com';
+			expect(GithubAPIProvider.BASE_API).toEqual('https://example.com');
+		});
+
+		it('should have a default "URL_BASE"', function () {
+			expect(GithubAPIProvider.BASE_HTML).toEqual( jasmine.any(String) );
+		});
+
+		it('should be possible to set the "URL_BASE"', function () {
+			GithubAPIProvider.BASE_HTML = 'https://example.com';
+			expect(GithubAPIProvider.BASE_HTML).toEqual('https://example.com');
 		});
 
 		it('should have a default "LOCATION_REPOS"', function () {
@@ -70,7 +79,7 @@ describe('[github/api]', function () {
 			owner = 'mps-gmbh';
 			token = '123456789009876543';
 
-			url = GithubAPIProvider.BASE + 'repos/' + owner + '/' + repo + '/';
+			url = GithubAPIProvider.BASE_API + 'repos/' + owner + '/' + repo + '/';
 			data = null;
 		});
 
@@ -83,11 +92,19 @@ describe('[github/api]', function () {
 		// -------------------------
 		describe('Config', function () {
 			it('should expose a method to get url base', function() {
-				expect(GithubAPI.getUrlBase).toEqual( jasmine.any(Function) );
+				expect(GithubAPI.getAPIBase).toEqual( jasmine.any(Function) );
 			});
 
 			it('should be possible to get the config url', function() {
-				expect(GithubAPI.getUrlBase()).toEqual(GithubAPIProvider.BASE);
+				expect(GithubAPI.getAPIBase()).toEqual(GithubAPIProvider.BASE_API);
+			});
+
+			it('should expose a method to get html base', function() {
+				expect(GithubAPI.getHTMLBase).toEqual( jasmine.any(Function) );
+			});
+
+			it('should be possible to get the config html base', function() {
+				expect(GithubAPI.getHTMLBase()).toEqual(GithubAPIProvider.BASE_HTML);
 			});
 
 			it('should expose a method to get locations', function() {

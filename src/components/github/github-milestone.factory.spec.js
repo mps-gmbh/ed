@@ -114,6 +114,27 @@ describe('[github/milestone]', function () {
 				new GithubMilestone( json, 1, 2, 3, 4);
 			}).toThrow();
 		});
+
+		it('should set `html_url` if possible', function() {
+			var owner = 'mps-gmbh',
+				repo = 'ed',
+				milestone = new GithubMilestone(json, owner, repo),
+				data = angular.copy(json);
+
+			expect(milestone.html_url).toEqual( jasmine.any(String) );
+
+			milestone = new GithubMilestone(json);
+			expect(milestone.html_url).toEqual( jasmine.any(String) );
+
+			delete data.url;
+			milestone = new GithubMilestone(data);
+			expect(milestone.html_url).toBeUndefined();
+
+			data = angular.copy(json);
+			delete data.title;
+			milestone = new GithubMilestone(data);
+			expect(milestone.html_url).toBeUndefined();
+		});
 	});
 
 
