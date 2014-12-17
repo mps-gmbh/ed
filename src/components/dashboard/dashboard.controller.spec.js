@@ -1,7 +1,8 @@
 describe('[dashboard/controller]', function () {
 	var $controller, $httpBackend, GithubRepository, GithubFixture,
-		$injector, tagFilter,
+		$injector, $interval, $rootScope, tagFilter,
 		FakeGithubRepository, gs, params,
+		intervalFn, intervalTimer,
 
 		ghConfig = {
 			owner: 'mps-gmbh',
@@ -36,6 +37,12 @@ describe('[dashboard/controller]', function () {
 
 		GithubFixture = _GithubFixture_;
 
+		$interval = jasmine.createSpy('$interval').and.callFake( function ( fn, timer ) {
+			intervalFn = fn;
+			intervalTimer = timer;
+		});
+		$rootScope = jasmine.createSpyObj('$rootScope', ['$broadcast']);
+
 		GithubRepository = _GithubRepository_;
 		FakeGithubRepository = jasmine.createSpy('GithubRepository').and.callFake( function ( o, r, t ) {
 			gs = new GithubRepository(o, r, t);
@@ -46,6 +53,8 @@ describe('[dashboard/controller]', function () {
 		params = {
 			GithubRepository: GithubRepository,
 			$injector: $injector,
+			$interval: $interval,
+			$rootScope: $rootScope,
 			tagFilter: tagFilter
 		};
 
@@ -111,6 +120,7 @@ describe('[dashboard/controller]', function () {
 				params.GithubRepository = FakeGithubRepository;
 				controller = $controller('DashboardController', params);
 
+				// Fake Remote
 				$httpBackend.whenGET(/milestones$/).respond(GithubFixture.milestones);
 				$httpBackend.whenGET(/issues\?/)
 					.respond(function ( method, url ) {
@@ -132,7 +142,7 @@ describe('[dashboard/controller]', function () {
 			});
 
 			it('should fetch milestones from remote', function () {
-				expect(gs.getMilestones).toHaveBeenCalledWith();
+				expect(gs.getMilestones).toHaveBeenCalled();
 			});
 
 			it('should expose fetched milestones', function () {
@@ -151,6 +161,50 @@ describe('[dashboard/controller]', function () {
 			it('should indicate that loading has finished', function () {
 				$httpBackend.flush();
 				expect(controller.isLoading).toBeFalsy();
+			});
+
+
+			// Automatically refresh Milestones
+			// -------------------------
+			describe('Automatically refresh Milestones', function () {
+				it('should set an interval', function() {
+					expect($interval).toHaveBeenCalledWith( jasmine.any(Function), jasmine.any(Number) );
+				});
+
+				it('should have 10 minutes as default', function() {
+					expect(ghConfig.milestones_refresh_timer).toBeUndefined();
+					expect(intervalTimer).toEqual(600000);
+				});
+
+				it('should set a flush timer if one is defined inside the config', function() {
+					ghConfig.milestones_refresh_timer = 1;
+					$controller('DashboardController', params);
+
+					expect(ghConfig.milestones_refresh_timer).toBeDefined();
+					expect(intervalTimer).toEqual(60000);
+				});
+
+				it('should refresh milestones when the intervall flushes', function() {
+					var count;
+					$httpBackend.flush();
+					count = gs.getMilestones.calls.count();
+
+					intervalFn();
+					expect(gs.getMilestones.calls.count()).toEqual( count + 1 );
+				});
+			});
+
+
+			// Broadcast Refresh
+			// -------------------------
+			describe('Broadcast Refresh', function () {
+				it('should broadcast event', function() {
+					$httpBackend.flush();
+					expect($rootScope.$broadcast).toHaveBeenCalledWith(
+						'ed:milestones:refreshed',
+						controller.repository.name
+					);
+				});
 			});
 		});
 

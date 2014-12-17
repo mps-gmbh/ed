@@ -16,8 +16,8 @@
 
 	// Controller
 	// -------------------------
-	DashboardController.$inject = [ '$injector', 'tagFilter', 'GithubRepository' ];
-	function DashboardController ( $injector, tagFilter, GithubRepository  ) {
+	DashboardController.$inject = [ '$rootScope', '$injector', '$interval', 'tagFilter', 'GithubRepository' ];
+	function DashboardController ( $rootScope, $injector, $interval, tagFilter, GithubRepository  ) {
 		var vm = this,
 			config;
 
@@ -45,36 +45,45 @@
 			config.repo,
 			config.token
 		);
+		refreshMilestones();
 
-		vm.repository.getMilestones().then( function ( milestones ) {
-			// Fallback for no groups
-			if( !(config.milestone_groups && isArray(config.milestone_groups)) ) {
-				vm.groups.push({ name: 'milestones', milestones: milestones });
-			} else {
+		// Automatically refresh every x minutes
+		$interval(refreshMilestones, (config.milestones_refresh_timer || 10) * 60000);
 
-				var groupMap = {},
-					last;
-				forEach( config.milestone_groups, function ( name, idx ) {
-					vm.groups.push({ name: name.toLowerCase(), milestones: [] });
-					groupMap[name] = idx;
-				});
-				vm.groups.push({
-					name: (config.milestones_groups_default || MILESTONE_FALLBACK_GROUP).toLowerCase(),
-					milestones: []
-				});
-				last = vm.groups.length - 1;
+		function refreshMilestones () {
+			vm.groups = [];
+			vm.repository.getMilestones().then( function ( milestones ) {
+				// Fallback for no groups
+				if( !(config.milestone_groups && isArray(config.milestone_groups)) ) {
+					vm.groups.push({ name: 'milestones', milestones: milestones });
+				} else {
+
+					var groupMap = {},
+						last;
+					forEach( config.milestone_groups, function ( name, idx ) {
+						vm.groups.push({ name: name.toLowerCase(), milestones: [] });
+						groupMap[name] = idx;
+					});
+					vm.groups.push({
+						name: (config.milestones_groups_default || MILESTONE_FALLBACK_GROUP).toLowerCase(),
+						milestones: []
+					});
+					last = vm.groups.length - 1;
+					forEach( milestones, function ( milestone ) {
+						var groupIdx = groupMap[(tagFilter(milestone.title) || '').toLowerCase()];
+						vm.groups[isNumber(groupIdx) ? groupIdx : last].milestones
+							.push(milestone);
+					});
+				}
+				return milestones;
+			}).then( function ( milestones ) {
 				forEach( milestones, function ( milestone ) {
-					var groupIdx = groupMap[(tagFilter(milestone.title) || '').toLowerCase()];
-					vm.groups[isNumber(groupIdx) ? groupIdx : last].milestones
-						.push(milestone);
+					milestone.getIssues();
 				});
-			}
-			return milestones;
-		}).then( function ( milestones ) {
-			forEach( milestones, function ( milestone ) {
-				milestone.getIssues();
+			}).then( function () {
+				$rootScope.$broadcast( 'ed:milestones:refreshed', vm.repository.name );
 			});
-		});
+		}
 	}
 
 })();

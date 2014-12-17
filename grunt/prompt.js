@@ -57,6 +57,14 @@ module.exports = function ( grunt, options ) {
 			when: function ( answers ) {
 				return answers['grouping'] === true;
 			}
+		}, {
+			name: 'milestones_refresh_timer',
+			type: 'input',
+			message: 'Please specify an interval (in minutes), in which the milestones should be updated:',
+			default: 10,
+			validate: function ( value ) {
+				return (typeof value === 'number');
+			}
 		}],
 		then: function ( answers, done ) {
 			delete answers.type;
