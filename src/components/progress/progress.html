@@ -6,4 +6,4 @@
 	complete="percentage"
 >
 </progress-arc>
-<span class="Progress-label">{{ percentage * 100 | number:0 }}</span>
+<span class="Progress-label">{{ percentage ? percentage * 100 : 0 | number:0 }}</span>
