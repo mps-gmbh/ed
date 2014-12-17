@@ -42,3 +42,7 @@ a {
 		color: lighten($black, 25%);
 	}
 }
+
+[ng-click]:not([disabled]) {
+	cursor: pointer;
+}

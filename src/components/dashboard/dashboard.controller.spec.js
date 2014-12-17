@@ -1,7 +1,7 @@
 describe('[dashboard/controller]', function () {
-	var $controller, $httpBackend, GithubService, GithubFixture,
+	var $controller, $httpBackend, GithubRepository, GithubFixture,
 		$injector, tagFilter,
-		FakeGithubService, gs, params,
+		FakeGithubRepository, gs, params,
 
 		ghConfig = {
 			owner: 'mps-gmbh',
@@ -10,7 +10,7 @@ describe('[dashboard/controller]', function () {
 		milestonesGroups = ['sprint', 'refactor'];
 
 	beforeEach(module('github.fixture'));
-	beforeEach(module('ed.github.service'));
+	beforeEach(module('ed.github'));
 	beforeEach(module('ed.string'));
 	beforeEach(module('ed.dashboard'));
 	beforeEach(module('ed.dashboard', function ( $provide ) {
@@ -28,7 +28,7 @@ describe('[dashboard/controller]', function () {
 			milestones_groups_default: 'fallback'
 		}));
 	}));
-	beforeEach( inject( function ( _$controller_, _$httpBackend_, _$injector_, _tagFilter_, _GithubService_, _GithubFixture_ ) {
+	beforeEach( inject( function ( _$controller_, _$httpBackend_, _$injector_, _tagFilter_, _GithubRepository_, _GithubFixture_ ) {
 		var $ctrl = _$controller_;
 		$httpBackend = _$httpBackend_;
 		$injector = _$injector_;
@@ -36,15 +36,15 @@ describe('[dashboard/controller]', function () {
 
 		GithubFixture = _GithubFixture_;
 
-		GithubService = _GithubService_;
-		FakeGithubService = jasmine.createSpy('GithubService').and.callFake( function ( o, r, t ) {
-			gs = new GithubService(o, r, t);
+		GithubRepository = _GithubRepository_;
+		FakeGithubRepository = jasmine.createSpy('GithubRepository').and.callFake( function ( o, r, t ) {
+			gs = new GithubRepository(o, r, t);
 			spyOn(gs, 'getMilestones').and.callThrough();
 			return gs;
 		});
 
 		params = {
-			GithubService: GithubService,
+			GithubRepository: GithubRepository,
 			$injector: $injector,
 			tagFilter: tagFilter
 		};
@@ -86,18 +86,18 @@ describe('[dashboard/controller]', function () {
 			var controller;
 
 			beforeEach(function () {
-				params.GithubService = FakeGithubService;
+				params.GithubRepository = FakeGithubRepository;
 			});
 
-			it('should init GithubService with passed config', function () {
+			it('should init GithubRepository with passed config', function () {
 				controller = $controller('DashboardController', params);
-				expect(params.GithubService).toHaveBeenCalledWith( ghConfig.owner, ghConfig.repo, undefined );
+				expect(params.GithubRepository).toHaveBeenCalledWith( ghConfig.owner, ghConfig.repo, undefined );
 			});
 
-			it('should init GithubService with token', function () {
+			it('should init GithubRepository with token', function () {
 				ghConfig.token = '1234567890';
 				controller = $controller('DashboardController', params);
-				expect(params.GithubService).toHaveBeenCalledWith( ghConfig.owner, ghConfig.repo, '1234567890' );
+				expect(params.GithubRepository).toHaveBeenCalledWith( ghConfig.owner, ghConfig.repo, '1234567890' );
 			});
 		});
 
@@ -108,7 +108,7 @@ describe('[dashboard/controller]', function () {
 			var controller;
 
 			beforeEach(function () {
-				params.GithubService = FakeGithubService;
+				params.GithubRepository = FakeGithubRepository;
 				controller = $controller('DashboardController', params);
 
 				$httpBackend.whenGET(/milestones$/).respond(GithubFixture.milestones);
@@ -124,7 +124,7 @@ describe('[dashboard/controller]', function () {
 			});
 
 			it('should inidcate that it is loading', function () {
-				expect(controller.isLoading).toBeTruthy();
+				expect(controller.repository.isLoadingMilestones).toBeTruthy();
 			});
 
 			it('should init empty milestones', function () {
@@ -167,7 +167,7 @@ describe('[dashboard/controller]', function () {
 			}
 
 			beforeEach(function () {
-				params.GithubService = FakeGithubService;
+				params.GithubRepository = FakeGithubRepository;
 				controller = $controller('DashboardController', params, 'MOCK_CONFIG_GROUPS');
 
 				$httpBackend.whenGET(/milestones$/).respond(GithubFixture.milestones);

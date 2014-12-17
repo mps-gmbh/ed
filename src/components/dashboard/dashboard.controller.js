@@ -16,19 +16,18 @@
 
 	// Controller
 	// -------------------------
-	DashboardController.$inject = [ '$injector', 'tagFilter', 'GithubService' ];
-	function DashboardController ( $injector, tagFilter, GithubService ) {
+	DashboardController.$inject = [ '$injector', 'tagFilter', 'GithubRepository' ];
+	function DashboardController ( $injector, tagFilter, GithubRepository  ) {
 		var vm = this,
-			config,
-			github;
+			config;
 
-		vm.isLoading = true;
 		vm.groups = [];
+		vm.repository = {};
 
 		//TODO Show errors on the page, not the console.
 		if( !vm.config ) {
 			throw MinErr('badargs',
-				'Expected configuration for `GithubService` got {0}.\n' +
+				'Expected configuration to instanciate `GithubRepository ` got {0}.\n' +
 				'Please generate a configuration with `grunt config`!',
 				vm.config );
 		}
@@ -40,13 +39,14 @@
 				config.owner, config.repo );
 		}
 
-		github = new GithubService(
+		// Initializie repository.
+		vm.repository = new GithubRepository (
 			config.owner,
 			config.repo,
 			config.token
 		);
 
-		github.getMilestones().then( function ( milestones ) {
+		vm.repository.getMilestones().then( function ( milestones ) {
 			// Fallback for no groups
 			if( !(config.milestone_groups && isArray(config.milestone_groups)) ) {
 				vm.groups.push({ name: 'milestones', milestones: milestones });
@@ -69,7 +69,11 @@
 						.push(milestone);
 				});
 			}
-			vm.isLoading = false;
+			return milestones;
+		}).then( function ( milestones ) {
+			forEach( milestones, function ( milestone ) {
+				milestone.getIssues();
+			});
 		});
 	}
 
