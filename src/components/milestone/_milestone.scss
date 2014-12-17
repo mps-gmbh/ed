@@ -123,7 +123,7 @@ ed-milestone {
 }
 
 .Milestone-section {
-	border-top: 1px solid #ededed;
+	border-top: 1px solid $grey;
 }
 
 
@@ -132,14 +132,17 @@ ed-milestone {
 $milestoneBarIconSize: 18;
 .Milestone-meta {
 	background: $grey--light;
-	padding: rem($whitespaceVertical) rem($whitespaceHorizontal);
 
 	color: $grey--darkest;
 	font-size: rem(14);
 	font-weight: 600;
 	text-transform: uppercase;
 
-	a {
+	.Milestone-metaItem {
+		display: inline-block;
+		padding: rem($whitespaceVertical) rem($whitespaceHorizontal);
+		border-right: 1px solid $grey;
+
 		color: $grey--darkest;
 
 		&:hover {
@@ -149,20 +152,24 @@ $milestoneBarIconSize: 18;
 
 	.has-Icon {
 		position: relative;
-		padding-left: rem($milestoneBarIconSize + 3);
+		padding-left: rem($whitespaceHorizontal + $milestoneBarIconSize + 3);
+	}
+
+	.is-last {
+		border-right: 0;
 	}
 
 	ed-icon {
 		position: absolute;
-		top: 0;
-		left: 0;
+		top: rem(1 + $whitespaceVertical);
+		left: rem($whitespaceHorizontal);
 
 		height: rem($milestoneBarIconSize);
 		width: rem($milestoneBarIconSize);
 
 		// Meh :(
 		&[name="github"] {
-			top: rem(-1);
+			top: rem(2 + $whitespaceVertical);
 			height: rem($milestoneBarIconSize - 2);
 			width: rem($milestoneBarIconSize - 2);
 		}

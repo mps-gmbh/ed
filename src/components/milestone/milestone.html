@@ -40,20 +40,25 @@
 	>
 		<div flex>
 			<a
-				class="has-Icon"
+				class="Milestone-metaItem has-Icon"
 				ng-href="{{ milestone.html_url }}"
 				target="_blank"
 			><ed-icon name="github"></ed-icon> View on Github</a>
+			<a
+				class="Milestone-metaItem has-Icon"
+				ng-click="milestone.refresh()"
+			><ed-icon name="sync"></ed-icon> Refresh</a>
 		</div>
 		<div
-			class="has-Icon"
-			ng-if="milestone.due_on"
+			class="Milestone-metaItem is-last has-Icon"
 		>
 			<ed-icon name="time"></ed-icon>
 			<time
+				ng-if="milestone.due_on"
 				date-time="{{ milestone.due_on }}"
 				is-relative
 			></time>
+			<span ng-if="!milestone.due_on ">no due date</span>
 		</div>
 	</section>
 
@@ -67,19 +72,18 @@
 	</section>
 
 
-	<section class="Milestone-section">
+	<!-- Issue Data -->
+	<section ng-if="milestone.isLoadingIssues" class="Milestone-section">
 		<div
 			layout="column"
 			layout-align="center center"
 			layout-fill
 			class="Animation--fade"
-			ng-if="milestone.isLoadingIssues"
 		>
 			<ed-loading-spinner size="small"></ed-loading-spinner>
 			<div class="LoadingSpinner-label">Loading Issues</div>
 		</div>
 	</section>
-
 	<span ng-if="!milestone.isLoadingIssues">
 		<!-- PRs -->
 		<section class="Milestone-section">
