@@ -7,8 +7,13 @@
 	<link rel="stylesheet" href="<%= package.name %>.css">
 </head>
 <body>
-	<header class="Page-header">
-		<h1 class="Brand">ED</h1>
+	<header
+		class="Page-header"
+		layout
+		layout-align="start center"
+	>
+		<h1 class="Brand" flex>ED</h1>
+		<ed-info-bar></ed-info-bar>
 	</header>
 
 	<main class="Page-content">
