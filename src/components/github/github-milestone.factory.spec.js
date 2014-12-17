@@ -152,6 +152,8 @@ describe('[github/milestone]', function () {
 			milestone = new GithubMilestone(json, owner, repo, token);
 			milestoneResponse = { title: 'Empty Milestone'};
 			$httpBackend.whenGET(json.url).respond(milestoneResponse);
+
+			spyOn(GithubMilestone.prototype, 'getIssues');
 		});
 
 		it('should expose a method to refresh', function() {
@@ -209,6 +211,12 @@ describe('[github/milestone]', function () {
 			expect(milestone.isRefreshing).toBeTruthy();
 			$httpBackend.flush();
 			expect(milestone.isRefreshing).toBeUndefined();
+		});
+
+		it('should fetch issues', function() {
+			milestone.refresh();
+			$httpBackend.flush();
+			expect(GithubMilestone.prototype.getIssues).toHaveBeenCalled();
 		});
 	});
 

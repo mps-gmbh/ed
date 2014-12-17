@@ -53,7 +53,6 @@
 		}
 
 		GithubMilestone.prototype = {
-
 			refresh: function () {
 				var self = this;
 				self.isRefreshing = true;
@@ -68,6 +67,11 @@
 					.then(function ( milestone ) {
 						utils.response.shallowClearAndCopy( self, milestone );
 						delete self.isRefreshing;
+					})
+					.then(function () {
+						return self.getIssues();
+					})
+					.then(function () {
 						return self;
 					});
 			},
