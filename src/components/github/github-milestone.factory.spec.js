@@ -1,12 +1,13 @@
-describe('[github/milestone]', function () {
+describe('[github/milestone/factory]', function () {
 	var $httpBackend,
-		GithubMilestone,
+		GithubMilestone, GithubIssue,
 		json;
 
 	beforeEach(module('ed.github'));
-	beforeEach( inject ( function ( _$httpBackend_, _GithubMilestone_ ) {
+	beforeEach( inject ( function ( _$httpBackend_, _GithubMilestone_, _GithubIssue_ ) {
 		$httpBackend = _$httpBackend_;
 		GithubMilestone = _GithubMilestone_;
+		GithubIssue = _GithubIssue_;
 
 		// Example from Github's API docs
 		json = {
@@ -281,6 +282,14 @@ describe('[github/milestone]', function () {
 			milestone.getIssues();
 			$httpBackend.flush();
 			expect(milestone.issues).toEqual(issueResponse[milestone.number]);
+		});
+
+		it('should cast fetched issues to `GithubIssue` objects', function() {
+			milestone.getIssues();
+			$httpBackend.flush();
+			milestone.issues.forEach( function ( issue ) {
+				expect( issue instanceof GithubIssue ).toBeTruthy();
+			});
 		});
 
 		it('should return fetched issues (as promise)', function() {
