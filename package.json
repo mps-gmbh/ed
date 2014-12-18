@@ -1,6 +1,6 @@
 {
   "name": "ed",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Keep track of your milestones and issues!",
   "scripts": {
     "test": "grunt test"
