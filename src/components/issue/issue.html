@@ -8,13 +8,19 @@
 		#{{ issue.number }}
 	</span>
 </a>
-<img
-	class="Issue-assignee"
-	ng-if="issue.assignee.avatar_url"
-	ng-src="{{ issue.assignee.avatar_url + '&s=192' }}"
+<div
+	layout
+	layout-align="end end"
 >
-<ed-icon
-	class="Issue-assignee"
-	name="help"
-	ng-if="!issue.assignee.avatar_url"
-></ed-icon>
+	<img
+		class="Issue-assignee"
+		ng-if="issue.assignee.avatar_url"
+		ng-src="{{ issue.assignee.avatar_url + '&s=192' }}"
+	>
+	<ed-icon
+		class="Issue-assignee"
+		name="help"
+		ng-if="!issue.assignee.avatar_url"
+	></ed-icon>
+	<div flex class="Issue-labels">{{ displayedLabels }}</div>
+</div>

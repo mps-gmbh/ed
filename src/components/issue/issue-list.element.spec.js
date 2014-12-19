@@ -19,10 +19,14 @@ describe('[issue-list]', function () {
 		scope = $rootScope.$new();
 		scope.issues = [{
 			title: 'Hey!',
-			state: 'open'
+			state: 'open',
+			labeels: [],
+			hasLabel: angular.noop
 		}, {
 			title: 'Ho!',
-			state: 'closed'
+			state: 'closed',
+			labeels: [],
+			hasLabel: angular.noop
 		}];
 
 		$compile( element )( scope );
