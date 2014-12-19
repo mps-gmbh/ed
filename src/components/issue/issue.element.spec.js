@@ -14,7 +14,7 @@ describe('[issue/value]', function () {
 describe('[issue/element]', function () {
 	var $rootScope, $compile, $templateCache, GithubIssue,
 		scope, element,
-		ED_ISSUE_LABELS = [ 'bug' ]
+		ED_ISSUE_LABELS = [ 'bug' ];
 	beforeEach(function () {
 		module('ed.issue', function ( $provide ) {
 			$provide.value('ED_ISSUE_LABELS', ED_ISSUE_LABELS);
