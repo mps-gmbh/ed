@@ -102,3 +102,10 @@ ed-issue {
 ed-icon.Issue-assignee {
 	opacity: 0.2;
 }
+
+.Issue-labels {
+	color: $grey--dark;
+	font-size: rem(12);
+	font-weight: 600;
+	text-align: right;
+}
