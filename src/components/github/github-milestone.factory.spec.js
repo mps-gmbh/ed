@@ -1,4 +1,4 @@
-describe('[github/milestone]', function () {
+ddescribe('[github/milestone]', function () {
 	var $httpBackend,
 		GithubMilestone,
 		json;
@@ -138,6 +138,58 @@ describe('[github/milestone]', function () {
 	});
 
 
+	// Update Progress
+	// -------------------------
+	describe('Update Progress', function () {
+		var owner, repo, token,
+			milestone;
+
+		beforeEach(function() {
+			owner = 'mps-gmbh';
+			repo = 'ed';
+			token = '123456789';
+			milestone = new GithubMilestone(json, owner, repo, token);
+			milestone.issues = [{
+				title: 'I want this to be implemented! Yesterday!',
+				number: 55,
+				state: 'open'
+			}, {
+				title: 'Yet another feature request',
+				number: 1234,
+				state: 'closed'
+			}, {
+				title: 'I found a bug',
+				number: 55,
+				state: 'open',
+				pull_request: { url: 'http://example.com/pull_request' }
+			}, {
+				title: 'Make button "cornflower blue" instead of "deep sky blue"',
+				number: 1234,
+				state: 'open'
+			}];
+		});
+
+		it('should espose a method to update progress', function() {
+			expect(milestone.updateProgress).toEqual( jasmine.any(Function) );
+		});
+
+		it('should be possible to update progress', function() {
+			expect(milestone.progress).toBeUndefined();
+			milestone.updateProgress();
+			expect(milestone.progress).toBeDefined();
+		});
+
+		it('should correctly calculate progress (ignore PRs)', function() {
+			milestone.updateProgress();
+			expect(milestone.progress).toEqual(1/3);
+
+			milestone.issues[0].state = 'closed';
+			milestone.updateProgress();
+			expect(milestone.progress).toEqual(2/3);
+		});
+	});
+
+
 	// Refresh
 	// -------------------------
 	describe('Refresh', function () {
@@ -270,6 +322,9 @@ describe('[github/milestone]', function () {
 				});
 			$httpBackend.whenGET(prURL)
 				.respond(prResponse);
+
+			// Spies
+			spyOn( GithubMilestone.prototype, 'updateProgress' ).and.callThrough();
 		});
 
 		it('should expose a method to fetch issues', function() {
@@ -298,6 +353,12 @@ describe('[github/milestone]', function () {
 			expect(milestone.isLoadingIssues).toBeTruthy();
 			$httpBackend.flush();
 			expect(milestone.isLoadingIssues).toBeUndefined();
+		});
+
+		it('should update progress after updating issues', function() {
+			milestone.getIssues();
+			$httpBackend.flush();
+			expect(GithubMilestone.prototype.updateProgress).toHaveBeenCalled();
 		});
 
 		// Pull Requests

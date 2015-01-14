@@ -8,6 +8,7 @@
 	// -------------------------
 	var extend = angular.extend,
 		forEach = angular.forEach,
+		isUndefined = angular.isUndefined,
 		MinErr = angular.$$minErr('GithubMilestone');
 
 
@@ -53,6 +54,22 @@
 		}
 
 		GithubMilestone.prototype = {
+			updateProgress: function () {
+				var open = 0,
+					closed = 0;
+				forEach( this.issues, function ( issue ) {
+					// Ignore PR Issues
+					if( isUndefined(issue.pull_request) ) {
+						if( issue.state === 'open' ) {
+							open++;
+						} else {
+							closed++;
+						}
+					}
+				});
+				this.progress = closed/(open + closed);
+			},
+
 			refresh: function () {
 				var self = this;
 				self.isRefreshing = true;
@@ -101,6 +118,7 @@
 					});
 					return $q.all(calls);
 				}).then( function () {
+					self.updateProgress();
 					delete self.isLoadingIssues;
 					return self.issues;
 				});
