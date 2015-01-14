@@ -14,8 +14,8 @@
 
 	// Factory
 	// -------------------------
-	GithubMilestoneFactory.$inject = [ '$http', '$q', 'GithubAPI', 'GithubUtils' ];
-	function GithubMilestoneFactory ( $http, $q, GithubAPI, utils ) {
+	GithubMilestoneFactory.$inject = [ '$http', '$q', 'GithubAPI', 'GithubIssue', 'GithubUtils' ];
+	function GithubMilestoneFactory ( $http, $q, GithubAPI, GithubIssue, utils ) {
 
 		function GithubMilestone ( data, a1, a2, a3 ) {
 			/* jshint -W086 */ /* (purposefully fall through case statements) */
@@ -103,9 +103,11 @@
 					self.issues = issues;
 					self.pull_requests = [];
 
-					// Enqueue to fetch additional `pull request` data
+					// Cast to `GithubIssue` +
+					// enqueue to fetch additional `pull request` data
 					var calls = [];
-					forEach( self.issues, function ( issue ) {
+					forEach( self.issues, function ( issue, idx ) {
+						self.issues[idx] = new GithubIssue(issue);
 						if( !issue.pull_request ) {	return; }
 						self.pull_requests.push(issue);
 						calls.push(function () {

@@ -1,8 +1,10 @@
 module.exports = function ( grunt, options ) {
 
-	function moduleTemplate ( data ) {
+	function moduleTemplate ( coreConfig, issueConfig ) {
 		var tpl =	'angular.module(\'ed.core\')\n' +
-					'	.value(\'ED_GITHUB_CONFIG\', ' + JSON.stringify(data) + ');\n';
+					'	.value(\'ED_GITHUB_CONFIG\', ' + JSON.stringify(coreConfig) + ');\n' +
+					'angular.module(\'ed.issue\')\n' +
+					'	.value(\'ED_ISSUE_LABELS\', ' + JSON.stringify(issueConfig) + ');\n';
 		return tpl;
 	};
 
@@ -65,12 +67,25 @@ module.exports = function ( grunt, options ) {
 			validate: function ( value ) {
 				return (typeof value === 'number');
 			}
+		}, {
+			name: 'issue_display_labels',
+			type: 'input',
+			message: 'Please specify a (comma seperated) list of labels to display:',
+			default: 'FE, BE',
+			validate: function ( value ) {
+				return /^[-\w\s]+(?:,[-\w\s]*)*$/.test(value);
+			},
+			filter: function ( value ) {
+				return value.split(/\s*,\s*/);
+			}
 		}],
 		then: function ( answers, done ) {
+			var issueConfig = answers.issue_display_labels;
 			delete answers.type;
+			delete answers.issue_display_labels;
 			grunt.file.write(
 				options.dir.tmp + '/github.config.js',
-				moduleTemplate(answers)
+				moduleTemplate(answers, issueConfig)
 			);
 			done();
 			return true;
