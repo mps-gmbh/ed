@@ -2,6 +2,7 @@ describe('toggleAttr', function () {
 	var $rootScope, $compile,
 		element, scope;
 
+	// Custom Jasmine Matchers.
 	//TODO: Add this globally.
 	beforeEach(function () {
 		function toHaveAttrMatcher () {
@@ -9,7 +10,7 @@ describe('toggleAttr', function () {
 				compare: function ( element, attrName, attrValue ) {
 					var result = {
 						pass: element.hasAttribute(attrName),
-						message: 'Expected ' + element.outerHTML + 'to have attribute "' + attrName + '".'
+						message: 'Expected ' + element.outerHTML + ' to have attribute "' + attrName + '".'
 					};
 					if( attrValue && result.pass ) {
 						result.pass = element.getAttribute(attrName) === attrValue;
@@ -305,6 +306,66 @@ describe('toggleAttr', function () {
 			clickElement(1);
 			expect(element[0]).not.toHaveAttr('foo');
 			expect(element[1]).not.toHaveAttr('foo');
+		});
+	});
+
+
+	// Toggle by Identifier
+	// -------------------------
+	describe('Toggle by Identifier', function () {
+		beforeEach(function() {
+			scope = $rootScope.$new();
+			scope.items = [{
+				id: 0,
+				name: 'Item #1'
+			}, {
+				id: 1,
+				name: 'Item #2'
+			}];
+			element = angular.element(
+				'<ul>' +
+				'	<li ng-repeat="i in items" ed-add-attr="foo" ed-toggle-attr-group="group" ed-toggle-attr-id="{{:: i.id}}">{{ i.name }}</li>' +
+				'</ul>' +
+				'<ul>' +
+				'	<li ng-repeat="i in items" ed-toggle-attr="foo" ed-toggle-attr-group="tGroup" ed-toggle-attr-id="{{:: i.id}}">{{ i.name }}</li>' +
+				'</ul>'
+			);
+			$compile( element )( scope );
+			scope.$digest();
+		});
+
+		it('should be possible to re-add attribute when `ng-repeat` is redrawn', function() {
+			// "add" directive
+			element.find('li').eq(0).triggerHandler('click');
+			expect(element.eq(0).children()[0]).toHaveAttr('foo');
+
+			scope.items = [];
+			scope.$digest();
+			scope.items = [{
+				id: 0,
+				name: 'Item #1'
+			}, {
+				id: 1,
+				name: 'Item #2'
+			}];
+			scope.$digest();
+			expect(element.eq(0).children()[0]).toHaveAttr('foo');
+
+			// "toggle" directive
+			element.find('li').eq(2).triggerHandler('click');
+			expect(element.eq(1).children()[0]).toHaveAttr('foo');
+
+			scope.items = [];
+			scope.$digest();
+			scope.items = [{
+				id: 0,
+				name: 'Item #1'
+			}, {
+				id: 1,
+				name: 'Item #2'
+			}];
+			scope.$digest();
+			expect(element.eq(1).children()[0]).toHaveAttr('foo');
 		});
 	});
 });

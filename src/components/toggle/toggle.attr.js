@@ -30,6 +30,36 @@
 		return add;
 	}
 
+	// Group Map Methods
+	function setActiveGroupItem ( groupName, attrName, el, id ) {
+		if ( groupName ) {
+			if ( toggleGroup[groupName] && toggleGroup[groupName].element ) {
+				toggleGroup[groupName].element.removeAttr(attrName);
+			}
+			toggleGroup[groupName] = {
+				element: el,
+				identifier: id
+			};
+		}
+	}
+
+	function removeActiveGroupItem ( groupName, attrName, el ) {
+		if( isDefined(el.attr(attrName)) ) {
+			el.removeAttr(attrName);
+		}
+		if( groupName ) {
+			if ( toggleGroup[groupName] && toggleGroup[groupName].element ) {
+				toggleGroup[groupName].element.removeAttr(attrName);
+			}
+			toggleGroup[groupName] = {};
+		}
+	}
+
+	function wasActive ( groupName, attrName, id ) {
+		return groupName && id && toggleGroup[groupName] && toggleGroup[groupName].identifier === id;
+	}
+
+
 
 	// Toggle
 	// -------------------------
@@ -42,17 +72,20 @@
 	function ToggleDirectiveLink ( scope, element, attr ) {
 		var attrName = attr.edToggleAttr;
 		if( !attrName ) { return; }
-		element.on('click', function () {
+		if ( wasActive( attr.edToggleAttrGroup, attrName, attr.edToggleAttrId ) ) {
+			toggleAttribute();
+		}
+		element.on('click', toggleAttribute );
+
+		function toggleAttribute () {
 			var el = getElement( element, attr ),
 				added = toggle( el, attrName );
-			// Toggle Groups
-			if( attr.edToggleAttrGroup ) {
-				if( toggleGroup[attr.edToggleAttrGroup] && added ) {
-					toggle(toggleGroup[attr.edToggleAttrGroup], attrName);
-				}
-				toggleGroup[attr.edToggleAttrGroup] = added ? el : undefined;
+			if( added ) {
+				setActiveGroupItem( attr.edToggleAttrGroup, attrName, el, attr.edToggleAttrId );
+			} else {
+				removeActiveGroupItem ( attr.edToggleAttrGroup, attrName, el );
 			}
-		});
+		}
 	}
 
 
@@ -67,17 +100,17 @@
 	function AddDirectiveLink ( scope, element, attr ) {
 		var attrName = attr.edAddAttr;
 		if( !attrName ) { return; }
-		element.on('click', function () {
+		if ( wasActive( attr.edToggleAttrGroup, attrName, attr.edToggleAttrId ) ) {
+			addAttribute();
+		}
+		element.on('click', addAttribute);
+
+		function addAttribute () {
 			var el = getElement( element, attr );
 			if( isDefined(el.attr(attrName)) ) { return; }
 			el.attr(attrName, '');
-			if( attr.edToggleAttrGroup ) {
-				if( toggleGroup[attr.edToggleAttrGroup] ) {
-					toggleGroup[attr.edToggleAttrGroup].removeAttr(attrName);
-				}
-				toggleGroup[attr.edToggleAttrGroup] = el;
-			}
-		});
+			setActiveGroupItem( attr.edToggleAttrGroup, attrName, el, attr.edToggleAttrId );
+		}
 	}
 
 
@@ -94,15 +127,7 @@
 		if( !attrName ) { return; }
 		element.on('click', function () {
 			var el = getElement( element, attr );
-			if( isDefined(el.attr(attrName)) ) {
-				el.removeAttr(attrName);
-			}
-			if( attr.edToggleAttrGroup ) {
-				if( toggleGroup[attr.edToggleAttrGroup] ) {
-					toggleGroup[attr.edToggleAttrGroup].removeAttr(attrName);
-				}
-				toggleGroup[attr.edToggleAttrGroup] = undefined;
-			}
+			removeActiveGroupItem ( attr.edToggleAttrGroup, attrName, el );
 		});
 	}
 
