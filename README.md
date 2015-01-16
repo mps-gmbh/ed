@@ -17,7 +17,7 @@ Make sure you have installed [node](http://nodejs.org/) and [bower](http://bower
 
 When all packages have been installed run `grunt config` and answer the prompts. You will be asked for a OAuth-Token. If you do not have a token and want one [go here for instructions how to get one](https://help.github.com/articles/creating-an-access-token-for-command-line-use/).
 
-**NOTE**: *ED* pings the GithubAPI a lot (for updates, ...), so even if the OAuth-Token is not required for a public repository you should consider creating one. Github sometimes blocks requests if the API is pinged without a token to often.
+**NOTE**: *ED* pings the GithubAPI a lot (for updates, ...), so even if the OAuth-Token is not required for a public repository you should consider creating one. Github sometimes blocks requests if the API is pinged without a token too often.
 
 After you're finished with the prompt, start *ED* with `grunt`.
 
