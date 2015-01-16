@@ -16,8 +16,8 @@
 
 	// Controller
 	// -------------------------
-	DashboardController.$inject = [ '$rootScope', '$injector', '$interval', 'tagFilter', 'GithubRepository' ];
-	function DashboardController ( $rootScope, $injector, $interval, tagFilter, GithubRepository  ) {
+	DashboardController.$inject = [ '$rootScope', '$injector', '$interval', '$document', 'tagFilter', 'GithubRepository' ];
+	function DashboardController ( $rootScope, $injector, $interval, $document, tagFilter, GithubRepository  ) {
 		var vm = this,
 			config;
 
@@ -86,9 +86,10 @@
 			});
 		}
 
-		function adjustPosition () {
-			console.log('adjust!');
-			console.log(arguments);
+		function adjustPosition ( name, value, element, action ) {
+			if( name === 'is-expanded' && action === 'addedAttribute') {
+				$document.scrollToElementAnimated(element, 15);
+			}
 		}
 	}
 
