@@ -23,6 +23,7 @@
 
 		vm.groups = [];
 		vm.repository = {};
+		vm.adjustPosition = adjustPosition;
 
 		//TODO Show errors on the page, not the console.
 		if( !vm.config ) {
@@ -83,6 +84,11 @@
 			}).then( function () {
 				$rootScope.$broadcast( 'ed:milestones:refreshed', vm.repository.name );
 			});
+		}
+
+		function adjustPosition () {
+			console.log('adjust!');
+			console.log(arguments);
 		}
 	}
 

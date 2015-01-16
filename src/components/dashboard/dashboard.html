@@ -19,6 +19,7 @@
 		<ed-milestone
 			ng-repeat="milestone in group.milestones"
 			model="milestone"
+			ed-attr-observe="{ 'is-expanded': dashboard.adjustPosition }"
 		></ed-milestone>
 	</section>
 </div>

@@ -4,7 +4,8 @@
 		'ed.string',
 		'ed.loadingSpinner',
 		'ed.milestone',
-		'ed.github'
+		'ed.github',
+		'ed.attr.observe',
 	]);
 
 })();
