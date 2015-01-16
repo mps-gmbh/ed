@@ -15,9 +15,9 @@ At MPS we use Github's Milestone to group and organize our
 
 Make sure you have installed [node](http://nodejs.org/) and [bower](http://bower.io/). Then run `npm install` and `bower install`.
 
-When all packages have been installed run `grunt config` and answer the prompts. You will be asked for a OAuth-Token. If you do not have one and do not know how to get one, [go here :)](https://help.github.com/articles/creating-an-access-token-for-command-line-use/)
+When all packages have been installed run `grunt config` and answer the prompts. You will be asked for a OAuth-Token. If you do not have a token and want one [go here for instructions how to get one](https://help.github.com/articles/creating-an-access-token-for-command-line-use/).
 
-*ED* pings the GithubAPI a lot (for updates, ...), so even if the OAuth-Token is not required for a public repository you should consider creating one. Github sometimes blocks requests if the API is pinged without a token to often.
+**NOTE**: *ED* pings the GithubAPI a lot (for updates, ...), so even if the OAuth-Token is not required for a public repository you should consider creating one. Github sometimes blocks requests if the API is pinged without a token to often.
 
 After you're finished with the prompt, start *ED* with `grunt`.
 
