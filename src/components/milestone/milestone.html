@@ -4,10 +4,10 @@
 	<h2
 		class="Milestone-title"
 		flex
-		ed-add-attr="is-expanded"
-		ed-toggle-attr-group="milestones"
-		ed-toggle-attr-id="{{ milestone.number }}"
-		ed-toggle-attr-closest="ed-milestone"
+		ed-attr-add="is-expanded"
+		ed-attr-toggle-group="milestones"
+		ed-attr-toggle-id="{{ milestone.number }}"
+		ed-attr-toggle-closest="ed-milestone"
 	>
 		{{ milestone.title | untag }}
 	</h2>
@@ -23,9 +23,9 @@
 	</div>
 	<div
 		class="Milestone-collapse"
-		ed-remove-attr="is-expanded"
-		ed-toggle-attr-group="milestones"
-		ed-toggle-attr-closest="ed-milestone"
+		ed-attr-remove="is-expanded"
+		ed-attr-toggle-group="milestones"
+		ed-attr-toggle-closest="ed-milestone"
 	>
 		<ed-icon name="close"></ed-icon>
 	</div>

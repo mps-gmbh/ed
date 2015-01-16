@@ -1,9 +1,9 @@
 (function () {
 
-	angular.module('ed.toggle')
-		.directive('edToggleAttr', ToggleAttrDirective )
-		.directive('edAddAttr', AddAttrDirective )
-		.directive('edRemoveAttr', RemoveAttrDirective );
+	angular.module('ed.attr.toggle')
+		.directive('edAttrToggle', ToggleAttrDirective )
+		.directive('edAttrAdd', AddAttrDirective )
+		.directive('edAttrRemove', RemoveAttrDirective );
 
 
 	// Helper
@@ -13,7 +13,7 @@
 		toggleGroup = {};
 
 	function getElement( element, attr ) {
-		return attr.edToggleAttrClosest ? closest(element, attr.edToggleAttrClosest) : element;
+		return attr.edAttrToggleClosest ? closest(element, attr.edAttrToggleClosest) : element;
 	}
 
 	function closest ( element, tag ) {
@@ -70,9 +70,9 @@
 		};
 	}
 	function ToggleDirectiveLink ( scope, element, attr ) {
-		var attrName = attr.edToggleAttr;
+		var attrName = attr.edAttrToggle;
 		if( !attrName ) { return; }
-		if ( wasActive( attr.edToggleAttrGroup, attrName, attr.edToggleAttrId ) ) {
+		if ( wasActive( attr.edAttrToggleGroup, attrName, attr.edAttrToggleId ) ) {
 			toggleAttribute();
 		}
 		element.on('click', toggleAttribute );
@@ -81,9 +81,9 @@
 			var el = getElement( element, attr ),
 				added = toggle( el, attrName );
 			if( added ) {
-				setActiveGroupItem( attr.edToggleAttrGroup, attrName, el, attr.edToggleAttrId );
+				setActiveGroupItem( attr.edAttrToggleGroup, attrName, el, attr.edAttrToggleId );
 			} else {
-				removeActiveGroupItem ( attr.edToggleAttrGroup, attrName, el );
+				removeActiveGroupItem ( attr.edAttrToggleGroup, attrName, el );
 			}
 		}
 	}
@@ -98,9 +98,9 @@
 		};
 	}
 	function AddDirectiveLink ( scope, element, attr ) {
-		var attrName = attr.edAddAttr;
+		var attrName = attr.edAttrAdd;
 		if( !attrName ) { return; }
-		if ( wasActive( attr.edToggleAttrGroup, attrName, attr.edToggleAttrId ) ) {
+		if ( wasActive( attr.edAttrToggleGroup, attrName, attr.edAttrToggleId ) ) {
 			addAttribute();
 		}
 		element.on('click', addAttribute);
@@ -109,7 +109,7 @@
 			var el = getElement( element, attr );
 			if( isDefined(el.attr(attrName)) ) { return; }
 			el.attr(attrName, '');
-			setActiveGroupItem( attr.edToggleAttrGroup, attrName, el, attr.edToggleAttrId );
+			setActiveGroupItem( attr.edAttrToggleGroup, attrName, el, attr.edAttrToggleId );
 		}
 	}
 
@@ -123,11 +123,11 @@
 		};
 	}
 	function RemoveDirectiveLink ( scope, element, attr ) {
-		var attrName = attr.edRemoveAttr;
+		var attrName = attr.edAttrRemove;
 		if( !attrName ) { return; }
 		element.on('click', function () {
 			var el = getElement( element, attr );
-			removeActiveGroupItem ( attr.edToggleAttrGroup, attrName, el );
+			removeActiveGroupItem ( attr.edAttrToggleGroup, attrName, el );
 		});
 	}
 

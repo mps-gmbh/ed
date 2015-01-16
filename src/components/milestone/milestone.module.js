@@ -7,7 +7,7 @@
 			'ed.string',
 			'ed.time',
 			'ed.element.progress',
-			'ed.toggle',
+			'ed.attr.toggle',
 			'ed.pullRequest',
 			'ed.issue'
 		]);
