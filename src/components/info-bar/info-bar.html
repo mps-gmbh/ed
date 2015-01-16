@@ -1,5 +1,6 @@
-<div class="InfoBar-item" ng-if="refresh_time">
-	Refreshed
+<div class="InfoBar-item">
+	<span ng-if="!refresh_time">Refreshing</span>
+	<span ng-if="refresh_time">Refreshed </span>
 	<time
 		date-time="{{ refresh_time }}"
 		is-relative
