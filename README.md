@@ -42,3 +42,6 @@ After you're finished with the prompt, start *ED* with `grunt`.
 - [angular-progress-arc](https://github.com/mathewbyrne/angular-progress-arc)
 - [angular-markdown-directive](https://github.com/btford/angular-markdown-directive) (uses [Showdown for processing Markdown](https://github.com/showdownjs/showdown))
 - [momentjs](http://momentjs.com/)
+- [layout.scss](https://material.angularjs.org/#/layout/container)
+- [Material Design Icons](https://github.com/google/material-design-icons)
+- [Font: Raleway](http://www.google.com/fonts/specimen/Raleway)
