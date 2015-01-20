@@ -1,3 +1,5 @@
-angular.module('ed.core', [
-	'ngAnimate'
-]);
+(function () {
+
+	angular.module('ed.core', [ 'ngAnimate' ]);
+
+})();
