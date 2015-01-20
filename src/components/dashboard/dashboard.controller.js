@@ -16,13 +16,14 @@
 
 	// Controller
 	// -------------------------
-	DashboardController.$inject = [ '$rootScope', '$injector', '$interval', 'tagFilter', 'GithubRepository' ];
-	function DashboardController ( $rootScope, $injector, $interval, tagFilter, GithubRepository  ) {
+	DashboardController.$inject = [ '$rootScope', '$injector', '$interval', '$document', 'tagFilter', 'GithubRepository' ];
+	function DashboardController ( $rootScope, $injector, $interval, $document, tagFilter, GithubRepository  ) {
 		var vm = this,
 			config;
 
 		vm.groups = [];
 		vm.repository = {};
+		vm.adjustPosition = adjustPosition;
 
 		//TODO Show errors on the page, not the console.
 		if( !vm.config ) {
@@ -83,6 +84,12 @@
 			}).then( function () {
 				$rootScope.$broadcast( 'ed:milestones:refreshed', vm.repository.name );
 			});
+		}
+
+		function adjustPosition ( name, value, element, action ) {
+			if( name === 'is-expanded' && action === 'addedAttribute') {
+				$document.scrollToElementAnimated(element, 15);
+			}
 		}
 	}
 

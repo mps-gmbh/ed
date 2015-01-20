@@ -1,6 +1,6 @@
 describe('[dashboard/controller]', function () {
 	var $controller, $httpBackend, GithubRepository, GithubFixture,
-		$injector, $interval, $rootScope, tagFilter,
+		$injector, $document, $interval, $rootScope, tagFilter,
 		FakeGithubRepository, gs, params,
 		intervalFn, intervalTimer,
 
@@ -29,10 +29,11 @@ describe('[dashboard/controller]', function () {
 			milestones_groups_default: 'fallback'
 		}));
 	}));
-	beforeEach( inject( function ( _$controller_, _$httpBackend_, _$injector_, _tagFilter_, _GithubRepository_, _GithubFixture_ ) {
+	beforeEach( inject( function ( _$controller_, _$httpBackend_, _$injector_, _$document_, _tagFilter_, _GithubRepository_, _GithubFixture_ ) {
 		var $ctrl = _$controller_;
 		$httpBackend = _$httpBackend_;
 		$injector = _$injector_;
+		$document = _$document_;
 		tagFilter = _tagFilter_;
 
 		GithubFixture = _GithubFixture_;
@@ -280,6 +281,36 @@ describe('[dashboard/controller]', function () {
 					}
 				});
 			});
+		});
+	});
+
+
+	// Adjust Position
+	// -------------------------
+	describe('Adjust Position', function () {
+		var controller,
+			element, anotherElement;
+
+		beforeEach(function () {
+			controller = $controller('DashboardController', params);
+			element = angular.element('<div></div>');
+			anotherElement = angular.element('<span></span>');
+			spyOn( $document, 'scrollToElementAnimated' );
+		});
+
+		it('should expose a method to adjust position', function() {
+			expect(controller.adjustPosition).toEqual( jasmine.any(Function) );
+		});
+
+		it('should call `scrollToElementAnimated` if attribute `is-expanded` was added', function() {
+			controller.adjustPosition('is-expanded', '', element, 'addedAttribute');
+			expect($document.scrollToElementAnimated).toHaveBeenCalledWith( element, 15 );
+
+			controller.adjustPosition('is-foo', '', anotherElement, 'addedAttribute');
+			expect($document.scrollToElementAnimated).not.toHaveBeenCalledWith( anotherElement, 15 );
+
+			controller.adjustPosition('is-expanded', '', anotherElement, 'removedAttribute');
+			expect($document.scrollToElementAnimated).not.toHaveBeenCalledWith( anotherElement, 15 );
 		});
 	});
 });

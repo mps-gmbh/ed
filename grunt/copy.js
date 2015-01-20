@@ -8,6 +8,12 @@ module.exports = function ( grunt ) {
 					return grunt.template.process(content);
 				}
 			}
+		},
+		maps: {
+			src: '<%= files.maps %>',
+			dest:  '<%= dir.dist %>/',
+			expand: true,
+			flatten: true,
 		}
 	};
 };

@@ -55,14 +55,19 @@ module.exports = function( grunt ) {
 
 			// Vendor
 			vendor: [
-				'<%= dir.vendor %>/showdown/compressed/showdown.js',
+				'<%= dir.vendor %>/showdown/compressed/Showdown.js',
 				'<%= dir.vendor %>/momentjs/moment.js',
 
 				'<%= dir.vendor %>/angular/angular.js',
 				'<%= dir.vendor %>/angular-sanitize/angular-sanitize.js',
 				'<%= dir.vendor %>/angular-animate/angular-animate.js',
+				'<%= dir.vendor %>/angular-scroll/angular-scroll.js',
 				'<%= dir.vendor %>/angular-progress-arc/angular-progress-arc.js',
 				'<%= dir.vendor %>/angular-markdown-directive/markdown.js'
+			],
+
+			maps: [
+				'<%= dir.vendor %>/showdown/compressed/Showdown.js.map'
 			]
 		},
 

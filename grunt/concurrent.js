@@ -4,5 +4,5 @@ module.exports = {
 		logConcurrentOutput: true
 	},
 
-	dev: ['lint', 'concat:src', 'concat:vendor', 'html2js', 'sass:dev', 'copy:index']
+	dev: ['lint', 'concat:src', 'concat:vendor', 'html2js', 'sass:dev', 'copy:index', 'copy:maps']
 };

@@ -36,7 +36,7 @@ describe('toggleAttr', function () {
 		jasmine.addMatchers({toHaveAttr: toHaveAttrMatcher});
 	});
 
-	beforeEach(module('ed.toggle'));
+	beforeEach(module('ed.attr.toggle'));
 	beforeEach( inject ( function ( _$rootScope_, _$compile_ ) {
 		$rootScope = _$rootScope_;
 		$compile = _$compile_;
@@ -48,7 +48,7 @@ describe('toggleAttr', function () {
 	describe('Add Attribute', function () {
 		beforeEach(function() {
 			scope = $rootScope.$new();
-			element = angular.element('<span ed-add-attr="foo">Click me!</span>');
+			element = angular.element('<span ed-attr-add="foo">Click me!</span>');
 			$compile( element )( scope );
 			scope.$digest();
 		});
@@ -70,7 +70,7 @@ describe('toggleAttr', function () {
 		});
 
 		it('should not do anything if no attribute was specified', function () {
-			element = angular.element('<span ed-add-attr>Click me!</span>');
+			element = angular.element('<span ed-attr-add>Click me!</span>');
 			$compile( element )( scope );
 			scope.$digest();
 
@@ -86,7 +86,7 @@ describe('toggleAttr', function () {
 	describe('Remove Attribute', function () {
 		beforeEach(function() {
 			scope = $rootScope.$new();
-			element = angular.element('<span ed-remove-attr="foo" foo>Click me!</span>');
+			element = angular.element('<span ed-attr-remove="foo" foo>Click me!</span>');
 			$compile( element )( scope );
 			scope.$digest();
 		});
@@ -108,7 +108,7 @@ describe('toggleAttr', function () {
 		});
 
 		it('should not do anything if no attribute was specified', function () {
-			element = angular.element('<span ed-remove-attr foo>Click me!</span>');
+			element = angular.element('<span ed-attr-remove foo>Click me!</span>');
 			$compile( element )( scope );
 			scope.$digest();
 
@@ -124,7 +124,7 @@ describe('toggleAttr', function () {
 	describe('Toggle Attribue', function () {
 		beforeEach(function() {
 			scope = $rootScope.$new();
-			element = angular.element('<span ed-toggle-attr="foo">Click me!</span>');
+			element = angular.element('<span ed-attr-toggle="foo">Click me!</span>');
 			$compile( element )( scope );
 			scope.$digest();
 		});
@@ -142,7 +142,7 @@ describe('toggleAttr', function () {
 		});
 
 		it('should not do anything if no attribute was specified', function () {
-			element = angular.element('<span ed-toggle-attr>Click me!</span>');
+			element = angular.element('<span ed-attr-toggle>Click me!</span>');
 			$compile( element )( scope );
 			scope.$digest();
 
@@ -163,10 +163,10 @@ describe('toggleAttr', function () {
 		beforeEach(function() {
 			scope = $rootScope.$new();
 			element = angular.element(
-				'<span ed-add-attr="foo" ed-toggle-attr-group="group">Click 1!</span>' +
-				'<span ed-remove-attr="foo" ed-toggle-attr-group="group">Click 2!</span>' +
-				'<span ed-toggle-attr="foo" ed-toggle-attr-group="group">Click 3!</span>' +
-				'<span ed-toggle-attr="foo" ed-toggle-attr-group="alone">Click 4!</span>'
+				'<span ed-attr-add="foo" ed-attr-toggle-group="group">Click 1!</span>' +
+				'<span ed-attr-remove="foo" ed-attr-toggle-group="group">Click 2!</span>' +
+				'<span ed-attr-toggle="foo" ed-attr-toggle-group="group">Click 3!</span>' +
+				'<span ed-attr-toggle="foo" ed-attr-toggle-group="alone">Click 4!</span>'
 			);
 			$compile( element )( scope );
 			scope.$digest();
@@ -242,9 +242,9 @@ describe('toggleAttr', function () {
 			scope = $rootScope.$new();
 			element = angular.element(
 				'<div>' +
-				'	<span ed-add-attr="foo" ed-toggle-attr-closest="div">Click 1!</span>' +
-				'	<span ed-remove-attr="foo" ed-toggle-attr-closest="div">Click 2!</span>' +
-				'	<span ed-toggle-attr="foo" ed-toggle-attr-closest="div">Click 3!</span>' +
+				'	<span ed-attr-add="foo" ed-attr-toggle-closest="div">Click 1!</span>' +
+				'	<span ed-attr-remove="foo" ed-attr-toggle-closest="div">Click 2!</span>' +
+				'	<span ed-attr-toggle="foo" ed-attr-toggle-closest="div">Click 3!</span>' +
 				'</div>'
 			);
 			$compile( element )( scope );
@@ -281,10 +281,10 @@ describe('toggleAttr', function () {
 			scope = $rootScope.$new();
 			element = angular.element(
 				'<div id="1">' +
-				'	<span ed-toggle-attr="foo" ed-toggle-attr-group="group" ed-toggle-attr-closest="div">Click!</span>' +
+				'	<span ed-attr-toggle="foo" ed-attr-toggle-group="group" ed-attr-toggle-closest="div">Click!</span>' +
 				'</div>' +
 				'<div id="2">' +
-				'	<span ed-toggle-attr="foo" ed-toggle-attr-group="group" ed-toggle-attr-closest="div">Click!</span>' +
+				'	<span ed-attr-toggle="foo" ed-attr-toggle-group="group" ed-attr-toggle-closest="div">Click!</span>' +
 				'</div>'
 			);
 			$compile( element )( scope );
@@ -324,10 +324,10 @@ describe('toggleAttr', function () {
 			}];
 			element = angular.element(
 				'<ul>' +
-				'	<li ng-repeat="i in items" ed-add-attr="foo" ed-toggle-attr-group="group" ed-toggle-attr-id="{{:: i.id}}">{{ i.name }}</li>' +
+				'	<li ng-repeat="i in items" ed-attr-add="foo" ed-attr-toggle-group="group" ed-attr-toggle-id="{{:: i.id}}">{{ i.name }}</li>' +
 				'</ul>' +
 				'<ul>' +
-				'	<li ng-repeat="i in items" ed-toggle-attr="foo" ed-toggle-attr-group="tGroup" ed-toggle-attr-id="{{:: i.id}}">{{ i.name }}</li>' +
+				'	<li ng-repeat="i in items" ed-attr-toggle="foo" ed-attr-toggle-group="tGroup" ed-attr-toggle-id="{{:: i.id}}">{{ i.name }}</li>' +
 				'</ul>'
 			);
 			$compile( element )( scope );
