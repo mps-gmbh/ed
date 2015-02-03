@@ -101,7 +101,7 @@
 					all: function ( owner, repo, token ) {
 						return $http.get(
 							createRepoUrl(provider.BASE_API, owner, repo) + provider.PREFIX_MILESTONES,
-							utils.request.createHttpConfig(token)
+							utils.request.createHttpConfig(token, { 'per_page': 100 })
 						).then(utils.response.unwrap);
 					}
 				}

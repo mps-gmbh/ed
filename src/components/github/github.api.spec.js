@@ -234,7 +234,7 @@ describe('[github/api]', function () {
 		describe('Milestones', function () {
 			beforeEach(function() {
 				resoponseData = [{ title: 'Milestone #1'}];
-				$httpBackend.whenGET(url + 'milestones').respond(resoponseData);
+				$httpBackend.whenGET(url + 'milestones?per_page=100').respond(resoponseData);
 				$httpBackend.whenGET(url + 'milestones/1').respond(resoponseData[0]);
 			});
 
@@ -309,7 +309,7 @@ describe('[github/api]', function () {
 					expect($http.get).toHaveBeenCalledWith( url + 'milestones', {
 						method: 'get',
 						url : 'https://api.github.com/repos/mps-gmbh/ed/milestones',
-						params: {}
+						params: { per_page : 100 }
 					});
 				});
 
@@ -327,7 +327,7 @@ describe('[github/api]', function () {
 						headers : { 'Authorization' : 'token 123456789009876543' },
 						method: 'get',
 						url : 'https://api.github.com/repos/mps-gmbh/ed/milestones',
-						params: {}
+						params: { per_page : 100 }
 					});
 				});
 

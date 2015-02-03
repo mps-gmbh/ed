@@ -122,7 +122,7 @@ describe('[dashboard/controller]', function () {
 				controller = $controller('DashboardController', params);
 
 				// Fake Remote
-				$httpBackend.whenGET(/milestones$/).respond(GithubFixture.milestones);
+				$httpBackend.whenGET(/milestones\?per_page=\d*$/).respond(GithubFixture.milestones);
 				$httpBackend.whenGET(/issues\?/)
 					.respond(function ( method, url ) {
 						var number = url.match(/milestone=(\d+)/)[1],
@@ -225,7 +225,7 @@ describe('[dashboard/controller]', function () {
 				params.GithubRepository = FakeGithubRepository;
 				controller = $controller('DashboardController', params, 'MOCK_CONFIG_GROUPS');
 
-				$httpBackend.whenGET(/milestones$/).respond(GithubFixture.milestones);
+				$httpBackend.whenGET(/milestones\?per_page=\d*$/).respond(GithubFixture.milestones);
 				$httpBackend.whenGET(/issues\?/)
 					.respond(function ( method, url ) {
 						var number = url.match(/milestone=(\d+)/)[1],

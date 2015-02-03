@@ -131,7 +131,7 @@ describe('[github/repository]', function () {
 			r2 = new GithubRepository( 'me', 'foo', '13479120516203' );
 
 			$httpBackend.whenGET(/milestones\/?(d+)?/).respond( function ( method, url ) {
-				var response = /\d+$/.test(url) ?
+				var response = /milestones\/\d+$/.test(url) ?
 					milestoneJson :
 					[milestoneJson, milestoneJson];
 				return [ 200, response ];
