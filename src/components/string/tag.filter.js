@@ -7,7 +7,7 @@
 		return function tagFn ( text, tag ) {
 			return tag ?
 				'[' + tag + '] ' + text :
-				(text.match(/^\[([^\]]+)\]/) || [,null])[1];
+				(text.match(/^\[([^\]]+)\]/) || [null,null])[1];
 		};
 	}
 

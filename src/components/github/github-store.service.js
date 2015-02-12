@@ -72,8 +72,8 @@
 			// This is due to the fact that we will fetch the data from Github
 			// if it's too old.
 			GithubStore.prototype.getMilestones = function ( a1, a2, a3 ) {
-				var owner, name, grouped,
-					rid, repo, deffered;
+				var grouped, rid, repo,
+					deferred;
 
 				switch(arguments.length) {
 					case 3:

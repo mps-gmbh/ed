@@ -37,9 +37,9 @@ describe('[github/store/provider]', function () {
 
 // Service
 // -------------------------
-fdescribe('[github/store/service]', function() {
+describe('[github/store/service]', function() {
 	var $rootScope, $httpBackend,
-		GithubStore, GithubStoreProvider,
+		GithubStore,
 		GithubRepository, GithubRepositorySpy,
 		GithubFixture,
 
@@ -247,7 +247,6 @@ fdescribe('[github/store/service]', function() {
 		});
 
 		it('should re-frecht data if it is too old', function() {
-			var milestones;
 			GithubStore.getMilestones(rid);
 			$httpBackend.flush();
 
