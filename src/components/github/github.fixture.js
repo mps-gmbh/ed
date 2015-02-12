@@ -2,13 +2,14 @@
 
 	angular.module('github.fixture', [])
 		.service('GithubFixture',
-			function ( GH_FIXTURE_MILESTONES_1, GH_FIXTURE_ISSUES_1, GH_FIXTURE_ISSUES_2, GH_FIXTURE_ISSUES_3 ) {
+			function ( GH_FIXTURE_MILESTONES_1, GH_FIXTURE_ISSUES_1, GH_FIXTURE_ISSUES_2, GH_FIXTURE_ISSUES_3, GH_FIXTURE_ISSUES_4 ) {
 
 			this.milestones = GH_FIXTURE_MILESTONES_1;
 			this.issues = {
 				'1' : GH_FIXTURE_ISSUES_1,
 				'2' : GH_FIXTURE_ISSUES_2,
-				'3' : GH_FIXTURE_ISSUES_3
+				'3' : GH_FIXTURE_ISSUES_3,
+				'4' : GH_FIXTURE_ISSUES_4
 			};
 		})
 
@@ -23,6 +24,9 @@
 		}, {
 			title: '[Sprint] Firefly',
 			number: 3
+		}, {
+			title: '[Tag] Teenage Mutant Ninja Turtles',
+			number: 4
 		}])
 
 
@@ -63,6 +67,16 @@
 			title: 'Only if you say it out loud.',
 			number: 31,
 			state: 'open'
-		}])		;
+		}])
+
+		.value('GH_FIXTURE_ISSUES_4', [{
+			title: 'God, I LOVE *BEING A TURTLE*!',
+			number: 40,
+			state: 'open'
+		}, {
+			title: 'Yes, Dudes and Dudettes, major-league butt-kicking is back in town.',
+			number: 41,
+			state: 'open'
+		}]);
 
 })();
