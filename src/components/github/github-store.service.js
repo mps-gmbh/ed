@@ -9,6 +9,7 @@
 	var copy = angular.copy,
 		forEach = angular.forEach,
 		isString = angular.isString,
+		isArray = angular.isArray,
 
 		MinErr = angular.$$minErr('GithubStore');
 
@@ -25,13 +26,6 @@
 		// Constructor
 		GithubStoreConstructor.$inject = [ '$q', 'GithubRepository', 'tagFilter' ];
 		function GithubStoreConstructor ( $q, GithubRepository, tagFilter ) {
-			// Create empty milestone groups.
-			// This will be added to every repository added to the store.
-			var emptyMilestoneGroups = {};
-			forEach( provider.milestone_groups, function ( name ) {
-				emptyMilestoneGroups[name] = [];
-			});
-
 
 			// Service
 			// -------------------------
@@ -44,17 +38,39 @@
 			}
 
 			// Repository Methods
-			GithubStore.prototype.addRepository = function ( owner, name, token ) {
-				var rid = this._getRepositoryIdentifier( owner, name );
+			GithubStore.prototype.addRepository = function ( owner, name, a2, a3 ) {
+				var rid = this._getRepositoryIdentifier( owner, name ),
+					token, tags;
+
 				if( this.hasRepository(rid) ) {
 					throw MinErr('badcfg',
 						'Repository "' + rid + '" already stored.');
 				}
+
+				// Arguments 3 and 4 are optional. Can either the auth token or
+				// customized tags.
+				switch(arguments.length) {
+					case 4:
+						token = a2;
+						tags = a3;
+						break;
+					case 3:
+						if( isString(a2) ) {
+							token = a2;
+						} else {
+							tags = a2;
+						}
+						break;
+				}
+				token = isString(a2) ? a2 : undefined;
+				tags = isArray(a2) ? tags : provider.milestone_groups
+
 				this._repositories[rid] = {
 					instance: new GithubRepository( owner, name, token ),
 					milestones: {
 						all: [],
-						group: copy(emptyMilestoneGroups)
+						group: createGroups(tags),
+						tags: tags
 					}
 				};
 				return rid;
@@ -112,7 +128,7 @@
 								var tag;
 								milestone.getIssues();
 								tag = (tagFilter(milestone.title) || '').toLowerCase();
-								tag = ~provider.milestone_groups.indexOf(tag) ?
+								tag = ~repo.milestones.tags.indexOf(tag) ?
 									tag : provider.milestone_group_default;
 								repo.milestones.group[tag].push(milestone);
 							});
@@ -142,6 +158,18 @@
 				var now = (new Date()).getTime();
 				return (now - date.getTime()) > (provider.refresh_timer * 60000);
 			};
+
+
+			// Create empty milestone groups.
+			// This will be added to every repository added to the store.
+			function createGroups ( tags ) {
+				var groups = {};
+				forEach( tags, function ( name ) {
+					groups[name] = [];
+				});
+				return groups;
+			}
+
 
 			// Exports
 			return new GithubStore();

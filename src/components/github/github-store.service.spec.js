@@ -134,6 +134,15 @@ describe('[github/store/service]', function() {
 
 				expect(repo.milestones.group.sprint).toEqual(jasmine.any(Array));
 				expect(repo.milestones.group.backlog).toEqual(jasmine.any(Array));
+
+				expect(repo.milestones.tags).toEqual(milestoneGroups);
+			});
+
+			it('should be possible to customize milestone tag groups', function() {
+				var rid = GithubStore.addRepository('mps-gmbh', 'ed', ['backlog']),
+					repo = GithubStore._repositories[rid];
+
+				expect(repo.milestones.tags).toEqual(['backlog']);
 			});
 
 			it('should throw an error if repo with an existing identifier is added', function() {
@@ -281,6 +290,21 @@ describe('[github/store/service]', function() {
 			});
 			$rootScope.$digest();
 			expect(milestones).toEqual(GithubStore._repositories[rid].milestones.group);
+		});
+
+		it('should be possible to get customized grouped milestones', function() {
+			var milestones;
+
+			GithubStore.removeRepository(rid);
+			GithubStore.addRepository('mps-gmbh', 'ed', ['sprint', 'tags', 'backlog']);
+			GithubStore.getMilestones(rid, true).then( function ( ms ) {
+				milestones = ms;
+			});
+			$httpBackend.flush();
+
+			expect(milestones.sprint).toEqual(jasmine.any(Array));
+			expect(milestones.tags).toEqual(jasmine.any(Array));
+			expect(milestones.backlog).toEqual(jasmine.any(Array));
 		});
 
 		it('should throw an error if repo does not exist', function() {
