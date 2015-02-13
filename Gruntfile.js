@@ -60,6 +60,7 @@ module.exports = function( grunt ) {
 
 				'<%= dir.vendor %>/angular/angular.js',
 				'<%= dir.vendor %>/angular-sanitize/angular-sanitize.js',
+				'<%= dir.vendor %>/angular-route/angular-route.js',
 				'<%= dir.vendor %>/angular-animate/angular-animate.js',
 				'<%= dir.vendor %>/angular-scroll/angular-scroll.js',
 				'<%= dir.vendor %>/angular-progress-arc/angular-progress-arc.js',

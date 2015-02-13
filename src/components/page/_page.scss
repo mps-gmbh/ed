@@ -5,6 +5,34 @@ $pageHeaderHeight: 24 + 2 * $pageHeaderVerticalSpace;
 	margin: rem($pageHeaderVerticalSpace) rem(12);
 }
 
+.Page-menu {
+	margin-left: rem(10);
+	border-left: 2px solid $brown;
+}
+
+ed-page-menu-item {
+	margin-left: rem(20);
+
+	a {
+		padding: rem(6) rem(14);
+
+		color: $brown--dark;
+		font-size: rem(13);
+		text-transform: uppercase;
+		line-height: 1;
+	}
+
+	a:hover,
+	&[is-current] a {
+		color: $brown--darker;
+	}
+
+	&[is-current] a {
+		cursor: default;
+		background: darken($brown--light, 5%);
+	}
+}
+
 .Page-content {
 	max-width: rem(1000);
 	@include calc(height, '100% - #{$pageHeaderHeight}px');

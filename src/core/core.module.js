@@ -1,5 +1,8 @@
 (function () {
 
-	angular.module('ed.core', [ 'ngAnimate' ]);
+	angular.module('ed.core', [
+		'ngRoute',
+		'ngAnimate'
+	]);
 
 })();

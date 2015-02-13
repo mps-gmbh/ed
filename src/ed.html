@@ -12,12 +12,17 @@
 		layout
 		layout-align="start center"
 	>
-		<h1 class="Brand" flex>ED</h1>
+		<h1 class="Brand">ED</h1>
+		<div class="Page-menu" flex>
+			<ed-page-menu-item route="/milestones">Milestones</ed-page-menu-item>
+			<ed-page-menu-item route="/bugs">Bugs</ed-page-menu-item>
+		</div>
 		<ed-info-bar></ed-info-bar>
 	</header>
 
 	<main class="Page-content">
-		<ed-dashboard config="ED_GITHUB_CONFIG"></ed-dashboard>
+		<ng-view></ng-view>
+		<!-- <ed-dashboard config="ED_GITHUB_CONFIG"></ed-dashboard> -->
 	</main>
 
 	<script src="vendor.js"></script>
