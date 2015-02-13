@@ -2,7 +2,8 @@
 
 	angular.module('ed.core', [
 		'ngRoute',
-		'ngAnimate'
+		'ngAnimate',
+		'ed.github'
 	]);
 
 })();

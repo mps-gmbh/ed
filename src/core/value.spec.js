@@ -1,13 +1,13 @@
 describe('[core/constant]', function () {
-	var ED_GITHUB_CONFIG;
+	var ED_CONFIGURATION;
 
 	beforeEach(module('ed.core'));
-	beforeEach( inject( function ( _ED_GITHUB_CONFIG_ ) {
-		ED_GITHUB_CONFIG = _ED_GITHUB_CONFIG_;
+	beforeEach( inject( function ( _ED_CONFIGURATION_ ) {
+		ED_CONFIGURATION = _ED_CONFIGURATION_;
 	}));
 
 	it('should be defined', function() {
-		expect(ED_GITHUB_CONFIG).toBeDefined();
+		expect(ED_CONFIGURATION).toBeDefined();
 	});
 
 });

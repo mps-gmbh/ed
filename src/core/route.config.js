@@ -11,11 +11,11 @@
 		$routeProvider
 			// Grouped Milestones
 			.when('/milestones', {
-				template: 'MILESTONES'
+				template: '<ed-milestone-list></ed-milestone-list>'
 			})
 			// Bug List
 			.when('/bugs', {
-				template: 'BUGS'
+				template: '<h1>comming soon!</h1><img src="http://stream1.gifsoup.com/view5/2581467/rick-roll-o.gif" alt="ricky" />'
 			})
 			// Fallback
 			.otherwise({ redirectTo: '/milestones' });

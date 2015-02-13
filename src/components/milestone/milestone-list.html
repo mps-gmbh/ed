@@ -1,0 +1,25 @@
+<div
+	layout
+	layout-align="center center"
+	layout-fill
+	class="Animation--fade"
+	ng-if="list.isLoading"
+>
+	<ed-loading-spinner></ed-loading-spinner>
+</div>
+<div
+	class="Dashboard-content Animation--fade"
+	ng-if="!list.isLoading"
+>
+	<section
+		ng-repeat="group in list.groups"
+		ng-if="group.milestones.length"
+	>
+		<h4 class="Dashboard-title">{{ group.name }}</h4>
+		<ed-milestone
+			ng-repeat="milestone in group.milestones"
+			model="milestone"
+			ed-attr-observe="{ 'is-expanded': list.adjustPosition }"
+		></ed-milestone>
+	</section>
+</div>

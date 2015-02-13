@@ -25,12 +25,16 @@ describe('[core/route]', function() {
 			expect($route.routes['/milestones']).toBeDefined();
 		});
 
+		it('should load `<ed-milestone-list>` as template', function() {
+			expect($route.routes['/milestones'].template).toEqual('<ed-milestone-list></ed-milestone-list>');
+		});
+
 		it('should have a "/bugs" route', function() {
 			expect($route.routes['/bugs']).toBeDefined();
 		});
 
 		it('should fallback to "/milestones" if route is uknown', function() {
-			expect($route.routes[null].redirectTo).toEqual('/milestones')
+			expect($route.routes[null].redirectTo).toEqual('/milestones');
 		});
 	});
 });

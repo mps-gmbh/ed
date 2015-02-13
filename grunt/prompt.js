@@ -2,7 +2,7 @@ module.exports = function ( grunt, options ) {
 
 	function moduleTemplate ( coreConfig, issueConfig ) {
 		var tpl =	'angular.module(\'ed.core\')\n' +
-					'	.value(\'ED_GITHUB_CONFIG\', ' + JSON.stringify(coreConfig) + ');\n' +
+					'	.value(\'ED_CONFIGURATION\', ' + JSON.stringify(coreConfig) + ');\n' +
 					'angular.module(\'ed.issue\')\n' +
 					'	.value(\'ED_ISSUE_LABELS\', ' + JSON.stringify(issueConfig) + ');\n';
 		return tpl;
