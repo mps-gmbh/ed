@@ -53,7 +53,7 @@ describe('[page/menu-item]', function() {
     	it('should remove [is-current] when no longer active route', function() {
       		$rootScope.$broadcast('$routeChangeSuccess', currRoute);
 
-      		currRoute.$$route.originalPath = '/other/route'
+      		currRoute.$$route.originalPath = '/other/route';
       		$rootScope.$broadcast('$routeChangeSuccess', currRoute);
     		expect(element[0].hasAttribute('is-current')).toBeFalsy();
     	});
