@@ -6,8 +6,7 @@
 
 	// Helpers
 	// -------------------------
-	var copy = angular.copy,
-		forEach = angular.forEach,
+	var forEach = angular.forEach,
 		isString = angular.isString,
 		isArray = angular.isArray,
 
@@ -63,7 +62,7 @@
 						break;
 				}
 				token = isString(a2) ? a2 : undefined;
-				tags = isArray(a2) ? tags : provider.milestone_groups
+				tags = isArray(a2) ? tags : provider.milestone_groups;
 
 				this._repositories[rid] = {
 					instance: new GithubRepository( owner, name, token ),
