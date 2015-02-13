@@ -15,7 +15,6 @@
 		function linkFn ( scope, element, attr ) {
 			var exp = new RegExp('^' + attr.route + '$');
 			scope.$on('$routeChangeSuccess', function ( ev, current ) {
-				console.log(current.$$route.originalPath);
 				if( exp.test(current.$$route.originalPath) ) {
 					element.attr(ATTR_CURRENT, '');
 				} else {
