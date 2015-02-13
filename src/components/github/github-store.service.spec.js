@@ -141,8 +141,19 @@ describe('[github/store/service]', function() {
 			it('should be possible to customize milestone tag groups', function() {
 				var rid = GithubStore.addRepository('mps-gmbh', 'ed', ['backlog']),
 					repo = GithubStore._repositories[rid];
-
 				expect(repo.milestones.tags).toEqual(['backlog']);
+			});
+
+			it('should always add the "default group" if it is missing', function() {
+				var rid = GithubStore.addRepository('mps-gmbh', 'ed', ['sprint']),
+				repo = GithubStore._repositories[rid];
+				expect(repo.milestones.tags).toEqual(['sprint', 'backlog']);
+			});
+
+			it('should fallback to use default groups if argument is not an array', function() {
+				var rid = GithubStore.addRepository('mps-gmbh', 'ed', '123456', 'myGroup'),
+				repo = GithubStore._repositories[rid];
+				expect(repo.milestones.tags).toEqual(['sprint', 'backlog']);
 			});
 
 			it('should throw an error if repo with an existing identifier is added', function() {

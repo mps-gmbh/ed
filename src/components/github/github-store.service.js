@@ -61,8 +61,17 @@
 						}
 						break;
 				}
-				token = isString(a2) ? a2 : undefined;
-				tags = isArray(a2) ? tags : provider.milestone_groups;
+
+				// Add default group if missing.
+				if( isArray(tags) ) {
+					if( !~tags.indexOf(provider.milestone_group_default) ) {
+						tags.push(provider.milestone_group_default)
+					}
+				// Fallback to use default milestone group
+				} else {
+					tags = provider.milestone_groups;
+				}
+				tags = isArray(tags) ? tags : provider.milestone_groups;
 
 				this._repositories[rid] = {
 					instance: new GithubRepository( owner, name, token ),
