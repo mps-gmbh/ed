@@ -156,6 +156,12 @@ describe('[github/store/service]', function() {
 				expect(repo.milestones.tags).toEqual(['sprint', 'backlog']);
 			});
 
+			it('should add an identifier to the stored repo', function() {
+				var rid = GithubStore.addRepository('mps-gmbh', 'ed');
+				expect(GithubStore._repositories[rid].id).toBeDefined();
+				expect(GithubStore._repositories[rid].id).toEqual(rid);
+			});
+
 			it('should throw an error if repo with an existing identifier is added', function() {
 				GithubStore.addRepository('mps-gmbh', 'ed');
 				expect(function () {
@@ -180,6 +186,26 @@ describe('[github/store/service]', function() {
 		});
 
 
+		// Get
+		// -------------------------
+		describe('Get', function () {
+			it('should expose a method to get a repo', function() {
+				expect(GithubStore.getRepository).toEqual(jasmine.any(Function));
+			});
+
+			it('should be possible to get a repo', function() {
+				var rid = GithubStore.addRepository('mps-gmbh', 'ed');
+				expect(GithubStore.getRepository(rid)).toEqual(GithubStore._repositories[rid]);
+			});
+
+			it('should throw an error if repo does not exist', function() {
+				expect(function () {
+					GithubStore.getRepository('nope', 'nope');
+				}).toThrow();
+			});
+		});
+
+
 		// Has Repository
 		// -------------------------
 		describe('Has Repository', function () {
@@ -195,6 +221,43 @@ describe('[github/store/service]', function() {
 			it('should return "false" if the repo doesn\'t exist', function() {
 				expect(GithubStore.hasRepository('not/stored')).toEqual(false);
 				expect(GithubStore.hasRepository('not', 'stored')).toEqual(false);
+			});
+		});
+
+
+		// Active Repository
+		// -------------------------
+		describe('Active Repository', function () {
+			beforeEach(function() {
+				GithubStore.addRepository('mps-gmbh', 'ed');
+			});
+
+			it('should init w/o an active repo', function() {
+				expect(GithubStore._active).toBeNull();
+			});
+
+			it('should expose a method to set active repo', function() {
+				expect(GithubStore.setActiveRepository).toEqual(jasmine.any(Function));
+			});
+
+			it('should be possible to set active repo', function() {
+				GithubStore.setActiveRepository('mps-gmbh/ed');
+				expect(GithubStore._active).toEqual('mps-gmbh/ed');
+			});
+
+			it('should throw if repo does not exist', function() {
+				expect(function () {
+					GithubStore.setActiveRepository('nope/nope');
+				}).toThrow();
+			});
+
+			it('should expose a method to get active repo', function() {
+				expect(GithubStore.getActiveRepository).toEqual(jasmine.any(Function));
+			});
+
+			it('should be possible to get active repo', function() {
+				GithubStore.setActiveRepository('mps-gmbh/ed');
+				expect(GithubStore.getActiveRepository()).toEqual(GithubStore._repositories['mps-gmbh/ed']);
 			});
 		});
 	});

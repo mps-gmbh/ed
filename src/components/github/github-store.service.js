@@ -34,6 +34,7 @@
 				// to test and debug.
 				this._repositories = {};
 				this._issues = {};
+				this._active = null;
 			}
 
 			// Repository Methods
@@ -65,7 +66,7 @@
 				// Add default group if missing.
 				if( isArray(tags) ) {
 					if( !~tags.indexOf(provider.milestone_group_default) ) {
-						tags.push(provider.milestone_group_default)
+						tags.push(provider.milestone_group_default);
 					}
 				// Fallback to use default milestone group
 				} else {
@@ -74,6 +75,7 @@
 				tags = isArray(tags) ? tags : provider.milestone_groups;
 
 				this._repositories[rid] = {
+					id: rid,
 					instance: new GithubRepository( owner, name, token ),
 					milestones: {
 						all: [],
@@ -86,8 +88,28 @@
 			GithubStore.prototype.removeRepository = function ( a1, name ) {
 				delete this._repositories[this._getRepositoryIdentifier(a1, name)];
 			};
+			GithubStore.prototype.getRepository = function ( a1, name ) {
+				var rid = this._getRepositoryIdentifier( a1, name );
+				if( !this.hasRepository(rid) ) {
+					throw MinErr('badargs',
+						'Repository "' + rid + '" does not exist in the store.');
+				}
+				return this._repositories[rid];
+			};
 			GithubStore.prototype.hasRepository = function ( a1, name ) {
 				return !!this._repositories[this._getRepositoryIdentifier(a1, name)];
+			};
+			GithubStore.prototype.setActiveRepository = function ( a1, name ) {
+				var rid = this._getRepositoryIdentifier( a1, name );
+				if( !this.hasRepository(rid) ) {
+					throw MinErr('badargs',
+						'Repository "' + rid + '" does not exist in the store.');
+				}
+
+				this._active = rid;
+			};
+			GithubStore.prototype.getActiveRepository = function () {
+				return this._repositories[this._active];
 			};
 
 
