@@ -6,7 +6,8 @@
 
 	// Helpers
 	// -------------------------
-	var forEach = angular.forEach,
+	var extend = angular.extend,
+		forEach = angular.forEach,
 		isString = angular.isString,
 		isArray = angular.isArray,
 
@@ -23,12 +24,18 @@
 		provider.$get = GithubStoreConstructor;
 
 		// Constructor
-		GithubStoreConstructor.$inject = [ '$q', 'GithubRepository', 'tagFilter' ];
-		function GithubStoreConstructor ( $q, GithubRepository, tagFilter ) {
+		GithubStoreConstructor.$inject = [ '$q', 'GithubRepository', 'EventEmitter', 'tagFilter' ];
+		function GithubStoreConstructor ( $q, GithubRepository, EventEmitter, tagFilter ) {
+			// Events
+			var EVENT_REPOSITORY_UPDATED = 'REPOSITORY_UPDATED';
+
 
 			// Service
 			// -------------------------
 			function GithubStore () {
+				// Inherit `EventEmitter` (1/2)
+				EventEmitter.call(this);
+
 				// Internal stores are public accessible but users should use exposed
 				// methods most of the time! Exposing them publicly makes it easiert
 				// to test and debug.
@@ -36,6 +43,10 @@
 				this._issues = {};
 				this._active = null;
 			}
+
+			// Inherit `EventEmitter` (2/2)
+			GithubStore.prototype = Object.create(EventEmitter.prototype);
+			GithubStore.prototype.constructor = GithubStore;
 
 			// Repository Methods
 			GithubStore.prototype.addRepository = function ( owner, name, a2, a3 ) {
@@ -118,22 +129,23 @@
 			// This is due to the fact that we will fetch the data from Github
 			// if it's too old.
 			GithubStore.prototype.getMilestones = function ( a1, a2, a3 ) {
-				var grouped, rid, repo,
+				var self = this,
+					grouped, rid, repo,
 					deferred;
 
 				switch(arguments.length) {
 					case 3:
-						rid = this._getRepositoryIdentifier(a1, a2);
+						rid = self._getRepositoryIdentifier(a1, a2);
 						grouped = a3;
 						break;
 					case 2:
 					case 1:
 						if( isString(a2) ) {
-							rid = this._getRepositoryIdentifier(a1, a2);
+							rid = self._getRepositoryIdentifier(a1, a2);
 							grouped = false;
 							break;
 						}
-						rid = this._getRepositoryIdentifier(a1);
+						rid = self._getRepositoryIdentifier(a1);
 						grouped = a2;
 						break;
 					default:
@@ -142,13 +154,13 @@
 							arguments.length);
 				}
 
-				if( !this.hasRepository(rid) ) {
+				if( !self.hasRepository(rid) ) {
 					throw MinErr('badargs',
 						'Repository "' + rid + '" does not exist in the store.');
 				}
 
-				repo = this._repositories[rid];
-				if( this._isTooOld(repo.updated_at) ) {
+				repo = self._repositories[rid];
+				if( self._isTooOld(repo.updated_at) ) {
 					return repo.instance.getMilestones()
 						// Update and gorup milestones
 						.then( function ( milestones ) {
@@ -162,11 +174,13 @@
 									tag : provider.milestone_group_default;
 								repo.milestones.group[tag].push(milestone);
 							});
+							self._emitRepositoryUpdate(repo);
 							return grouped ? repo.milestones.group : milestones;
 						});
 				} else {
 					deferred = $q.defer();
 					deferred.resolve(repo.milestones[grouped ? 'group' : 'all']);
+					self._emitRepositoryUpdate(repo);
 					return deferred.promise;
 				}
 			};
@@ -187,6 +201,10 @@
 
 				var now = (new Date()).getTime();
 				return (now - date.getTime()) > (provider.refresh_timer * 60000);
+			};
+
+			GithubStore.prototype._emitRepositoryUpdate = function ( repo ) {
+				this.emit(EVENT_REPOSITORY_UPDATED, repo);
 			};
 
 

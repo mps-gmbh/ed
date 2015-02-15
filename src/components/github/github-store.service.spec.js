@@ -39,13 +39,14 @@ describe('[github/store/provider]', function () {
 // -------------------------
 describe('[github/store/service]', function() {
 	var $rootScope, $httpBackend,
-		GithubStore,
 		GithubRepository, GithubRepositorySpy,
-		GithubFixture,
+		EventEmitter, GithubFixture,
+		GithubStore,
 
 		milestoneGroups = ['sprint', 'backlog'];
 
 	beforeEach(module('github.fixture'));
+	beforeEach(module('ed.event'));
 	beforeEach(module('ed.github', function ( $provide, GithubStoreProvider ) {
 		GithubStoreProvider.milestone_groups = milestoneGroups;
 
@@ -55,6 +56,12 @@ describe('[github/store/service]', function() {
 				.and.callFake( function (owner, name, token) {
 					return new $delegate(owner, name, token);
 				});
+		});
+
+		$provide.decorator( 'EventEmitter', function ( $delegate ) {
+			spyOn($delegate, 'call').and.callThrough();
+			EventEmitter = $delegate;
+			return $delegate;
 		});
 	}));
 	beforeEach(inject( function ( _$rootScope_, _$httpBackend_, _GithubStore_, _GithubFixture_ ) {
@@ -66,8 +73,18 @@ describe('[github/store/service]', function() {
 	}));
 
 
-	it('should be a service', function() {
-		expect(GithubStore).toEqual(jasmine.any(Object));
+	// Init
+	// -------------------------
+	describe('Init', function () {
+		it('should be a service', function() {
+			expect(GithubStore).toEqual(jasmine.any(Object));
+		});
+
+		it('should extend the "EventEmitter"', function() {
+			expect(EventEmitter.call).toHaveBeenCalled();
+			expect(GithubStore.register).toEqual(EventEmitter.prototype.register);
+			expect(GithubStore.emit).toEqual(EventEmitter.prototype.emit);
+		});
 	});
 
 	// Utils
@@ -379,6 +396,22 @@ describe('[github/store/service]', function() {
 			expect(milestones.sprint).toEqual(jasmine.any(Array));
 			expect(milestones.tags).toEqual(jasmine.any(Array));
 			expect(milestones.backlog).toEqual(jasmine.any(Array));
+		});
+
+		it('should emit repo updates to listeners', function() {
+			var listener = jasmine.createSpy('listener');
+			GithubStore.register(listener);
+
+			GithubStore.getMilestones(rid);
+			$httpBackend.flush();
+			GithubStore.getMilestones(rid);
+			$rootScope.$digest();
+
+			expect(listener).toHaveBeenCalledWith(
+				'REPOSITORY_UPDATED',
+				GithubStore._repositories[rid]
+			);
+			expect(listener.calls.count()).toEqual(2);
 		});
 
 		it('should throw an error if repo does not exist', function() {
