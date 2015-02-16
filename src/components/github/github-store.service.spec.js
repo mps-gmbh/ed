@@ -82,7 +82,7 @@ describe('[github/store/service]', function() {
 
 		it('should extend the "EventEmitter"', function() {
 			expect(EventEmitter.call).toHaveBeenCalled();
-			expect(GithubStore.register).toEqual(EventEmitter.prototype.register);
+			expect(GithubStore.listenTo).toEqual(EventEmitter.prototype.listenTo);
 			expect(GithubStore.emit).toEqual(EventEmitter.prototype.emit);
 		});
 	});
@@ -400,7 +400,7 @@ describe('[github/store/service]', function() {
 
 		it('should emit repo updates to listeners', function() {
 			var listener = jasmine.createSpy('listener');
-			GithubStore.register(listener);
+			GithubStore.listenTo('repository.updated', listener);
 
 			GithubStore.getMilestones(rid);
 			$httpBackend.flush();
@@ -408,7 +408,7 @@ describe('[github/store/service]', function() {
 			$rootScope.$digest();
 
 			expect(listener).toHaveBeenCalledWith(
-				'REPOSITORY_UPDATED',
+				'repository.updated',
 				GithubStore._repositories[rid]
 			);
 			expect(listener.calls.count()).toEqual(2);

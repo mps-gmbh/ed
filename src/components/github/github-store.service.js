@@ -6,8 +6,7 @@
 
 	// Helpers
 	// -------------------------
-	var extend = angular.extend,
-		forEach = angular.forEach,
+	var forEach = angular.forEach,
 		isString = angular.isString,
 		isArray = angular.isArray,
 
@@ -27,7 +26,7 @@
 		GithubStoreConstructor.$inject = [ '$q', 'GithubRepository', 'EventEmitter', 'tagFilter' ];
 		function GithubStoreConstructor ( $q, GithubRepository, EventEmitter, tagFilter ) {
 			// Events
-			var EVENT_REPOSITORY_UPDATED = 'REPOSITORY_UPDATED';
+			var EVENT_REPOSITORY_UPDATED = 'repository.updated';
 
 
 			// Service

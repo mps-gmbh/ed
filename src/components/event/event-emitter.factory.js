@@ -10,17 +10,22 @@
 	function EventEmitterFactory () {
 
 		function EventEmitter () {
-			this._listeners = [];
+			this._listeners = {};
 		}
 
-		EventEmitter.prototype.register = function ( listener ) {
-			this._listeners.push(listener);
+		EventEmitter.prototype.listenTo = function ( event, listener ) {
+			if( !this._listeners[event] ) {
+				this._listeners[event] = [];
+			}
+			this._listeners[event].push(listener);
 		};
 
 		EventEmitter.prototype.emit = function ( event, data ) {
-			forEach( this._listeners, function ( listener ) {
-				listener( event, data );
-			});
+			if( this._listeners[event] ) {
+				forEach( this._listeners[event], function ( listener ) {
+					listener( event, data );
+				});
+			}
 		};
 
 		return EventEmitter;
