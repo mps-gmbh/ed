@@ -110,13 +110,13 @@
 						self.issues[idx] = new GithubIssue(issue);
 						if( !issue.pull_request ) {	return; }
 						self.pull_requests.push(issue);
-						calls.push(function () {
-							return $http.get(issue.pull_request.url, utils.request.createAuthHeader(self._token))
+						calls.push(
+							$http.get(issue.pull_request.url, utils.request.createAuthHeader(self._token))
 								.then(utils.response.unwrap)
 								.then(function ( pr ) {
 									utils.response.shallowClearAndCopy( issue, pr );
-								});
-						});
+								})
+						);
 					});
 					return $q.all(calls);
 				}).then( function () {
