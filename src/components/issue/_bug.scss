@@ -1,0 +1,103 @@
+$butPaddingHorizontal: 10;
+$bugFontSize: 21;
+$bugContentHeight: 16;
+$bugPrioritySize: 25;
+
+// Bug Root
+// -------------------------
+ed-bug {
+	display: block;
+
+	margin: 0 rem($contentHorizontalSpace);
+	padding: rem($butPaddingHorizontal) rem($whitespaceHorizontal);
+	background: $white;
+
+	@include shadow;
+
+	// Borders
+	&:first-child {
+		border-radius: $border-radius $border-radius 0 0;
+	}
+	&:last-child {
+		border-radius: 0 0 $border-radius $border-radius;
+	}
+}
+
+
+// Bug Header
+// -------------------------
+.Bug-title {
+	margin: 0;
+	padding: 0;
+
+	font-size: em($bugFontSize);
+	font-weight: 700;
+	line-height: 1.2;
+	word-wrap: break-word;
+}
+.Bug-priority {
+	display: block;
+
+	margin-right: rem(14);
+
+	height: rem($bugPrioritySize);
+	width: rem($bugPrioritySize);
+
+	border-radius: rem($bugPrioritySize);
+
+	background: $yellow;
+
+	&[priority="high"] {
+		background: $red;
+	}
+
+	&[priority="low"] {
+		background: $grey;
+	}
+}
+
+
+// Bug Content
+// -------------------------
+.Bug-content {
+	padding-top: rem(6);
+
+	color: $grey--dark;
+	font-size: rem($bugContentHeight);
+	font-weight: 600;
+	line-height: rem($bugContentHeight);
+
+	a {
+		color: $grey--dark;
+
+		&:hover {
+			color: $black;
+		}
+	}
+
+	path {
+		fill: currentColor;
+	}
+
+	> * {
+		height: rem($bugContentHeight);
+	}
+}
+
+.Bug-contentDivider {
+	display: inline-block;
+	margin: 0 rem(7);
+
+	width: 1px;
+	height: rem($bugContentHeight);
+
+	background: $grey;
+}
+
+.Bug-assignee {
+	display: inline-block;
+	height: rem($bugContentHeight);
+	width: rem($bugContentHeight);
+}
+
+

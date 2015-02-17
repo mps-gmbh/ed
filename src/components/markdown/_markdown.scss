@@ -1,0 +1,22 @@
+[btf-markdown] {
+	p {
+		margin: 0 0 rem($whitespaceVertical);
+	}
+
+	ul, ol {
+		margin: 0 0 rem($whitespaceVertical);;
+		padding-left: rem(24);
+	}
+
+	pre {
+		padding: rem(5);
+		background: $grey--light;
+		border: 1px solid darken( $grey--light, 5% );
+	}
+
+	img {
+		display: block;
+		max-width: 100%;
+		height: auto;
+	}
+}

@@ -1,0 +1,15 @@
+<div
+	layout
+	layout-align="center center"
+	layout-fill
+	class="Animation--fade"
+	ng-if="list.isLoading"
+>
+	<ed-loading-spinner></ed-loading-spinner>
+</div>
+<div
+	class="Animation--fade"
+	ng-if="!list.isLoading"
+>
+	<ed-bug ng-repeat="bug in list.bugs" model="bug"></ed-bug>
+</div>

@@ -1,13 +1,31 @@
 $milestoneFontSize: 24;
 $milestoneProgressHeight: 38;
 
+$milestoneListPaddingTop: 25;
+
+
+// Milestone List
+// -------------------------
+.MilestoneList-content {
+	margin: rem(-$milestoneListPaddingTop) 0 rem(20);
+}
+
+.MilestoneList-title {
+	margin: 0;
+	padding: rem($milestoneListPaddingTop) 0 rem(5) rem(30);
+
+	color: $brand;
+	font-size: rem(18);
+	text-transform: uppercase;
+}
+
 
 // Milestone Root
 // -------------------------
 ed-milestone {
 	display: block;
 	background: $white;
-	margin: 0 rem(30);
+	margin: 0 rem($contentHorizontalSpace);
 
 	@include shadow;
 
@@ -185,15 +203,5 @@ $milestoneBarIconSize: 18;
 // -------------------------
 .Milestone-description {
 	padding: 0 rem($whitespaceHorizontal) rem($whitespaceVertical);
-
 	font-size: rem(16);
-
-	p {
-		margin: 0 0 rem($whitespaceVertical);
-	}
-
-	ul, ol {
-		margin: 0 0 rem($whitespaceVertical);;
-		padding-left: rem(24);
-	}
 }

@@ -8,14 +8,14 @@
 	<ed-loading-spinner></ed-loading-spinner>
 </div>
 <div
-	class="Dashboard-content Animation--fade"
+	class="MilestoneList-content Animation--fade"
 	ng-if="!list.isLoading"
 >
 	<section
 		ng-repeat="group in list.groups"
 		ng-if="group.milestones.length"
 	>
-		<h4 class="Dashboard-title">{{ group.name }}</h4>
+		<h4 class="MilestoneList-title">{{ group.name }}</h4>
 		<ed-milestone
 			ng-repeat="milestone in group.milestones"
 			model="milestone"

@@ -48,27 +48,28 @@
 			GithubStore.prototype.constructor = GithubStore;
 
 			// Repository Methods
-			GithubStore.prototype.addRepository = function ( owner, name, a2, a3 ) {
+			GithubStore.prototype.addRepository = function ( owner, name, a3, a4, a5 ) {
 				var rid = this._getRepositoryIdentifier( owner, name ),
-					token, tags;
+					token, tags, bug_label;
 
 				if( this.hasRepository(rid) ) {
 					throw MinErr('badcfg',
 						'Repository "' + rid + '" already stored.');
 				}
 
-				// Arguments 3 and 4 are optional. Can either the auth token or
-				// customized tags.
+				// Arguments 3-5 are optional. Can be [token, tags, bug_label]
 				switch(arguments.length) {
+					case 5:
 					case 4:
-						token = a2;
-						tags = a3;
+						bug_label = a5 || provider.bug_label;
+						token = a3;
+						tags = a4;
 						break;
 					case 3:
-						if( isString(a2) ) {
-							token = a2;
+						if( isString(a3) ) {
+							token = a3;
 						} else {
-							tags = a2;
+							tags = a3;
 						}
 						break;
 				}
@@ -91,6 +92,10 @@
 						all: [],
 						group: createGroups(tags),
 						tags: tags
+					},
+					bugs: {
+						label: bug_label,
+						all: []
 					}
 				};
 				return rid;
@@ -182,6 +187,44 @@
 					self._emitRepositoryUpdate(repo);
 					return deferred.promise;
 				}
+			};
+
+
+			// Bugs
+			GithubStore.prototype.getBugs = function ( a1, a2 ) {
+				var self = this,
+					rid = self._getRepositoryIdentifier(a1, a2),
+					deferred = $q.defer(),
+					currPage = 0,
+					per_page = 100,
+					lastLength = per_page,
+					repo;
+
+				if( !self.hasRepository(rid) ) {
+					throw MinErr('badargs',
+						'Repository "' + rid + '" does not exist in the store.');
+				}
+
+				repo = self._repositories[rid];
+				repo.bugs.all = [];
+				loop();
+
+				function loop () {
+					if( per_page > lastLength ) {
+						return deferred.resolve(repo.bugs.all);
+					}
+					return repo.instance
+						.getIssues({ 'labels': repo.bugs.label, 'state': 'open',
+							'per_page': per_page, 'page': currPage })
+						.then(function ( issues ) {
+							repo.bugs.all = repo.bugs.all.concat(issues);
+							lastLength = issues.length;
+							currPage++;
+						})
+						.then(loop);
+				}
+
+				return deferred.promise;
 			};
 
 

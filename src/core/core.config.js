@@ -19,7 +19,7 @@
 	function CoreSetup ( GithubStore, settings ) {
 		var rid = GithubStore.addRepository(
 				settings.owner, settings.repo, settings.token,
-				settings.milestone_groups);
+				settings.milestone_groups, settings.bug_label);
 		GithubStore.setActiveRepository(rid);
 	}
 

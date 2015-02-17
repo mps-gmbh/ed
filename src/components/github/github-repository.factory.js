@@ -12,8 +12,8 @@
 
 	// Factory
 	// -------------------------
-	GithubRepositoryFactory.$inject = [ 'GithubAPI', 'GithubMilestone' ];
-	function GithubRepositoryFactory ( GithubAPI, GithubMilestone ) {
+	GithubRepositoryFactory.$inject = [ 'GithubAPI', 'GithubIssue', 'GithubMilestone' ];
+	function GithubRepositoryFactory ( GithubAPI, GithubIssue, GithubMilestone ) {
 
 		function GithubRepository ( owner, name, token ) {
 			this.owner = owner;
@@ -37,6 +37,9 @@
 					this.token,
 					filter
 				).then( function ( issues ) {
+					forEach( issues, function ( issue, idx ) {
+						issues[idx] = new GithubIssue(issue);
+					});
 					delete self.isLoadingIssues;
 					return issues;
 				});

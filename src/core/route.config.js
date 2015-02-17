@@ -15,7 +15,7 @@
 			})
 			// Bug List
 			.when('/bugs', {
-				template: '<h1>comming soon!</h1><img src="http://stream1.gifsoup.com/view5/2581467/rick-roll-o.gif" alt="ricky" />'
+				template: '<ed-bug-list></ed-bug-list>'
 			})
 			// Fallback
 			.otherwise({ redirectTo: '/milestones' });

@@ -1,5 +1,7 @@
 (function () {
 
-	angular.module('ed.issue', []);
+	angular.module('ed.issue', [
+		'ed.github'
+	]);
 
 })();

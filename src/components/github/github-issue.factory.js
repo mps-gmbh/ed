@@ -15,6 +15,13 @@
 
 		function GithubIssue ( data ) {
 			extend( this, data );
+
+			this.priority = (function ( labels ) {
+				for (var i = labels.length - 1; i >= 0; i--) {
+					var matches = /^priority:(.*)/.exec(labels[i].name);
+					return matches ? matches[1] : 'normal';
+				}
+			})( data.labels );
 		}
 
 		GithubIssue.prototype = {
