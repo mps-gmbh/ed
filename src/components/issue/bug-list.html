@@ -11,5 +11,5 @@
 	class="Animation--fade"
 	ng-if="!list.isLoading"
 >
-	<ed-bug ng-repeat="bug in list.bugs" model="bug"></ed-bug>
+	<ed-bug ng-repeat="bug in list.bugs | orderBy:list.priority:true" model="bug"></ed-bug>
 </div>

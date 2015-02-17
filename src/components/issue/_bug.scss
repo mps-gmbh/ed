@@ -3,6 +3,12 @@ $bugFontSize: 21;
 $bugContentHeight: 16;
 $bugPrioritySize: 25;
 
+ed-bug-list {
+	display: block;
+	margin-bottom: rem(20);
+}
+
+
 // Bug Root
 // -------------------------
 ed-bug {

@@ -13,7 +13,8 @@
 			templateUrl: 'issue/bug-list.html',
 			controller: BugListController,
 			controllerAs: 'list',
-			bindToController: true
+			bindToController: true,
+			scope: {}
 		};
 	}
 
@@ -27,6 +28,10 @@
 
 		vm.bugs = [];
 		vm.isLoading = true;
+
+		vm.priority = function ( issue ) {
+			return issue.priorityAsNumber();
+		};
 
 		GithubStore.getBugs(repo.id).then(function ( bugs ) {
 			vm.bugs = bugs;

@@ -31,6 +31,17 @@
 				return this.labels.some( function ( label ) {
 					return exp.test(label.name);
 				});
+			},
+
+			priorityAsNumber: function () {
+				switch( this.priority ) {
+					case 'high':
+						return 3;
+					case 'low':
+						return 1;
+					default:
+						return 2;
+				}
 			}
 
 		};
