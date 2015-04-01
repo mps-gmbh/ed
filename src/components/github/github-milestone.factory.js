@@ -51,6 +51,11 @@
 				this.html_url = GithubAPI.getHTMLBase() + this._owner + '/' + this._repo +
 						GithubAPI.getPrefix('milestone') + '/' + this.title;
 			}
+
+			if( this._owner && this._repo && this.title ) {
+				this.new_issue_url = GithubAPI.getHTMLBase() + this._owner + '/' + this._repo +
+						"/issues/new?milestone=" + this.number;
+			}
 		}
 
 		GithubMilestone.prototype = {
