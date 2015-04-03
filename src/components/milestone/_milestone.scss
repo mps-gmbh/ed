@@ -59,6 +59,10 @@ ed-milestone {
 	padding: 0 rem($whitespaceHorizontal);
 }
 
+.completed {
+  background-color: #5E9E5E;
+}
+
 .Milestone-title {
 	margin: 0;
 	padding: rem($whitespaceVertical) 0;
