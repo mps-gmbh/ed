@@ -1,6 +1,5 @@
-<div class="Milestone-header" layout layout-align="start center">
+<div class="Milestone-header" ng-class="{ completed: milestone.completed }" layout layout-align="start center">
 	<span class="Milestone-number">#{{ milestone.number }}</span>
-
 	<h2
 		class="Milestone-title"
 		flex
@@ -16,7 +15,7 @@
 		class="Milestone-openPR Animation--blink"
 		ng-if="(milestone.pull_requests | filter: { state: 'open' }).length"
 	>PR!</div>
-	<div class="Milestone-progress">
+	<div class="Milestone-progress" ng-if="!milestone.completed">
 		<ed-progress
 			percentage="milestone.progress"
 		></ed-progress>

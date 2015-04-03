@@ -72,6 +72,18 @@
 						}
 					}
 				});
+				var numPRs = 0,
+					mergedPRs = 0;
+				forEach( this.pull_requests, function ( pr ) {
+					numPRs++;
+					if ( pr.merged ) {
+						mergedPRs++;
+					}
+				});
+				this.completed = false;
+				if ( numPRs > 0 && numPRs === mergedPRs ) {
+					this.completed = true;
+				}
 				this.progress = closed/(open + closed);
 			},
 
