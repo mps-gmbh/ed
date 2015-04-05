@@ -61,7 +61,9 @@
 		GithubMilestone.prototype = {
 			updateProgress: function () {
 				var open = 0,
-					closed = 0;
+					closed = 0,
+					merged = 0;
+
 				forEach( this.issues, function ( issue ) {
 					// Ignore PR Issues
 					if( isUndefined(issue.pull_request) ) {
@@ -73,6 +75,18 @@
 					}
 				});
 				this.progress = closed/(open + closed);
+
+				forEach( this.pull_requests, function ( pr ) {
+					if( pr.merged || pr.state === 'closed' ) {
+						merged++;
+					}
+				});
+				// A milestone is completed, when
+				// (1) it has PRs
+				// (2) its progress is 100%
+				// (3) all PRs are merged or closed
+				this.completed = this.pull_requests.length &&
+					this.progress === 1 && this.pull_requests.length === merged;
 			},
 
 			refresh: function () {

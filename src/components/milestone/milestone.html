@@ -16,8 +16,13 @@
 		class="Milestone-openPR Animation--blink"
 		ng-if="(milestone.pull_requests | filter: { state: 'open' }).length"
 	>PR!</div>
-	<div class="Milestone-progress">
+	<div class="Milestone-progress" ng-switch="milestone.completed">
+		<ed-icon
+			ng-switch-when="true"
+			name="done"
+		></ed-icon>
 		<ed-progress
+			ng-switch-default
 			percentage="milestone.progress"
 		></ed-progress>
 	</div>

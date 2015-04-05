@@ -12,11 +12,27 @@ $milestoneListPaddingTop: 25;
 
 .MilestoneList-title {
 	margin: 0;
-	padding: rem($milestoneListPaddingTop) 0 rem(5) rem(30);
+	padding: rem($milestoneListPaddingTop) rem(30) rem(5) rem(30);
 
 	color: $brand;
 	font-size: rem(18);
 	text-transform: uppercase;
+
+	> ed-icon {
+		display: block;
+		float: right;
+
+		margin-right: rem(5);
+
+		height: rem(26);
+		width: rem(26);
+
+		opacity: 0.25;
+
+		&.active {
+			opacity: 1;
+		}
+	}
 }
 
 
@@ -97,6 +113,17 @@ ed-milestone {
 .Milestone-progress {
 	height: rem(38);
 	width: rem(38);
+
+	> ed-icon {
+		height: rem(24);
+		width: rem(24);
+
+		margin: rem((38 - 24)/2);
+
+		path {
+			fill: $green;
+		}
+	}
 }
 
 

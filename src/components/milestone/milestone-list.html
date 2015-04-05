@@ -15,9 +15,17 @@
 		ng-repeat="group in list.groups"
 		ng-if="group.milestones.length"
 	>
-		<h4 class="MilestoneList-title">{{ group.name }}</h4>
+		<h4 class="MilestoneList-title">
+			{{ group.name }} {{group.show_completed}}
+			<ed-icon
+				name="done"
+				ng-click="group.show_completed = !group.show_completed;"
+				ng-class="{ active: group.show_completed }"
+			></ed-icon>
+		</h4>
 		<ed-milestone
 			ng-repeat="milestone in group.milestones"
+			ng-if="group.show_completed || !milestone.completed"
 			model="milestone"
 			ed-attr-observe="{ 'is-expanded': list.adjustPosition }"
 		></ed-milestone>
