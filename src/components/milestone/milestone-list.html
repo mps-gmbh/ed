@@ -26,6 +26,7 @@
 		<ed-milestone
 			ng-repeat="milestone in group.milestones"
 			ng-if="group.show_completed || !milestone.completed"
+			ng-class="{ completed: milestone.completed }"
 			model="milestone"
 			ed-attr-observe="{ 'is-expanded': list.adjustPosition }"
 		></ed-milestone>

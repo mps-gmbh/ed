@@ -66,6 +66,10 @@ ed-milestone {
 
 		@include shadow--highlight;
 	}
+
+	&.completed {
+		background: $green--light;
+	}
 }
 
 
