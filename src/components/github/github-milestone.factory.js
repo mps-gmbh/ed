@@ -52,13 +52,24 @@
 						GithubAPI.getPrefix('milestone') + '/' + this.title;
 			}
 
-			if( this._owner && this._repo && this.title ) {
-				this.new_issue_url = GithubAPI.getHTMLBase() + this._owner + '/' + this._repo +
-						"/issues/new?milestone=" + this.number;
-			}
+			this.setNewMilestoneIssueUrl();
+			this.setMilestoneEditorUrl();
 		}
 
 		GithubMilestone.prototype = {
+			setNewMilestoneIssueUrl: function () {
+				if( this._owner && this._repo && this.number ) {
+					this.new_issue_url = GithubAPI.getHTMLBase() + this._owner + '/' + this._repo +
+							'/issues/new?milestone=' + this.number;
+				}
+			},
+			setMilestoneEditorUrl: function () {
+				if( this._owner && this._repo && this.number ) {
+					this.milestone_editor_url = GithubAPI.getHTMLBase() + this._owner + '/' + this._repo +
+							'/milestones/' + this.number + '/edit';
+				}
+			},
+
 			updateProgress: function () {
 				var open = 0,
 					closed = 0,
@@ -102,6 +113,8 @@
 					.then(utils.response.unwrap)
 					.then(function ( milestone ) {
 						utils.response.shallowClearAndCopy( self, milestone );
+						this.setNewMilestoneIssueUrl();
+						this.setMilestoneEditorUrl();
 						delete self.isRefreshing;
 					})
 					.then(function () {

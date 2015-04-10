@@ -52,6 +52,11 @@
 			><ed-icon name="github"></ed-icon> View on Github</a>
 			<a
 				class="Milestone-metaItem has-Icon"
+				ng-href="{{ milestone.milestone_editor_url }}"
+				target="_blank"
+			><ed-icon name="edit"></ed-icon> Edit</a>
+			<a
+				class="Milestone-metaItem has-Icon"
 				ng-href="{{ milestone.new_issue_url }}"
 				target="_blank"
 			><ed-icon name="issue"></ed-icon> Create new Issue</a>
