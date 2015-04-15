@@ -24,7 +24,7 @@
 			></ed-icon>
 		</h4>
 		<ed-milestone
-			ng-repeat="milestone in group.milestones"
+			ng-repeat="milestone in group.milestones | orderBy:'number' track by $id(milestone)"
 			ng-if="group.show_completed || !milestone.completed"
 			ng-class="{ completed: milestone.completed }"
 			model="milestone"

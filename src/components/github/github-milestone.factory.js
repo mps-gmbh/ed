@@ -113,8 +113,8 @@
 					.then(utils.response.unwrap)
 					.then(function ( milestone ) {
 						utils.response.shallowClearAndCopy( self, milestone );
-						this.setNewMilestoneIssueUrl();
-						this.setMilestoneEditorUrl();
+						self.setNewMilestoneIssueUrl();
+						self.setMilestoneEditorUrl();
 						delete self.isRefreshing;
 					})
 					.then(function () {
